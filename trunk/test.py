@@ -16,16 +16,10 @@ def get_matching_segments():
     t1 = alltps.filter(trace=2)[0]
     print t1
     tps = Trace_point.objects.exclude(trace=2)
-    match = 0
-    dist = 0
-    for t in tps:
-        # dist = 1000*lib.getDistance(t1.latitude, t1.longitude, t.latitude, t.longitude)
-        diff = 20000* (abs(t1.latitude-t.latitude) + abs(t1.longitude - t.longitude))
-        if diff < 1:
-            print u'match '+ unicode(dist)+ ' diff '+ unicode(diff) + '  ' + unicode(t)
-            match += 1
-    print 'matches ' + str(match)
-
+    tps= tps.extra(where=['20000*(abs('+str(t1.latitude)+'-latitude)+abs('+str(t1.longitude)+'-longitude)) < 1'])
+    tps = tps.order_by('order_num')
+    # if tps.count()>0:
+    print tps[0]
 
 start = datetime.now()
 print start
