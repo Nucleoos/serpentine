@@ -15,5 +15,5 @@ You will have to add 'gps' app and urls to your settings and then run "syncdb" t
   * Vraie page d'accueil
   * Scorer les traces 
   * Gérer les segments de traces 
-  * Ajouter des photos dans la trace
+  * Ajouter des photos dans la trace (click droit ajouter)
   * Repérer les segments analogues

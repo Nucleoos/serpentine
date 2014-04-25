@@ -312,7 +312,8 @@ class Trace_point(models.Model):
     segment_number = models.IntegerField()
 
     def __unicode__(self):
-        u = "n:" + unicode(self.order_num) + " / lat: " + unicode(self.latitude) + " / lon:" + unicode(self.longitude)
+        u = "Trace id " + unicode(self.trace)
+        u = u + "order_num:" + unicode(self.order_num) + " / lat: " + unicode(self.latitude) + " / lon:" + unicode(self.longitude)
         u = u + " / elevation: " + unicode(self.elevation)
         u = u + " / time: " + unicode(self.time)
         u = u + " / distance: " + unicode(self.distance)
