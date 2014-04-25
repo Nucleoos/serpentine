@@ -1,0 +1,27 @@
+<div class="sidetitle">Les 10 dernières traces</div>
+<div class="sidegroup" id="track_menu">
+    {% if latest_traces %}
+    <ul>
+        {% for trace in latest_traces %}
+        <li>
+            <a id="trace_{{ trace.id }}" class="a_track" href="/trace/{{ trace.id }}">{{ trace.name }} </a> ({{ trace.user }})
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    Pas de traces disponibles.
+    {% endif %}
+</div>
+
+{% if mes_traces %}
+<div class="sidetitle">Mes 10 dernières traces</div>
+<div class="sidegroup" id="track_menu">
+    <ul>
+        {% for trace in mes_traces %}
+        <li>
+            <a id="trace_{{ trace.id }}" class="a_track" href="/trace/{{ trace.id }}">{{ trace.name }} </a> ({{ trace.user }})
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}

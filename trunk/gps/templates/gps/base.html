@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Serpentine GPS - {% block page_title %} visualiser, éditer et partager des traces GPS{% endblock %} </title>
+    {% block style %}
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css"></link>
+    {% endblock style %}
+    {% block js_base %}
+    <script type="text/javascript" src="/static/js/jquery-1.4.4.js"></script>
+    <script type="text/javascript" src="/static/js/gps/base.js"></script>
+    {% endblock js_base %}
+    {% block js_plot %}{% endblock js_plot %}
+    {% block js_maps %}{% endblock js_maps %}
+</head>
+<body>
+<div id="header">
+    <div id="title" title="Retourner à l'accueil du site">
+        <!--img alt="en attendant le serpent de Fabienne !" src="/static/img/serpentine.jpg"/-->
+        <a href="/">Serpentine-GPS - New</a>
+    </div>
+    <div id="subtitle">
+        {% block title %}
+        Visualiser, partager et éditer des parcours GPS
+        {% endblock %}
+    </div>
+</div>
+<div id="under_header">
+    <div id="main_menu">
+        <ul>
+            <li title="Charger un fichier GPX"><a href="/upload">Charger un fichier </a></li>
+        </ul>
+    </div>
+    <div id="quick_search" title="Recheche rapide d'un lieu ou d'un parcours">
+        <ul>
+            <li>
+                <form method="get" id="quicksearch" action="/recherche">
+                    <div class="search_input">
+                        {{ quick_search_form.recherche }}
+                        <!--<input type="submit" name="searchsubmit" value="GO" />-->
+                    </div>
+                </form>
+            </li>
+        </ul>
+    </div>
+    <div id="map_switcher" title="Choisir la carte par défaut dans laquelle s'afficheront les parcours">
+        <ul>
+            <li>Carte préférée</li>
+            <li><a id="map_ign" href="">ign</a></li>
+            <li><a id="map_osm" href="">osm</a></li>
+        </ul>
+    </div>
+</div>
+<div id="content">
+
+    <div id="main_content">
+        {% block content %}
+        {% endblock content%}
+    </div>
+    <div id="sidebar">
+        {% block sidebar %}
+        {% block sidebar_intro %}
+        Bienvenue sur Serpentine-GPS, un site de partage de trace GPS. Vous pouvez charger, visualiser et bientôt éditer
+        vos traces ... bla bla bla, bla bla bla...
+        {% endblock sidebar_intro %}
+        <div class="nav">
+            {% include "gps/nav.html" %}
+        </div>
+        <!--	<div id="login">
+                Login
+              {% if user_logged %}
+              Vous êtes connecté <br/>
+              {{user_logged}}
+              <a id="logout" href="/logout/">se déconnecter</a>
+              {% else %}
+              <form action="/login/" method="post">
+                {% csrf_token %}
+                <table>
+                  {{ login_form.as_table }}
+                </table>
+                 <div class="invisible"><input type="submit" value="Login"/></div>
+              </form>
+              {% endif %}
+
+        </div>
+        -->
+        <div id="w3c">
+            <a href="http://validator.w3.org/check?uri=referer">
+                xhtml1.0 strict
+            </a>
+        </div>
+    </div>
+
+    {% endblock sidebar%}
+</div>
+</body>
+</html>

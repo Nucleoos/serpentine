@@ -1,0 +1,36 @@
+<div class="sidetitle">Modifier</div>
+<div id="maptools" class="sidegroup" style="display:none">
+    <div id="controls">
+        <form method="post" action="/modify/">
+            <ul id="controlToggle">
+                <li>
+                    <input type="radio" name="type" value="none" id="noneToggle" onclick="toggleControl(this);"
+                           checked="checked"/>
+                    <label for="noneToggle">navigate</label>
+                </li>
+                <li>
+                    <input type="radio" name="type" value="point" id="pointToggle" onclick="toggleControl(this);"/>
+                    <label for="pointToggle">draw point</label>
+                </li>
+                <li>
+                    <input type="radio" name="type" value="line" id="lineToggle" onclick="toggleControl(this);"/>
+                    <label for="lineToggle">draw line</label>
+                </li>
+                <li>
+                    <input type="radio" name="type" value="polygon" id="polygonToggle" onclick="toggleControl(this);"/>
+                    <label for="polygonToggle">draw polygon</label>
+                </li>
+                <li>
+                    <input type="radio" name="type" value="modify" id="modifyToggle" onclick="toggleControl(this);"/>
+                    <label for="modifyToggle">modify feature</label>
+                </li>
+                <li><input type="submit" value="Poster les modifications" id="postchanges"/></li>
+            </ul>
+        </form>
+    </div>
+    <ul>
+        <li><a class="getElevation" href=""> Ajuster aux altitudes terrestres </a></li>
+        <li><a href="/edit/{{ trace.id }}">edit</a></li>
+    </ul>
+    <a id="fullscreen" href="/">Agrandir la carte </a>
+</div>

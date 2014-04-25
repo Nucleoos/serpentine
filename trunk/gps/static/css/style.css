@@ -1,0 +1,246 @@
+body{
+    font-family: sans-serif;
+}
+
+#header{
+    height:45px;
+    font-size:8pt;
+    background: -moz-linear-gradient(top,#CFCFCF,white);
+    background: -webkit-gradient(linear, center bottom, center top, from(white), to(#CFCFCF)); 
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-top: 1px solid;
+    border-color: #CFCFCF;
+    width: 100%;
+}
+
+#title a {
+    margin-left:5px;
+    float: left;
+    height: 100%;
+    font-size:20pt;
+    font-family: cursive;
+    text-decoration: none;
+}
+
+#subtitle{
+    float: right;
+    font-size:14pt;
+    margin-top:10px;
+    margin-right: 20px;
+}
+#under_header{
+    height:20px;
+    font-size: 10pt;
+    width: 100%;  
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+    border-color: #CFCFCF;
+}
+#main_menu{
+    float: left;
+}
+#under_header ul{
+    list-style-type:none;
+    margin: 0px;
+    padding: 0px;
+} 
+#under_header li{
+    display: inline;
+    padding: 3px;
+    text-decoration: none;
+}
+#map_switcher{
+    background-color:red;
+    float: right;
+    display: inline;
+}
+
+#quick_search{
+    float: right;
+    display: inline;
+}
+#quick_search form{
+    float: right;
+    display: inline;
+}
+#quick_search input{
+    padding: 0px;
+    margin: 0px;
+}
+
+#main_content{
+    float:left;
+}
+#text_content{
+    height: 100%;
+    padding: 8px;
+}
+#sidebar{
+    float: right; 
+    font-size:8pt;
+    width:300px;
+}
+#sidebar ul{
+    padding:0px;
+}
+#sidebar li{
+    list-style-type:none;
+    padding:0px;
+}
+#sidebar a{
+    font-size:8pt;
+}
+.sidegroup{
+    padding: 5px;
+}
+.sidegroup ul {   
+    margin: 0px;
+    padding: 0px;
+    display: inline;
+}
+.sidegroup ul li {
+    display: block;
+}
+.trackinfo{
+    font-size: 8pt;
+}
+.trackshortinfo{
+    font-size: 8pt;
+}
+.trackshortinfo hover{
+    font-size: 14pt;
+}
+.ajaxgif{
+    text-align: center;
+}
+.traceinfotable {
+    border: 1px solid #CFCFCF;
+    border-collapse:collapse;
+    margin-top: 10px;
+    padding: 3px;
+    width: 290px;
+    height: 25px;
+}
+
+#chartdiv{
+    height:200px;
+}
+#speedchartdiv{
+    height:200px;
+}
+#map_canvas{
+    opacity: 0.99;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+    border-color: #CFCFCF;
+
+}
+
+#w3c{
+    float: right;
+    font-size:8pt;
+}
+.margintop{
+    margin-top:20px;
+}
+
+#track_popup_contentDiv{
+    opacity:0.8;
+    border: 1px solid;
+
+}
+.maptools{
+    border: 1px solid;
+
+    padding: 5px;
+}
+.sidetitle{
+    padding-top: 5px;
+    border: 1px solid;
+    border-color: #CFCFCF;
+    cursor: pointer;
+    margin-bottom: 5px;
+    padding-bottom: 1px;
+    padding-left: 3px;
+    padding-top: 5px;
+    background: -moz-linear-gradient(top,white, #CFCFCF);
+    background: -webkit-gradient(linear, center bottom, center top, from(#CFCFCF), to(white));
+
+}
+.sidetitle:hover{
+    background-color: gray;
+    color: white;
+}
+.invisible{
+    visibility:hidden;
+}
+.absolute{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+
+#upload_form td, th{
+   text-align: left;
+   font-weight: normal;
+   vertical-align: top;
+
+}
+#upload_form td{
+   display: inline;
+   float: left;
+}
+#upload_form input, textarea{
+    border: 1px solid gray;
+    display: inline;
+}
+.errorlist{
+    display:inline;
+    float: right;
+    margin: 0;
+    padding:0px;
+    padding-left: 4px;
+    vertical-align: top;
+    list-style-type:none;
+    color: red;
+}
+.trace_title{
+    font-weight: bold;
+}
+
+.trace_title a {
+    font-weight: normal;
+}
+
+.searchresults{
+    border-collapse:collapse;
+    font-size: 12px;
+}
+.searchresults th {
+    background-color:#00AA99;
+    font-weight: bold;
+    color: white;
+}
+.searchresults td, th{
+    border: 1px solid black;
+    padding: 3px;
+}
+.searchresults tr:hover{
+    background-color:#D2D2D2;
+    cursor:pointer;
+}
+.searchresults a{
+    display: block;
+    width:100%;
+    height: 100%;
+    text-decoration:none;
+}
+
+.odd {
+}
+.even {
+  background-color: #EEEEEE;
+}
