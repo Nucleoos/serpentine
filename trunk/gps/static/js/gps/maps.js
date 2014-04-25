@@ -69,19 +69,21 @@ function modifyTrack(map,track){
     // duplique la trace passée en paramètre et positionne les modify features dessus    
 }
 
-function drawTrack(map, trackname, track) {   
+function drawTrack(map, trackname, track,color, adding) {
     vec_track = new OpenLayers.Layer.Vector("track");
     var track_points = [];
     for (i in track.points) {
 	var point = new OpenLayers.Geometry.Point(track.points[i]["lon"],  track.points[i]["lat"]);
 	track_points.push(point.transform(geographic,map.getProjectionObject()));
     }
-    var line_style = { strokeWidth: 3, strokeColor: getColor(), strokeOpacity: 0.7 };
+    var line_style = { strokeWidth: 3, strokeColor: color, strokeOpacity: 0.7 };
     var lineGeometry =   new OpenLayers.Geometry.LineString(track_points);
     var lineFeature = new OpenLayers.Feature.Vector(lineGeometry,null,line_style);
     map.addLayer(vec_track);
     vec_track.addFeatures(lineFeature);
-    map.zoomToExtent(lineGeometry.getBounds());
+    if (!adding) {
+        map.zoomToExtent(lineGeometry.getBounds());
+        }
     plotTrace(track,"dist","ele");
     //plotElevation(track); 
     //plotSpeed(track); 
@@ -239,5 +241,16 @@ function onFeatureUnselect(evt) {
 
 function getColor() {
     // mettre ici le code qui prend la couleur choisie dans une palette
-    return '#0000FF'; 
+    return '#0000FF';
 }
+
+
+  function  addTrack(id) {
+	   track=getTrackPoints(id);
+	   drawTrack(mainmap,id, track,'#333333', true);
+   }
+
+
+        // regexp example
+	   //rg = new RegExp("^trace_([0-9]*)");
+	   //tr = rg.exec(id);

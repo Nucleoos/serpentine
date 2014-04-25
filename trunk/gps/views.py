@@ -129,7 +129,8 @@ def nearby(request):
         #TODO tester l'existence des cles
         lat = float(request.GET['lat'])
         lon = float(request.GET['lon'])
-    closest = Trace.get_closest_tracks(lat, lon)
+        tr_id = int(request.GET['tr_id'])
+    closest = Trace.get_closest_tracks(tr_id, lat, lon)
     c['closest_tracks'] = closest
     return render_to_response('gps/nearby.html', c)
 

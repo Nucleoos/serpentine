@@ -267,11 +267,11 @@ class Trace(models.Model):
         return trs
 
     @staticmethod
-    def get_closest_tracks(lat, lon):
+    def get_closest_tracks(tr_id, lat, lon):
         """Renvoie les traces les plus proches du point passé en paramètre
+            à l'exception de tr_id (trace courante)
            Calcul fait sur la base du point "moyen" des traces  
         """
-        print datetime.datetime.now()
         #boundbox progressivement agrandie, on s'arrete quand on a plus de 10 traces, on les ordonne par distance puis on renvoie les 10 premiers
         boxsize, trs, trsdis = gps.settings.SEARCH_BOX_SIZE, [], []
         #TODO optimiser ? 
@@ -281,10 +281,10 @@ class Trace(models.Model):
         #recherche des 10 plus proches
         #trsdis = [(t,lib.getDistanceAB(lat,lon,t.getFirstPoint().latitude,t.getFirstPoint().longitude)) for t in trs]
         for t in trs:
-            avgPt = t.get_avg_lat_lon()
-            trsdis.append((t, lib.getDistance(lat, lon, avgPt['lat'], avgPt['lon'])))
+            if t.id != tr_id:
+                avgPt = t.get_avg_lat_lon()
+                trsdis.append((t, lib.getDistance(lat, lon, avgPt['lat'], avgPt['lon'])))
         trs = sorted(trsdis, key=lambda trk: trk[1])[0:10]
-        print datetime.datetime.now()
         return trs
 
     @staticmethod
@@ -312,8 +312,8 @@ class Trace_point(models.Model):
     segment_number = models.IntegerField()
 
     def __unicode__(self):
-        u = "Trace id " + unicode(self.trace)
-        u = u + "order_num:" + unicode(self.order_num) + " / lat: " + unicode(self.latitude) + " / lon:" + unicode(self.longitude)
+        u = "tr" + unicode(self.trace.id)
+        u = u + " / order_num:" + unicode(self.order_num) + " / lat: " + unicode(self.latitude) + " / lon:" + unicode(self.longitude)
         u = u + " / elevation: " + unicode(self.elevation)
         u = u + " / time: " + unicode(self.time)
         u = u + " / distance: " + unicode(self.distance)

@@ -5,21 +5,26 @@ from datetime import datetime
 
 
 def run_test():
-    get_nearby()
+    get_matching_segments()
 
 
-def get_nearby():
+def get_matching_segments():
     from gps.models import Trace, Trace_point
     from gps import lib
 
-    tps = Trace_point.objects.get('trace=1')
-    t1 = tps[0]
+    alltps = Trace_point.objects.all()
+    t1 = alltps.filter(trace=2)[0]
     print t1
+    tps = Trace_point.objects.exclude(trace=2)
+    match = 0
+    dist = 0
     for t in tps:
-        if t.trace != t1.trace:
-            dist = lib.getDistance(t1.latitude, t1.longitude, t.latitude, t.longitude)
-            if dist > 1:
-                print u'match' + unicode(t)
+        # dist = 1000*lib.getDistance(t1.latitude, t1.longitude, t.latitude, t.longitude)
+        diff = 20000* (abs(t1.latitude-t.latitude) + abs(t1.longitude - t.longitude))
+        if diff < 1:
+            print u'match '+ unicode(dist)+ ' diff '+ unicode(diff) + '  ' + unicode(t)
+            match += 1
+    print 'matches ' + str(match)
 
 
 start = datetime.now()

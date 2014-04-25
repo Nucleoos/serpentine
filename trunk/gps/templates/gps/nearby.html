@@ -2,7 +2,8 @@
 <ul>
     {% for trace, dist in closest_tracks %}
     <li>
-        <a id="trace_{{ trace.id }}" class="a_track" href="/trace/{{ trace.id }}">{{ trace.name }} </a> à {{ dist|floatformat:1 }} km
+            <a class="a_track" href="/trace/{{ trace.id }}"> {{ trace.name }} </a> à {{ dist|floatformat:1 }} km
+            <span id="trace_{{ trace.id }}" onclick="addTrack({{ trace.id }})" class="add_track" title="ajouter à la carte courante"> (+) </span>
     </li>
     {% endfor %}
 </ul>

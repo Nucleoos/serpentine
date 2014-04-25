@@ -70,14 +70,14 @@ function getTracksFromBounds(bnds) {
 	    }});
 }
 
-function getTracksNearby(lat,lon) {
+function getTracksNearby(tr_id, lat,lon) {
     //recup du html de la vue nearby et affectation à id=nearby_content
     $("#nearby_content").show(0);
     $("#nearby_content").html('<div class="ajaxgif"><img src="/static/img/ajax-loader.gif"/></div>');
     $.ajax({
 	    url: "/nearby.html",
 	    datatype: 'text', 
-		data: ({lat: lat, lon: lon}), 
+		data: ({tr_id: tr_id, lat: lat, lon: lon}),
 	    async: true,
 	    success: function(data) {
 		$("#nearby_content").html(data);

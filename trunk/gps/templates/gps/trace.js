@@ -45,7 +45,7 @@ function initAfterMapSet() {
     //writeInfo(trackinfo);
     //addSnappingControls(map);
     track = getTrackPoints("{{ num }}");
-    drawTrack(mainmap,"{{ num }}" ,track);
+    drawTrack(mainmap,"{{ num }}" ,track, '#0000FF');
     if ("{{ fullscreen }}" == "fullscreen"){
        fullscreen = true;
     }
@@ -53,25 +53,12 @@ function initAfterMapSet() {
     resizeMap();
     var center = mainmap.getCenter();
     var cnt = center.transform(mainmap.getProjection(),geographic); 
-    getTracksNearby(cnt.lat,cnt.lon);   
+    getTracksNearby({{ num }},cnt.lat,cnt.lon);
     mainmap.events.on({ "moveend": function (e) {
 	var cnt = mainmap.getCenter().transform(mainmap.getProjectionObject(),geographic);
-	getTracksNearby(cnt.lat,cnt.lon);   
+	getTracksNearby({{ num }},cnt.lat,cnt.lon);
     }
 		      });
     
 }
 
-
-
-   // afficher directement une nouvelle trace dans la carte en cours
-   /*
-     $(".a_track").click(function(evt){
-	   evt.preventDefault();
-	   rg = new RegExp("^trace_([0-9]*)");
-	   tr = rg.exec(this.id);
-	   track=getTrack(tr[1]);
-	   //	   Tracks.push(track);
-	   drawTrack(map,tr[1], track);
-       });
-   */
