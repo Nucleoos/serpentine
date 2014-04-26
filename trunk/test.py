@@ -12,27 +12,25 @@ def run_test():
 def get_matching_segments():
     from gps.models import Trace, Trace_point
 
-    def get_matching_point(t1):
+    def get_matching_point(t1,tr_id, tr2_id, min_order_num):
         matches = {}
-        tps = Trace_point.objects.exclude(trace=2)
+        tps = Trace_point.objects.exclude(trace=tr_id)
+        tps = tps.filter(order_num__gt = min_order_num).filter(trace=tr2_id)
         tps= tps.extra(where=['20000*(abs('+str(t1.latitude)+'-latitude)+abs('+str(t1.longitude)+'-longitude)) < 1'])
         tps = tps.order_by('order_num')
+        # print tps.query
         if tps.count()>0:
             matches[t1] = tps[0]
         return matches
 
     alltps = Trace_point.objects.all()
-    t1 = alltps.filter(trace=2)[1]
-    matches = get_matching_point(t1)
-    print matches
-
-    t1 = alltps.filter(trace=2)[10]
-    matches = get_matching_point(t1)
-    print matches
-
-    t1 = alltps.filter(trace=2)[30]
-    matches = get_matching_point(t1)
-    print matches
+    min_num = 0
+    tps = alltps.filter(trace=2)
+    for t1 in tps:
+        matches = get_matching_point(t1,2,3,min_num)
+        if matches!={}:
+            min_num = matches.values()[0].order_num
+            print 'num' + str(min_num) + ' ' + str(matches)
 
 start = datetime.now()
 print start
