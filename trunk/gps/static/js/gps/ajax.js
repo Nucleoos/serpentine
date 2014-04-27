@@ -15,6 +15,23 @@ function getTrackPoints(tr) {
 	    }});
     return points;
 }
+
+
+function getMatchingPoints(t1,t2) {
+    //renvoie l'ensemble des infos + points matchant deux traces
+    var points;
+    $.ajax({
+	    url: "/trace/json_segments",
+	    datatype: 'json',
+	    data: ({t1:t1,t2:t2}),
+	    async: false,
+	    success: function(data) {
+		points = JSON.parse(data);
+	    }});
+    return points;
+}
+
+
 function getTrackInfos(tr) {
     // renvoie les infos de base d'un track particulier
     var infos;

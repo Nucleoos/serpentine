@@ -3,15 +3,16 @@ import os
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'serpentine.settings'
 from datetime import datetime
-
+from gps.models import Trace, Trace_point
+from gps import lib
 
 def run_test():
-   for i in  get_matching_segments(1,2,20):
-       print i
+    tr = Trace.objects.get(id=1)
+    segments = tr.get_matching_segments_json(2)
+    print segments
 
-def get_matching_segments(tr1_id,tr2_id,length_tolerance):
-    from gps.models import Trace, Trace_point
-    from gps import lib
+
+def get_matching_segments(tr1_id,tr2_id,length_tolerance=20):
 
     #TODO: use excluded ranges instead of excluded lists
     def get_matching_points(tp1 ,tr2_id, num_min = 0, exclude_list = [],length_tolerance = 30):

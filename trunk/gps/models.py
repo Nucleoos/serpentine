@@ -209,6 +209,91 @@ class Trace(models.Model):
         """ get json format for quick info on the Trace object"""
         return json.dumps(self.get_info())
 
+    def get_matching_segments(self,tr2_id,length_tolerance=20):
+        """ repérage et TODO: stockage des segments communs entre self et tr2
+        on passe une tolerance en longueur pour le match (plus c'est élevé plus on tolère de mismatchs
+        TODO: stockage en base des repérages de segments matchés
+        """
+        #TODO: use excluded ranges instead of excluded lists
+        def get_matching_points(tp1 ,tr2_id, num_min = 0, exclude_list = [],length_tolerance = 20, dist_tolerance = 0.10):
+            """ renvoie pour tp1 les points de t2 susceptible de matcher les points de t1
+                avec un order_num >= à order_min
+            """
+            match = {}
+            tps = Trace_point.objects.filter(trace=tr2_id)
+            if num_min != 0:
+                tps = tps.filter(order_num__lt = num_min +length_tolerance)
+            if len(exclude_list)>950:
+            #handling sqlite limitations (but exclude list should not be so long) i should use excluded_ranges cf previous to do.
+            # this is artificially introducing a maxlength to the matching segment
+                return {}
+            tps = tps.filter(order_num__gt = num_min).exclude(order_num__in=exclude_list)
+            tps = tps.extra(where=['10000*(abs('+str(tp1.latitude)+'-latitude)+abs('+str(tp1.longitude)+'-longitude)) < 2']) #todo approx plane for dist
+            # tps = tps.extra(where=['power(3,2)<3'])
+            tps = tps.order_by('order_num')
+            # print tps.query
+            if tps.count()>0:
+                min_dist = 1 #on commence avec 1 km
+                tp2 = tps[0]
+                for t in tps:
+                    # dist = lib.getDistance(tp1.latitude, tp1.longitude,t.latitude, t.longitude)
+                    dist = lib.getQuickDistance(tp1.latitude, tp1.longitude,t.latitude, t.longitude)
+                    if dist < min_dist:
+                        min_dist = dist
+                        tp2 = t
+                if min_dist < dist_tolerance:
+                    match[tp1] = tp2
+                else:
+                    return {}
+            return match
+
+        tps = Trace_point.objects.filter(trace=self)[::length_tolerance] #query with a step equals to tolerance
+        matches = [] #liste de points matchants
+        t1_order_num = 0
+        exclude_list = [] #liste des points déjà matchés dans t2=> à exclure
+        matching_segments = [] #liste de matches dont la longueur est suffisante
+        for tp1 in tps:
+            if tp1.order_num > t1_order_num:
+                t1_order_num = tp1.order_num
+                match = get_matching_points(tp1, tr2_id, 0, [x[1] for x in matches]+exclude_list,length_tolerance)
+                if match != {}:
+                    # matches.append((match.keys()[0].order_num, match.values()[0][0].order_num))
+                    min_num = match.values()[0].order_num
+                    # try to build a segment
+                    segtps = Trace_point.objects.filter(trace=self).filter(order_num__gt=tp1.order_num-length_tolerance)
+                    n_unmatch = 0
+                    min_num -= length_tolerance
+                    for tp in segtps:
+                        t1_order_num = tp.order_num
+                        match = get_matching_points(tp,tr2_id,min_num,[x[1] for x in matches]+exclude_list,length_tolerance)
+                        if match == {}:
+                            n_unmatch += 1
+                            if n_unmatch > length_tolerance/2:
+                                break
+                        else:
+                            matches.append((match.keys()[0].order_num, match.values()[0].order_num))
+                            min_num = match.values()[0].order_num
+                            n_unmatch=0
+                    if len(matches) > length_tolerance*4:
+                        matching_segments.append(matches)
+                        exclude_list += [x[1] for x in matches]
+                    matches = []
+
+        return matching_segments
+
+    def get_matching_segments_json(self, tr2_id):
+        """ get json for matching segments as Trace format """
+        segments = self.get_matching_segments(tr2_id)
+        tr = {}
+        tp = Trace_point.objects.filter(trace=tr2_id).filter(order_num__gt=segments[0][0][1])
+        tp = tp.filter(order_num__lt=segments[0][-1][1]).order_by('time')
+        points = []
+        for p in tp:
+            points.append(p.get_dict())
+        tr['points']=points
+        return json.dumps(tr)
+
+
     #traitements sur les points de la trace
     @transaction.commit_manually
     def compute_distances(self):
@@ -270,11 +355,11 @@ class Trace(models.Model):
     def get_closest_tracks(tr_id, lat, lon):
         """Renvoie les traces les plus proches du point passé en paramètre
             à l'exception de tr_id (trace courante)
-           Calcul fait sur la base du point "moyen" des traces  
+           Calcul fait sur la base du point "moyen" des traces
         """
         #boundbox progressivement agrandie, on s'arrete quand on a plus de 10 traces, on les ordonne par distance puis on renvoie les 10 premiers
         boxsize, trs, trsdis = gps.settings.SEARCH_BOX_SIZE, [], []
-        #TODO optimiser ? 
+        #TODO optimiser ?
         while len(trs) < 10 and boxsize < 2000:
             boxsize = boxsize * 2 + gps.settings.SEARCH_BOX_SIZE  #on augmente de plus en plus vite
             trs = Trace.get_tracks_in_bounds(lat - boxsize, lon - boxsize, lat + boxsize, lon + boxsize)
@@ -289,7 +374,7 @@ class Trace(models.Model):
 
     @staticmethod
     def get_search_results(criteria):
-        """renvoie les traces ré&pondant aux critères 
+        """renvoie les traces ré&pondant aux critères
         Arguments:
         - `criteria`: pour l'instant une chaine de caractères
         """

@@ -156,14 +156,14 @@ LOGGING = {
         },
     }
 }
-
+"""
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
         'LOCATION': 'django_cache',
     }
 }
-
+"""
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'gps.views.main_context',

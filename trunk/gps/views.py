@@ -132,6 +132,7 @@ def nearby(request):
         tr_id = int(request.GET['tr_id'])
     closest = Trace.get_closest_tracks(tr_id, lat, lon)
     c['closest_tracks'] = closest
+    c['tr_id'] = tr_id
     return render_to_response('gps/nearby.html', c)
 
 
@@ -298,6 +299,14 @@ def trace_json_info(request):
     if request.method == 'GET':
         t = int(request.GET['t'])
         points = Trace.objects.get(id=t).get_json_info()
+        return HttpResponse(points, mimetype='application/javascript')
+
+
+def trace_segment_json(request):
+    if request.method == 'GET':
+        t1 = int(request.GET['t1'])
+        t2 = int(request.GET['t2'])
+        points = Trace.objects.get(id=t1).get_matching_segments_json(t2)
         return HttpResponse(points, mimetype='application/javascript')
 
 

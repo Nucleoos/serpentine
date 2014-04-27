@@ -4,6 +4,7 @@
     <li>
             <a class="a_track" href="/trace/{{ trace.id }}"> {{ trace.name }} </a> à {{ dist|floatformat:1 }} km
             <span id="trace_{{ trace.id }}" onclick="addTrack({{ trace.id }})" class="add_track" title="ajouter à la carte courante"> (+) </span>
+            <span id="seg_{{ trace.id }}" onclick="addMatchingSegment({{ tr_id }},{{ trace.id }})" class="add_track" title="ajouter à la carte courante"> (+) </span>
     </li>
     {% endfor %}
 </ul>
