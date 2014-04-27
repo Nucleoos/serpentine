@@ -156,6 +156,7 @@ function showMarker(e, gridpos, datapos, neighbor, plot) {
     point = point.transform(geographic, mainmap.getProjectionObject());
     var pointFeature = new OpenLayers.Feature.Vector(point,null, marker_style);
     vec_pt.addFeatures(pointFeature);
+    $("#order_num").html(i);
 }
 
 function addMarkerTracks(map, tracks) {

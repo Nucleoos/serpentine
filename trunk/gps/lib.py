@@ -168,7 +168,7 @@ def getLatLonBounds(points):
             t['minlon'] = p['lon']
     return t
 
-
+#TODO include real segment feature
 def createGpxXml(points, name):
     "Prend un tableau de point et un nom de trace et renvoie un fichier gpx"
     from xml.dom.minidom import Document
