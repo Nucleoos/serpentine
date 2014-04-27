@@ -274,7 +274,7 @@ class Trace(models.Model):
                             matches.append((match.keys()[0].order_num, match.values()[0].order_num))
                             min_num = match.values()[0].order_num
                             n_unmatch=0
-                    if len(matches) > length_tolerance*4:
+                    if len(matches) > length_tolerance:
                         matching_segments.append(matches)
                         exclude_list += [x[1] for x in matches]
                     matches = []

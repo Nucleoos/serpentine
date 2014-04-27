@@ -7,8 +7,8 @@ from gps.models import Trace, Trace_point
 from gps import lib
 
 def run_test():
-    tr = Trace.objects.get(id=1)
-    segments = tr.get_matching_segments_json(2)
+    tr = Trace.objects.get(id=10)
+    segments = tr.get_matching_segments_json(11)
     print segments
 
 
