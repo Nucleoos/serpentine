@@ -152,6 +152,12 @@ def getDistance(latX, lonX, latY, lonY):
 
     return 6371 * d
 
+def getQuickDistance(latX, lonX, latY, lonY):
+    R = 6371  #radius of the earth in km
+    x = (lonY - lonX)*math.pi/180 * math.cos( 0.5*(latY+latX)*math.pi/180)
+    y = (latY - latX)*math.pi/180
+    return R * math.sqrt( x*x + y*y )
+
 
 def getLatLonBounds(points):
     """ prend un tableau de points en parametre et renvoie un dictionnaire avec les bounds """
