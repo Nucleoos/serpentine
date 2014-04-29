@@ -215,7 +215,7 @@ class Trace(models.Model):
         TODO: stockage en base des repérages de segments matchés
         """
         #TODO: use excluded ranges instead of excluded lists
-        def get_matching_points(tp1 ,tr2_id, num_min = 0, exclude_list = [],length_tolerance = 20, dist_tolerance = 0.10):
+        def get_matching_points(tp1 ,tr2_id, num_min = 0, exclude_list = [],length_tolerance = 20, dist_tolerance = 0.15):
             """ renvoie pour tp1 les points de t2 susceptible de matcher les points de t1
                 avec un order_num >= à order_min
             """
