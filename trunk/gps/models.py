@@ -285,15 +285,13 @@ class Trace(models.Model):
         """ get json for matching segments as Trace format """
         segments = self.get_matching_segments(tr2_id)
         tr = {}
-        i = 0
         for seg in segments:
-            i += 1
             tp = Trace_point.objects.filter(trace=tr2_id).filter(order_num__gt=seg[0][0])
-            tp = tp.filter(order_num__lt=segments[-1][0]).order_by('time')
+            tp = tp.filter(order_num__lt=seg[-1][0]).order_by('time')
             points = []
             for p in tp:
                 points.append(p.get_dict())
-            tr['points'+str(i)] = points
+            tr['points'] = points
 
         return json.dumps(tr)
 
