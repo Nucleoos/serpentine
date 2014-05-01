@@ -7,10 +7,9 @@ from gps.models import Trace, Trace_point
 from gps import lib
 
 def run_test():
-    tr = Trace.objects.get(id=10)
-    segments = tr.get_matching_segments_json(11)
-    print segments
-
+    tr = Trace.objects.get(id=3)
+    segments = tr.get_matching_segments_json(2)
+    print(segments)
 
 def get_matching_segments(tr1_id,tr2_id,length_tolerance=20):
 
@@ -83,8 +82,8 @@ def get_matching_segments(tr1_id,tr2_id,length_tolerance=20):
     return matching_segments
 
 start = datetime.now()
-print start
+print(start)
 run_test()
 end = datetime.now()
-print end
-print 'total time spent: ' + str(end - start)
+print(end)
+print('total time spent: ' + str(end - start))

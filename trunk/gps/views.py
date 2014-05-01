@@ -125,6 +125,7 @@ def nav_html(request):
 
 def nearby(request):
     c = {}
+    lat, lon , tr_id = 0 ,0 ,0
     if request.method == 'GET':
         #TODO tester l'existence des cles
         lat = float(request.GET['lat'])
@@ -136,15 +137,18 @@ def nearby(request):
     return render_to_response('gps/nearby.html', c)
 
 
-#gpx render
+@cache_page(86400 * 365)
 def gpx(request, num):
-    t = loader.get_template('gps/trace.gpx')
+    response = HttpResponse(mimetype='text/gpx+xml')
     trace = Trace.objects.get(id=int(num))
     points = trace.get_points()
     lat = [p['lat'] for p in points]
     c = Context({'trace': trace.name, 'lat': lat, 'points': points})
-    return HttpResponse(t.render(c), mimetype='text/xml')
+    t = loader.get_template('gps/trace.gpx')
+    response['Content-Disposition'] = 'attachment; filename="'+trace.name+'.gpx"'
 
+    response.write(t.render(c))
+    return response
 
 #upload file
 @login_required

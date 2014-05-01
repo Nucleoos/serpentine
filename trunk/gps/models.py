@@ -228,7 +228,8 @@ class Trace(models.Model):
             # this is artificially introducing a maxlength to the matching segment
                 return {}
             tps = tps.filter(order_num__gt = num_min).exclude(order_num__in=exclude_list)
-            tps = tps.extra(where=['10000*(abs('+str(tp1.latitude)+'-latitude)+abs('+str(tp1.longitude)+'-longitude)) < 2']) #todo approx plane for dist
+            tps = tps.extra(where=['10000*(abs('+str(tp1.latitude)+'-latitude)+abs('+str(tp1.longitude)+'-longitude)) < 2'])
+            #todo approx plane for dist
             # tps = tps.extra(where=['power(3,2)<3'])
             tps = tps.order_by('order_num')
             # print tps.query

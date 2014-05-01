@@ -6,7 +6,7 @@ urlpatterns = patterns('',
                        (r'^$', 'gps.views.index'),
                        (r'^recherche/$', 'gps.views.recherche'),
                        #gpx file
-                       (r'^gpx/(\d+).gpx', 'gps.views.gpx'),
+                       (r'^trace/(\d+).gpx', 'gps.views.gpx'),
                        #view_trace html
                        (r'^trace/(?P<num>\d+)$', 'gps.views.view_trace'),
                        (r'^traceinfo/(\d+)', 'gps.views.trace_info_html'),
