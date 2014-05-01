@@ -215,10 +215,10 @@ class Trace(models.Model):
         on passe une tolerance en longueur pour le match (plus c'est élevé plus on tolère de mismatchs
         TODO: stockage en base des repérages de segments matchés
         """
-        search_step = 10
+        search_step = 20  # nombre de points
         dist_tolerance = 0.040
-        min_segment_points = 10
-        mismatch_tolerance = 20
+        min_seg_dist = 0.100
+        mismatch_tolerance = 40 #tolerance de distortion en nombre de points
 
         #TODO: use excluded ranges instead of excluded lists
         def get_matching_points(tp1 ,tr2_id, num_min = 0, exclude_list = []):
@@ -279,10 +279,15 @@ class Trace(models.Model):
                             matches.append((match.keys()[0].order_num, match.values()[0].order_num))
                             t2_min_num = match.values()[0].order_num
                             n_unmatch=0
-                    if len(matches) > min_segment_points:
-                        matching_segments.append(matches)
-                        if len(matches) >0: exclude_list += range(matches[0][1],matches[-1][1])
-                    matches = []
+
+                    if len(matches) > 0:
+                        start = Trace_point.objects.filter(trace= self).filter(order_num = matches[0][0])[0]
+                        end = Trace_point.objects.filter(trace= self).filter(order_num = matches[-1][0])[0]
+                        dist_seg = lib.getDistance(start.latitude,start.longitude, end.latitude, end.longitude)
+                        if dist_seg > min_seg_dist:
+                            matching_segments.append(matches)
+                            if len(matches) >0: exclude_list += range(matches[0][1],matches[-1][1])
+                        matches = []
 
         return matching_segments
 

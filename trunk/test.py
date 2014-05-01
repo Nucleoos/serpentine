@@ -7,9 +7,12 @@ from gps.models import Trace, Trace_point
 from gps import lib
 
 def run_test():
-    tr = Trace.objects.get(id=13)
-    segments = tr.get_matching_segments(14)
-    print(segments)
+    # tr1, tr2 = 13,14 # langeais
+    tr1 , tr2 = 15,16 # BRM
+    tr = Trace.objects.get(id=tr1)
+    segments = tr.get_matching_segments(tr2)
+    for segment in segments:
+        print(segment)
 
 def get_matching_segments(tr1_id,tr2_id,length_tolerance=20):
 
