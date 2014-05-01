@@ -290,7 +290,7 @@ def view_trace_js(request, num, maptype):
     return response
 
 
-@cache_page(86400 * 365)
+#@cache_page(86400 * 365)
 def trace_json(request):
     if request.method == 'GET':
         t = int(request.GET['t'])
