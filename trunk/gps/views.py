@@ -6,9 +6,9 @@ from django.template import Context, RequestContext, loader
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.core.context_processors import csrf
-from django.core.mail import send_mail
+# from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
-from django import forms
+# from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -16,7 +16,7 @@ from django.views.decorators.cache import cache_page
 
 import json
 import datetime
-import re
+# import re
 import gps.settings
 from gps import utils
 
