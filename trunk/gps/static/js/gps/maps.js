@@ -84,9 +84,6 @@ function drawTrack(map, trackname, track,color, adding) {
     if (!adding) {
         map.zoomToExtent(lineGeometry.getBounds());
         }
-    plotTrace(track,"dist","ele");
-    //plotElevation(track); 
-    //plotSpeed(track); 
     return lineGeometry;
 }
 
@@ -247,13 +244,13 @@ function getColor() {
 
 
   function  addTrack(id) {
-	   track=getTrackPoints(id);
+	   var track=getTrackPoints(id);
 	   drawTrack(mainmap,id, track,'#333333', true);
    }
 
 
 function addMatchingSegment(id1, id2) {
-	   track=getMatchingPoints(id1,id2);
+	   var track=getMatchingPoints(id1,id2);
 	   drawTrack(mainmap,id2, track,'#FF0000', false);
 }
 

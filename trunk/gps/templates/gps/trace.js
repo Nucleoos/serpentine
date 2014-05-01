@@ -46,6 +46,7 @@ function initAfterMapSet() {
     //addSnappingControls(map);
     track = getTrackPoints("{{ num }}");
     drawTrack(mainmap,"{{ num }}" ,track, '#0000FF');
+    plotTrace(track,"dist","ele");
     if ("{{ fullscreen }}" == "fullscreen"){
        fullscreen = true;
     }
