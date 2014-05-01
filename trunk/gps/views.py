@@ -137,7 +137,7 @@ def nearby(request):
     return render_to_response('gps/nearby.html', c)
 
 
-@cache_page(86400 * 365)
+@cache_page(120)
 def gpx(request, num):
     response = HttpResponse(mimetype='text/gpx+xml')
     trace = Trace.objects.get(id=int(num))
@@ -145,8 +145,7 @@ def gpx(request, num):
     lat = [p['lat'] for p in points]
     c = Context({'trace': trace.name, 'lat': lat, 'points': points})
     t = loader.get_template('gps/trace.gpx')
-    response['Content-Disposition'] = 'attachment; filename="'+trace.name+'.gpx"'
-
+    response['Content-Disposition'] = 'attachment; filename="'+trace.name.encode('ascii','replace')+'.gpx"'
     response.write(t.render(c))
     return response
 
