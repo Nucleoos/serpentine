@@ -14,6 +14,7 @@ from django.db import transaction
 import gps.settings
 # Create your models here.
 
+
 class Trace(models.Model):
     name = models.CharField(max_length=256)
     user = models.ForeignKey(User)
@@ -209,26 +210,30 @@ class Trace(models.Model):
         """ get json format for quick info on the Trace object"""
         return json.dumps(self.get_info())
 
-    def get_matching_segments(self,tr2_id,length_tolerance=20):
+    def get_matching_segments(self, tr2_id):
         """ repérage et TODO: stockage des segments communs entre self et tr2
         on passe une tolerance en longueur pour le match (plus c'est élevé plus on tolère de mismatchs
         TODO: stockage en base des repérages de segments matchés
         """
+        search_step = 20
+        dist_tolerance = 0.030
+        min_segment_points = 10
+
         #TODO: use excluded ranges instead of excluded lists
-        def get_matching_points(tp1 ,tr2_id, num_min = 0, exclude_list = [],length_tolerance = 20, dist_tolerance = 0.15):
+        def get_matching_points(tp1 ,tr2_id, num_min = 0, exclude_list = []):
             """ renvoie pour tp1 les points de t2 susceptible de matcher les points de t1
                 avec un order_num >= à order_min
             """
             match = {}
             tps = Trace_point.objects.filter(trace=tr2_id)
             if num_min != 0:
-                tps = tps.filter(order_num__lt = num_min +length_tolerance)
+                tps = tps.filter(order_num__lt = num_min +search_step)
             if len(exclude_list)>950:
             #handling sqlite limitations (but exclude list should not be so long) i should use excluded_ranges cf previous to do.
             # this is artificially introducing a maxlength to the matching segment
                 return {}
             tps = tps.filter(order_num__gt = num_min).exclude(order_num__in=exclude_list)
-            tps = tps.extra(where=['10000*(abs('+str(tp1.latitude)+'-latitude)+abs('+str(tp1.longitude)+'-longitude)) < 2'])
+            tps = tps.extra(where=['10000*(abs('+str(tp1.latitude)+'-latitude)+abs('+str(tp1.longitude)+'-longitude)) < 4'])
             #todo approx plane for dist
             # tps = tps.extra(where=['power(3,2)<3'])
             tps = tps.order_by('order_num')
@@ -248,7 +253,7 @@ class Trace(models.Model):
                     return {}
             return match
 
-        tps = Trace_point.objects.filter(trace=self)[::length_tolerance] #query with a step equals to tolerance
+        tps = Trace_point.objects.filter(trace=self)[::search_step] #query with a step equals to tolerance
         matches = [] #liste de points matchants
         t1_order_num = 0
         exclude_list = [] #liste des points déjà matchés dans t2=> à exclure
@@ -256,26 +261,25 @@ class Trace(models.Model):
         for tp1 in tps:
             if tp1.order_num > t1_order_num:
                 t1_order_num = tp1.order_num
-                match = get_matching_points(tp1, tr2_id, 0, [x[1] for x in matches]+exclude_list,length_tolerance)
+                match = get_matching_points(tp1, tr2_id, 0, [x[1] for x in matches]+exclude_list)
                 if match != {}:
                     # matches.append((match.keys()[0].order_num, match.values()[0][0].order_num))
-                    min_num = match.values()[0].order_num
-                    # try to build a segment
-                    segtps = Trace_point.objects.filter(trace=self).filter(order_num__gt=tp1.order_num-length_tolerance)
+                    min_num = match.values()[0].order_num-search_step*2
+                    # try to build a segment ( with first match, i go back search_step points)
+                    segtps = Trace_point.objects.filter(trace=self).filter(order_num__gt=tp1.order_num-search_step*2)
                     n_unmatch = 0
-                    min_num -= length_tolerance
                     for tp in segtps:
                         t1_order_num = tp.order_num
-                        match = get_matching_points(tp,tr2_id,min_num,[x[1] for x in matches]+exclude_list,length_tolerance)
+                        match = get_matching_points(tp,tr2_id,min_num,[x[1] for x in matches]+exclude_list)
                         if match == {}:
                             n_unmatch += 1
-                            if n_unmatch > length_tolerance/2:
+                            if n_unmatch > search_step:
                                 break
                         else:
                             matches.append((match.keys()[0].order_num, match.values()[0].order_num))
                             min_num = match.values()[0].order_num
                             n_unmatch=0
-                    if len(matches) > length_tolerance:
+                    if len(matches) > min_segment_points:
                         matching_segments.append(matches)
                         exclude_list += [x[1] for x in matches]
                     matches = []
@@ -285,15 +289,17 @@ class Trace(models.Model):
     def get_matching_segments_json(self, tr2_id):
         """ get json for matching segments as Trace format """
         segments = self.get_matching_segments(tr2_id)
-        tr = {}
-        for seg in segments:
-            tp = Trace_point.objects.filter(trace=tr2_id).filter(order_num__gt=seg[0][0])
+        tr = []
+        for i, seg in enumerate(segments):
+            s = {}
+            tp = Trace_point.objects.filter(trace=self).filter(order_num__gt=seg[0][0])
             tp = tp.filter(order_num__lt=seg[-1][0]).order_by('time')
             points = []
             for p in tp:
                 points.append(p.get_dict())
-            tr['points'] = points
-
+            s['segment'] = i+1
+            s['points'] = points
+            tr.append(s)
         return json.dumps(tr)
 
 

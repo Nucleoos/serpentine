@@ -69,14 +69,15 @@ function modifyTrack(map,track){
     // duplique la trace passée en paramètre et positionne les modify features dessus    
 }
 
-function drawTrack(map, trackname, track,color, adding) {
+function drawTrack(map, trackname, track,color, adding, width) {
+    width = typeof width !== 'undefined' ? width : 3;
     vec_track = new OpenLayers.Layer.Vector("track");
     var track_points = [];
     for (i in track.points) {
 	var point = new OpenLayers.Geometry.Point(track.points[i]["lon"],  track.points[i]["lat"]);
 	track_points.push(point.transform(geographic,map.getProjectionObject()));
     }
-    var line_style = { strokeWidth: 3, strokeColor: color, strokeOpacity: 0.7 };
+    var line_style = { strokeWidth: width, strokeColor: color, strokeOpacity: 0.7 };
     var lineGeometry =   new OpenLayers.Geometry.LineString(track_points);
     var lineFeature = new OpenLayers.Feature.Vector(lineGeometry,null,line_style);
     map.addLayer(vec_track);
@@ -114,7 +115,7 @@ function showAlert() {
     }
 }
 
-function drawTrackPart(map, trackname, track,idxmin, idxmax) {   
+function drawTrackPart(map, trackname, track, idxmin, idxmax) {
     if (vec_t != undefined) {
 	map.removeLayer(vec_t);
     }
@@ -250,8 +251,10 @@ function getColor() {
 
 
 function addMatchingSegment(id1, id2) {
-	   var track=getMatchingPoints(id1,id2);
-	   drawTrack(mainmap,id2, track,'#FF0000', false);
+	   var segments=getMatchingPoints(id1,id2);
+	   for (var i in segments) {
+	        drawTrack(mainmap,id2, segments[i],'#FF0000', true, 6);
+	   }
 }
 
 
