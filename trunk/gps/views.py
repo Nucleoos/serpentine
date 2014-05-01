@@ -145,7 +145,7 @@ def gpx(request, num):
     lat = [p['lat'] for p in points]
     c = Context({'trace': trace.name, 'lat': lat, 'points': points})
     t = loader.get_template('gps/trace.gpx')
-    response['Content-Disposition'] = 'attachment; filename="'+trace.name.encode('ascii','replace')+'.gpx"'
+    response['Content-Disposition'] = 'attachment; filename="'+trace.name.encode('ascii','ignore')+'.gpx"'
     response.write(t.render(c))
     return response
 
