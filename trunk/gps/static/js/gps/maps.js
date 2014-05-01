@@ -244,10 +244,10 @@ function getColor() {
 }
 
 
-  function  addTrack(id) {
-	   var track=getTrackPoints(id);
-	   drawTrack(mainmap,id, track,'#333333', true);
-   }
+function  addTrack(id) {
+   var track=getTrackPoints(id);
+   drawTrack(mainmap,id, track,'#333333', true);
+}
 
 
 function addMatchingSegment(id1, id2) {
@@ -258,6 +258,6 @@ function addMatchingSegment(id1, id2) {
 }
 
 
-        // regexp example
-	   //rg = new RegExp("^trace_([0-9]*)");
-	   //tr = rg.exec(id);
+//regexp example
+//rg = new RegExp("^trace_([0-9]*)");
+//tr = rg.exec(id);
