@@ -24,7 +24,7 @@ function getMatchingPoints(t1,t2) {
 	    url: "/trace/json_segments",
 	    datatype: 'json',
 	    data: ({t1:t1,t2:t2}),
-	    async: true,
+	    async: false,
 	    success: function(data) {
 		    points = JSON.parse(data);
 		    if (points.length == 0) {alert('No matches found');}
