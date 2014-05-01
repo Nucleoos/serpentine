@@ -23,8 +23,9 @@ class Trace(models.Model):
     tdate = models.DateTimeField(null=True)
 
     def __unicode__(self):
+        nb_points = Trace_point.objects.filter(trace=self).count()
         return unicode(self.id) + " " + self.name + " -dist =" + unicode(
-            self.get_total_distance()) + self.user.username + " ( " + unicode(self.ctime) + ")"
+            self.get_total_distance()) + self.user.username + " ( " + unicode(self.ctime) + ")" + ' nb pts ' +unicode(nb_points)
 
     @transaction.commit_manually
     def create_from_file(self, file):
