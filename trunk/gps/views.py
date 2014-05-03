@@ -310,7 +310,7 @@ def trace_json_info(request):
         points = Trace.objects.get(id=t).get_json_info()
         return HttpResponse(points, mimetype='application/javascript')
 
-@cache_page(300)
+@cache_page(1)
 def trace_segment_json(request):
     if request.method == 'GET':
         t1 = int(request.GET['t1'])
