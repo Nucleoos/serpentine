@@ -20,15 +20,28 @@ function getTrackPoints(tr) {
 function getMatchingPoints(t1,t2) {
     //renvoie l'ensemble des infos + points matchant deux traces
     var points;
+    $('#seg_'+t2).html('searching...');
     $.ajax({
 	    url: "/trace/json_segments",
 	    datatype: 'json',
 	    data: ({t1:t1,t2:t2}),
-	    async: false,
+	    async: true,
 	    success: function(data) {
 		    points = JSON.parse(data);
-		    if (points.length == 0) {alert('No matches found');}
-	    }});
+		    if (points.length == 0) {
+		        $('#seg_'+t2).html('No matches found');
+		    }
+		    else {
+                $('#seg_'+t2).html('matches found');
+                for (var i in points) {
+                    drawTrack(mainmap,t2, points[i],'#FF0000', true, 8);
+                }
+	        }
+	    },
+	    error: function(XMLHttpRequest, textStatus, errorThrown) {
+              alert("Status: " + textStatus); alert("Error: " + errorThrown);
+           }
+	    });
     return points;
 }
 

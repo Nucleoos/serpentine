@@ -250,14 +250,6 @@ function  addTrack(id) {
 }
 
 
-function addMatchingSegment(id1, id2) {
-	   var segments=getMatchingPoints(id1,id2);
-	   for (var i in segments) {
-	        drawTrack(mainmap,id2, segments[i],'#FF0000', true, 6);
-	   }
-}
-
-
 //regexp example
 //rg = new RegExp("^trace_([0-9]*)");
 //tr = rg.exec(id);

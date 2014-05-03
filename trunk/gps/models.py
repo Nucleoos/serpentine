@@ -218,7 +218,7 @@ class Trace(models.Model):
         """
         search_step = 20  # nombre de points
         dist_tolerance = 0.040
-        min_seg_dist = 0.100
+        min_seg_dist = 0.500 #means 500m
         mismatch_tolerance = 40 #tolerance de distortion en nombre de points
 
         #TODO: use excluded ranges instead of excluded lists
