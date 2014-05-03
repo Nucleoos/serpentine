@@ -216,11 +216,16 @@ class Trace(models.Model):
         """ repérage et TODO: stockage des segments communs entre self et tr2
         on passe une tolerance en longueur pour le match (plus c'est élevé plus on tolère de mismatchs
         TODO: stockage en base des repérages de segments matchés
+        TODO: search_small_step est le levier d'amélioration dans le paramétrage
+
         """
-        search_step = 20  # nombre de points
+        search_big_step = 30  # nombre de points entre 2 tests en recherche grosse maille
+        search_small_step = 1  # nombre de points entre 2 tests après avoir trouvé le premier match
         dist_tolerance = 0.040
         min_seg_dist = 0.500 #means 500m
-        mismatch_tolerance = 40 #tolerance de distortion en nombre de points
+        mismatch_tolerance = 5 #tolerance de distortion en nombre de points
+        lonlat_delta = 10
+        seg2_search_length = 100 #range of points to be search further after first match found
 
         #TODO: use excluded ranges instead of excluded lists
         def get_matching_points(tp1 ,tr2_id, num_min = 0, exclude_list = []):
@@ -230,15 +235,13 @@ class Trace(models.Model):
             match = {}
             tps = Trace_point.objects.filter(trace=tr2_id)
             if num_min != 0:
-                tps = tps.filter(order_num__lt = num_min +2*search_step)
+                tps = tps.filter(order_num__lt = num_min + seg2_search_length)
             if len(exclude_list)>950:
             #handling sqlite limitations (but exclude list should not be so long) i should use excluded_ranges cf previous to do.
             # this is artificially introducing a maxlength to the matching segment
                 return {}
             tps = tps.filter(order_num__gt = num_min).exclude(order_num__in=exclude_list)
-            tps = tps.extra(where=['10000*(abs('+str(tp1.latitude)+'-latitude)+abs('+str(tp1.longitude)+'-longitude)) < 10'])
-            #todo approx plane for dist
-            # tps = tps.extra(where=['power(3,2)<3'])
+            tps = tps.extra(where=['10000*(abs('+str(tp1.latitude)+'-latitude)+abs('+str(tp1.longitude)+'-longitude)) <'+str(lonlat_delta)])
             tps = tps.order_by('order_num')
             # print tps.query
             if tps.count()>0:
@@ -256,7 +259,7 @@ class Trace(models.Model):
                     return {}
             return match
 
-        tps = Trace_point.objects.filter(trace=self)[::search_step] #query with a step equals to tolerance
+        tps = Trace_point.objects.filter(trace=self)[::search_big_step] #query with a step equals to tolerance
         matches = [] #liste de points matchants
         t1_order_num = 0
         exclude_list = [] #liste des points déjà matchés dans t2=> à exclure
@@ -267,20 +270,22 @@ class Trace(models.Model):
                 match = get_matching_points(tp1, tr2_id, 0, exclude_list)
                 if match != {}:
                     # matches.append((match.keys()[0].order_num, match.values()[0][0].order_num))
-                    t2_min_num = match.values()[0].order_num-search_step
-                    # try to build a segment ( with first match, i go back search_step points)
-                    segtps = Trace_point.objects.filter(trace=self).filter(order_num__gt=t1_order_num-search_step)
-                    n_unmatch = 0
+                    t2_min_num = match.values()[0].order_num-search_big_step
+                    t1_order_num = t1_order_num-search_big_step
+                    # try to build a segment ( with first match, i go back search_step points) and find the first matching point
+                    segtps = Trace_point.objects.filter(trace=self).filter(order_num__gt=t1_order_num)[::search_small_step]
+                    n_unmatch , first_match_found = 0,0
+                    #boucle en small step
                     for tp in segtps:
-                        match = get_matching_points(tp,tr2_id,t2_min_num,exclude_list)
+                        match = get_matching_points(tp,tr2_id,t2_min_num-search_small_step,exclude_list)
                         if match == {}:
                             n_unmatch += 1
-                            if n_unmatch > mismatch_tolerance:
+                            if n_unmatch > mismatch_tolerance and first_match_found==1:
                                 break
                         else:
                             matches.append((match.keys()[0].order_num, match.values()[0].order_num))
                             t2_min_num = match.values()[0].order_num
-                            n_unmatch=0
+                            n_unmatch, first_match_found=0,1
 
                     if len(matches) > 0:
                         start = Trace_point.objects.filter(trace= self).filter(order_num = matches[0][0])[0]
