@@ -1,8 +1,4 @@
-#summary works in progress.
 #labels TODO
-
-=== Work in progress reminder ===
-
   * Compare Tracks - Matching segments 
      * DONE: first version that gives results
      * TODO: optimise for long tracks
@@ -15,10 +11,12 @@
      * TODO: Android import (with an app ? ) 
 
   * UI
+     * Maps Index: draw squares with summary info if too many tr points  
      * TODO: better access to features 
      * Multiple Tracks plot + tables + map 
      * Include gmaps terrain 
      * Check 
+
 
   * Restore IGN features
  
@@ -29,4 +27,3 @@
      * Log in with google account 
   
 ....
-
