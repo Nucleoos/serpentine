@@ -213,7 +213,7 @@ class Trace(models.Model):
         """ get json format for quick info on the Trace object"""
         return json.dumps(self.get_info())
 
-    def get_matching_segments_old(self, tr2_id):
+    def get_matching_segments(self, tr2_id):
         """ repérage et TODO: stockage des segments communs entre self et tr2
         on passe une tolerance en longueur pour le match (plus c'est élevé plus on tolère de mismatchs
         TODO: stockage en base des repérages de segments matchés
@@ -300,7 +300,7 @@ class Trace(models.Model):
         return matching_segments
 
 
-    def get_matching_segments(self, tr2_id):
+    def get_matching_segments_2(self, tr2_id):
         """ repérage et TODO: stockage des segments communs entre self et tr2
         on passe une tolerance en longueur pour le match (plus c'est élevé plus on tolère de mismatchs
         TODO: stockage en base des repérages de segments matchés
