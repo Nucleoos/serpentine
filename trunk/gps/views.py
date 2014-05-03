@@ -50,7 +50,9 @@ def main_context(request):
 
 #html pages 
 def index(request):
-    return render_to_response(utils.get_prefix(request) + 'index.html', {}, context_instance=RequestContext(request))
+    d = {}
+    d['all_traces'] = Trace.objects.all().order_by('-ctime')
+    return render_to_response(utils.get_prefix(request) + 'index.html', d, context_instance=RequestContext(request))
 
 
 def view_trace(request, num):

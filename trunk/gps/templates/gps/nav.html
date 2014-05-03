@@ -1,3 +1,4 @@
+<div class="nav1">
 <div class="sidetitle">Les 10 dernières traces</div>
 <div class="sidegroup" id="track_menu">
     {% if latest_traces %}
@@ -18,6 +19,19 @@
 <div class="sidegroup" id="track_menu">
     <ul>
         {% for trace in mes_traces %}
+        <li>
+            <a id="trace_{{ trace.id }}" class="a_track" href="/trace/{{ trace.id }}">{{ trace.name }} </a> ({{ trace.user }})
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+</div>
+{% if all_traces %}
+<div class="sidetitle">Toutes les traces</div>
+<div class="sidegroup" id="track_menu" style="display: none;">
+    <ul>
+        {% for trace in all_traces %}
         <li>
             <a id="trace_{{ trace.id }}" class="a_track" href="/trace/{{ trace.id }}">{{ trace.name }} </a> ({{ trace.user }})
         </li>

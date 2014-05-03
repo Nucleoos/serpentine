@@ -97,7 +97,7 @@ function getTracksFromBounds(bnds) {
                         maxlat: bnds.top, maxlon: bnds.right}), 
 	    async: true,
 	    success: function(data) {
-		$(".nav").html(data);
+		$(".nav1").html(data);
 	    }});
 }
 
