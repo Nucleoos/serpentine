@@ -141,7 +141,7 @@ def nearby(request):
     return render_to_response('gps/nearby.html', c)
 
 
-@cache_page(86400)
+@cache_page(86400*365)
 def gpx(request, num):
     response = HttpResponse(mimetype='text/gpx+xml')
     trace = Trace.objects.get(id=int(num))
@@ -294,7 +294,7 @@ def view_trace_js(request, num, maptype):
     return response
 
 
-@cache_page(86400 * 365)
+@cache_page(86400*365)
 def trace_json(request):
     if request.method == 'GET':
         t = int(request.GET['t'])
