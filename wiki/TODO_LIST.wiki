@@ -1,0 +1,32 @@
+#summary works in progress.
+#labels TODO
+
+=== Work in progress reminder ===
+
+  * Compare Tracks - Matching segments 
+     * DONE: first version that gives results
+     * TODO: optimise for long tracks
+     * Visualise comparison
+
+  * Simplify track import 
+     * TODO: Load first - describe after
+     * TODO: Trim or slice first import 
+     * TODO: Garmin plugin import
+     * TODO: Android import (with an app ? ) 
+
+  * UI
+     * TODO: better access to features 
+     * Multiple Tracks plot + tables + map 
+     * Include gmaps terrain 
+     * Check 
+
+  * Restore IGN features
+ 
+  * Track privacy (private / limited / public)
+
+  * Log in  
+     * Proper log in page
+     * Log in with google account 
+  
+....
+
