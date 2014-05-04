@@ -4,8 +4,8 @@
     {% for trace, dist in closest_tracks %}
     <li>
             <a class="bouton-simple" href="/trace/{{ trace.id }}"> {{ trace.name }} </a> à {{ dist|floatformat:1 }} km
-            <span id="trace_{{ trace.id }}" onclick="addTrack({{ trace.id }})" class="bouton-simple" title="ajouter à la carte courante"> (+show) </span>
-            <span id="seg_{{ trace.id }}" onclick="getMatchingPoints({{ tr_id }},{{ trace.id }})" class="bouton-simple" title="rechercher les segments communs"> (+match) </span>
+            |<span id="trace_{{ trace.id }}" onclick="addTrack({{ trace.id }})" class="bouton-simple" title="ajouter à la carte courante"> +add </span>|
+            <span id="seg_{{ trace.id }}" onclick="getMatchingPoints({{ tr_id }},{{ trace.id }})" class="bouton-simple" title="rechercher les segments communs"> +match </span>
    {% endfor %}
 </ul>
 

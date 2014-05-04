@@ -382,7 +382,10 @@ class Trace(models.Model):
 
     def get_matching_segments_json(self, tr2_id):
         """ get json for matching segments as Trace format """
+        start = datetime.datetime.now()
         segments = self.get_matching_segments(tr2_id)
+        td = (datetime.datetime.now() - start)
+        time_spent ="%d.%d" % (td.seconds, td.microseconds/10000)
         tr = []
         for i, seg in enumerate(segments):
             s = {}
@@ -391,7 +394,7 @@ class Trace(models.Model):
             points = []
             for p in tp:
                 points.append(p.get_dict())
-            s['segment'] = i+1
+            s['time_spent'] = time_spent
             s['points'] = points
             tr.append(s)
         return json.dumps(tr)

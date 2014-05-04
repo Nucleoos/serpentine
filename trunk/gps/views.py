@@ -313,10 +313,12 @@ def trace_json_info(request):
 @cache_page(1)
 def trace_segment_json(request):
     if request.method == 'GET':
-        t1 = int(request.GET['t1'])
-        t2 = int(request.GET['t2'])
-        points = Trace.objects.get(id=t1).get_matching_segments_json(t2)
-        return HttpResponse(points, mimetype='application/javascript')
+        if request.GET.has_key('t1') and request.GET.has_key('t2'):
+            t1 = int(request.GET['t1'])
+            t2 = int(request.GET['t2'])
+            points = Trace.objects.get(id=t1).get_matching_segments_json(t2)
+            return HttpResponse(points, content_type='application/javascript')
+    return HttpResponse('{error}', content_type='application/javascript' )
 
 
 def trace_json_index(request):

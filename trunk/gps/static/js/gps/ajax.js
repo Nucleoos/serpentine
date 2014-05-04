@@ -29,17 +29,18 @@ function getMatchingPoints(t1,t2) {
 	    success: function(data) {
 		    points = JSON.parse(data);
 		    if (points.length == 0) {
-		        $('#seg_'+t2).html('No matches found');
+		        $('#seg_'+t2).html('no seg found '+points[0]['time_spent']+'s');
 		    }
 		    else {
-                $('#seg_'+t2).html('matches found');
+                $('#seg_'+t2).html('seg found in '+points[0]['time_spent']+'s');
                 for (var i in points) {
                     drawTrack(mainmap,t2, points[i],'#FF0000', true, 8);
                 }
 	        }
 	    },
 	    error: function(XMLHttpRequest, textStatus, errorThrown) {
-              alert("Status: " + textStatus); alert("Error: " + errorThrown);
+	          $('#seg_'+t2).html('errors during process');
+              //alert("Status: " + textStatus); alert("Error: " + errorThrown);
            }
 	    });
     return points;
