@@ -101,14 +101,15 @@ function getTracksFromBounds(bnds) {
 	    }});
 }
 
-function getTracksNearby(tr_id, lat,lon) {
+function getTracksNearby(tr_id) {
+	var cnt = mainmap.getCenter().transform(mainmap.getProjectionObject(),geographic);
     //recup du html de la vue nearby et affectation à id=nearby_content
     $("#nearby_content").show(0);
     $("#nearby_content").html('<div class="ajaxgif"><img src="/static/img/ajax-loader.gif"/></div>');
     $.ajax({
 	    url: "/nearby.html",
 	    datatype: 'text', 
-		data: ({tr_id: tr_id, lat: lat, lon: lon}),
+		data: ({tr_id: tr_id, lat: cnt.lat, lon: cnt.lon}),
 	    async: true,
 	    success: function(data) {
 		$("#nearby_content").html(data);

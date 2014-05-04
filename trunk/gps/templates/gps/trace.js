@@ -55,11 +55,11 @@ function initAfterMapSet() {
     var center = mainmap.getCenter();
     var cnt = center.transform(mainmap.getProjection(),geographic); 
     getTracksNearby({{ num }},cnt.lat,cnt.lon);
+    //Auto refresh mode
+    /*
     mainmap.events.on({ "moveend": function (e) {
-	var cnt = mainmap.getCenter().transform(mainmap.getProjectionObject(),geographic);
-	getTracksNearby({{ num }},cnt.lat,cnt.lon);
-    }
-		      });
-    
+	getTracksNearby({{ num }});
+    }});
+    */
 }
 

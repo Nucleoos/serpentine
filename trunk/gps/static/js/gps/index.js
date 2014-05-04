@@ -12,9 +12,8 @@ $(document).ready(
 	
 	mainmap.events.on({ "moveend": function (e) {
 	    var bnds =  mainmap.getExtent().transform(mainmap.getProjectionObject(), geographic);
-	var cnt = mainmap.getCenter().transform(mainmap.getProjectionObject(),geographic);
 	    getTracksFromBounds(bnds);
-	    getTracksNearby(0,cnt.lat,cnt.lon);
+	    getTracksNearby(0);
 	    // var maxbnds = mainmap.getMaxExtent().transform(mainmap.getProjectionObject(), geographic);
 	}
 });
@@ -22,8 +21,7 @@ $(document).ready(
 
 
    mainmap.zoomToExtent(bounds.transform(geographic, mainmap.getProjectionObject()));
-    var cnt = mainmap.getCenter().transform(mainmap.getProjectionObject(),geographic);
-   getTracksNearby(0,cnt.lat,cnt.lon);
+   getTracksNearby(0);
 
    // afficher directement une nouvelle trace dans la carte en cours
 

@@ -245,7 +245,15 @@ body{
   background-color: #EEEEEE;
 }
 
-.add_track {
-color: blue;
-cursor: pointer;
+.bouton-simple {
+    color: blue;
+    cursor: pointer;
+}
+.droite {
+   float: right;
+}
+.bouton-simple:hover{
+    background-color: #CCCCCC;
+    color: red;
+    cursor: pointer;
 }

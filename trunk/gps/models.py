@@ -380,7 +380,6 @@ class Trace(models.Model):
                         matches = []
         return matching_segments
 
-
     def get_matching_segments_json(self, tr2_id):
         """ get json for matching segments as Trace format """
         segments = self.get_matching_segments(tr2_id)
@@ -475,6 +474,7 @@ class Trace(models.Model):
                 trsdis.append((t, lib.getDistance(lat, lon, avgPt['lat'], avgPt['lon'])))
         trs = sorted(trsdis, key=lambda trk: trk[1])[0:10]
         return trs
+
 
     @staticmethod
     def get_search_results(criteria):
