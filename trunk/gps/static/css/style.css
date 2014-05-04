@@ -21,13 +21,18 @@ body{
     font-size:20pt;
     font-family: cursive;
     text-decoration: none;
+    width : 300px;
 }
-
+a:hover{
+    background-color: #CCCCCC;
+    color: red;
+}
 #subtitle{
     float: right;
     font-size:14pt;
     margin-top:10px;
     margin-right: 20px;
+    text-align: right;
 }
 #under_header{
     height:20px;
@@ -37,6 +42,16 @@ body{
     border-right: 1px solid;
     border-bottom: 1px solid;
     border-color: #CFCFCF;
+}
+
+#quick_search{
+    float: left;
+    display: inline;
+    padding-top: 15px;
+}
+
+.search_input{
+ text-align: center;
 }
 #main_menu{
     float: left;
@@ -57,10 +72,6 @@ body{
     display: inline;
 }
 
-#quick_search{
-    float: right;
-    display: inline;
-}
 #quick_search form{
     float: right;
     display: inline;
@@ -245,15 +256,15 @@ body{
   background-color: #EEEEEE;
 }
 
-.bouton-simple {
+.simple-link {
     color: blue;
     cursor: pointer;
 }
 .droite {
    float: right;
 }
-.bouton-simple:hover{
+
+.simple-link:hover{
     background-color: #CCCCCC;
     color: red;
-    cursor: pointer;
 }

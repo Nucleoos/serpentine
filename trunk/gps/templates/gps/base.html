@@ -17,12 +17,21 @@
 <div id="header">
     <div id="title" title="Retourner à l'accueil du site">
         <!--img alt="en attendant le serpent de Fabienne !" src="/static/img/serpentine.jpg"/-->
-        <a href="/">Serpentine-GPS - New</a>
+        <a href="/">Serpentine-GPS</a>
     </div>
+
     <div id="subtitle">
         {% block title %}
-        Visualiser, partager et éditer des parcours GPS
+        Partagez vos parcours GPS
         {% endblock %}
+    </div>
+    <div id="quick_search" title="Recherche rapide d'un lieu ou d'un parcours">
+        <form method="get" id="quicksearch" action="/recherche">
+            <div class="search_input">
+                {{ quick_search_form.recherche }}
+                <!--<input type="submit" name="searchsubmit" value="GO" />-->
+            </div>
+        </form>
     </div>
 </div>
 <div id="under_header">
@@ -31,25 +40,14 @@
             <li title="Charger un fichier GPX"><a href="/upload">Charger un fichier </a></li>
         </ul>
     </div>
-    <div id="quick_search" title="Recheche rapide d'un lieu ou d'un parcours">
-        <ul>
-            <li>
-                <form method="get" id="quicksearch" action="/recherche">
-                    <div class="search_input">
-                        {{ quick_search_form.recherche }}
-                        <!--<input type="submit" name="searchsubmit" value="GO" />-->
-                    </div>
-                </form>
-            </li>
-        </ul>
-    </div>
-    <div id="map_switcher" title="Choisir la carte par défaut dans laquelle s'afficheront les parcours">
-        <ul>
-            <li>Carte préférée</li>
-            <li><a id="map_ign" href="">ign</a></li>
-            <li><a id="map_osm" href="">osm</a></li>
-        </ul>
-    </div>
+
+    <!--<div id="map_switcher" title="Choisir la carte par défaut dans laquelle s'afficheront les parcours">-->
+        <!--<ul>-->
+            <!--<li>Carte préférée</li>-->
+            <!--<li><a id="map_ign" href="">ign</a></li>-->
+            <!--<li><a id="map_osm" href="">osm</a></li>-->
+        <!--</ul>-->
+    <!--</div>-->
 </div>
 <div id="content">
 

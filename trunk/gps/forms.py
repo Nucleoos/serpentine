@@ -26,6 +26,6 @@ class QuickLoginForm(forms.Form):
 
 
 class QuickSearchForm(forms.Form):
-    recherche = forms.CharField(required=False, max_length=10, label='recherche', initial="Rechercher",
+    recherche = forms.CharField(required=False, max_length=10, label='recherche', initial="Rechercher une trace",
                                 widget=forms.TextInput(attrs={'onclick': 'this.select();', }))
 
