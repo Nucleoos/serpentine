@@ -15,32 +15,28 @@
 </head>
 <body>
 <div id="header">
-    <div id="title" title="Retourner à l'accueil du site">
+    <a href="/" id="title"  title="Retourner à l'accueil du site">
         <!--img alt="en attendant le serpent de Fabienne !" src="/static/img/serpentine.jpg"/-->
-        <a href="/">Serpentine-GPS</a>
-    </div>
-
-    <div id="subtitle">
-        {% block title %}
-        Partagez vos parcours GPS
-        {% endblock %}
-    </div>
+        Serpentine-GPS
+    </a>
     <div id="quick_search" title="Recherche rapide d'un lieu ou d'un parcours">
-        <form method="get" id="quicksearch" action="/recherche">
-            <div class="search_input">
+        <form class= "inline" method="get"  action="/recherche">
+            <div class="search_input inline">
                 {{ quick_search_form.recherche }}
                 <!--<input type="submit" name="searchsubmit" value="GO" />-->
             </div>
         </form>
     </div>
-</div>
-<div id="under_header">
-    <div id="main_menu">
-        <ul>
-            <li title="Charger un fichier GPX"><a href="/upload">Charger un fichier </a></li>
-        </ul>
+    <div id="subtitle" >
+        {% block title %}
+        Visualisez et partagez vos parcours GPS
+        {% endblock %}
     </div>
-
+</div>
+</div>
+<div id="under_header"><div id="main_menu"> <ul><li>
+    <a href="/">Accueil</a></li><li title="Charger un fichier GPX">
+            <a href="/upload">Charger un fichier</a></li></ul></div>
     <!--<div id="map_switcher" title="Choisir la carte par défaut dans laquelle s'afficheront les parcours">-->
         <!--<ul>-->
             <!--<li>Carte préférée</li>-->

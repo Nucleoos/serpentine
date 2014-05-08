@@ -1,5 +1,9 @@
 body{
     font-family: sans-serif;
+    width:99.5%;
+    height:100%;
+    padding:0px;
+    margin:2px;
 }
 
 #header{
@@ -12,76 +16,104 @@ body{
     border-top: 1px solid;
     border-color: #CFCFCF;
     width: 100%;
+    margin:0px;
+}
+.inline{
+    display: inline;
+}
+.left{
+    text-align: left;
+}
+.center{
+    text-align: center;
+}
+.right{
+    text-align: left;
 }
 
-#title a {
+#title {
+    position: absolute;
+    float:left;
     margin-left:5px;
-    float: left;
-    height: 100%;
     font-size:20pt;
     font-family: cursive;
     text-decoration: none;
-    width : 300px;
+    #background-image:url("/static/img/serpentine.jpg");
+    z-index:200;
 }
+
+
 a:hover{
-    background-color: #CCCCCC;
     color: red;
 }
-#subtitle{
-    float: right;
-    font-size:14pt;
-    margin-top:10px;
-    margin-right: 20px;
-    text-align: right;
+
+a {
+   padding:0px;
+   margin:0px;
+   text-decoration: none;
 }
+
+#subtitle{
+    font-size: 11pt;
+    float: right;
+    margin: 10px 10px 0px 0px;
+}
+
+#quick_search{
+     position: absolute;
+     top: 17px;
+     width: 100%;
+     text-align: center;
+     z-index:100;
+}
+
 #under_header{
-    height:20px;
-    font-size: 10pt;
-    width: 100%;  
+    float:left;
+    width: 100%;
     border-left: 1px solid;
     border-right: 1px solid;
     border-bottom: 1px solid;
     border-color: #CFCFCF;
+    margin:0px;
+    padding:0px;
 }
 
-#quick_search{
-    float: left;
-    display: inline;
-    padding-top: 15px;
+#main_menu a{
+ width: 100%;
+ display: inline-block;
 }
 
-.search_input{
- text-align: center;
-}
-#main_menu{
-    float: left;
-}
-#under_header ul{
-    list-style-type:none;
+#main_menu ul{
     margin: 0px;
-    padding: 0px;
-} 
-#under_header li{
-    display: inline;
-    padding: 3px;
-    text-decoration: none;
+    padding:0px;
 }
+
+#main_menu li {
+    float: left;
+    display: inline-block;
+    text-decoration: none;
+    width: 110px;
+    border-top:1px solid;
+    border-right: 1px solid;
+    border-color: #CFCFCF;
+    list-style-type:none;
+    font-size: 12px;
+    text-align: center;
+    padding:0px;
+    margin:0px;
+}
+#main_menu li:hover{
+    background-color: #CCCCCC;
+}
+
 #map_switcher{
     background-color:red;
     float: right;
     display: inline;
 }
 
-#quick_search form{
-    float: right;
-    display: inline;
-}
-#quick_search input{
-    padding: 0px;
-    margin: 0px;
-}
-
 #main_content{
+    clear:both;
     float:left;
 }
 #text_content{
