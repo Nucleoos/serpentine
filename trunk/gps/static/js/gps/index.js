@@ -3,7 +3,7 @@ $(document).ready(
 	var trackindex = getTrackIndex(); // cherche en ajax la liste des traces à afficher
 	var bounds = new OpenLayers.Bounds(trackindex["minlon"],trackindex["minlat"],trackindex["maxlon"],trackindex["maxlat"]);
 	
-	setMainMap('ol',bounds);
+	setMainMap('ol',bounds,['mapnik']);
 	var tracks = [];
 	for (var i in trackindex){
 	    tracks.push(trackindex[i]);

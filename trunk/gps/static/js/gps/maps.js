@@ -1,16 +1,16 @@
 var  mainmap, geographic, selectControl, clickControl , vec_track, vec_t, viewer,iv; 
 
-function setMainMap(type,bounds) {
+function setMainMap(type,bounds,layers) {
     geographic = new OpenLayers.Projection("EPSG:4326"); //projection lat lon
     if (type=='ign') {
-	setIgnMap(bounds);
+	setIgnMap(bounds,layers);
     } 
     else {
-	setOsmMap(bounds);
+	setOsmMap(bounds,layers);
     }
 }
 
-function setIgnMap(bounds) {
+function setIgnMap(bounds,layers) {
     function initIgnMap() {
 	viewer = iv.getViewer();
 	iv.setLayerOpacity('GEOGRAPHICALGRIDSYSTEMS.MAPS',0.8);
@@ -30,7 +30,7 @@ function setIgnMap(bounds) {
     
 }
 
-function setOsmMap(bounds) {
+function setOsmMap(bounds,layers) {
     var map;
     var cartographic = new OpenLayers.Projection("EPSG:900913");	
     var options = {
@@ -42,13 +42,28 @@ function setOsmMap(bounds) {
     map.addControl(new OpenLayers.Control.LayerSwitcher());
     var mousePosCtl = new OpenLayers.Control.MousePosition({displayProjection: geographic});
     map.addControl(mousePosCtl);
-    
-    var mapnik = new OpenLayers.Layer.OSM("osm mapnik");
-    var hybrid = new OpenLayers.Layer.Google(
-					     "hybrid google maps", {type:  google.maps.MapTypeId.HYBRID,'sphericalMercator': true,
+    var scaleLine = new OpenLayers.Control.ScaleLine();
+    map.addControl(scaleLine);
+
+
+
+	if ($.inArray('terrain', layers)>=0) {
+    var terrain = new OpenLayers.Layer.Google(
+					     "google maps physical", {type:  google.maps.MapTypeId.TERRAIN,'sphericalMercator': true,
 								    numZoomLevels: 20} );
+    map.addLayer(terrain);
+    }
+    var mapnik = new OpenLayers.Layer.OSM("osm mapnik");
     map.addLayer(mapnik);
+
+
+    if ($.inArray('hydrid', layers)>=0) {
+    var hybrid = new OpenLayers.Layer.Google(
+					     "google maps hybrid", {type:  google.maps.MapTypeId.HYBRID,'sphericalMercator': true,
+								    numZoomLevels: 20} );
     map.addLayer(hybrid);
+	}
+
     mainmap = map;       
 }
 

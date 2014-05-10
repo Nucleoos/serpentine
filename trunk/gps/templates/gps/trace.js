@@ -33,7 +33,7 @@ function initMainVariables() {
 $(document).ready(function() {  
     initMainVariables();
     resizeMap();
-    setMainMap('{{ maptype }}',bounds);
+    setMainMap('{{ maptype }}',bounds,['terrain','hybrid']);
     if ('{{ maptype }}'=='ol') { initAfterMapSet();}
 });
 

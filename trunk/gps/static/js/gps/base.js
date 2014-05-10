@@ -2,7 +2,7 @@ var fullscreen = false;
 
 function resizeMap() {
     if (!fullscreen) {
-	$("#map_canvas").width($("#content").width()-$("#sidebar").width()-18);
+	$("#map_canvas").width($("#content").width()-$("#sidebar").width()-20);
 	$("#map_canvas").height($(window).height()-$("#header").height()-30 -$("#text_content").height());
     }
     else {
