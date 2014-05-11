@@ -1,17 +1,28 @@
-<div class="sidetitle" id="titleinfo" title="Cliquer pour masquer/afficher la section">
+{% if trace %}
+<div class="sidetitle hideshow" id="titleinfo" title="Cliquer pour masquer/afficher la section">
     <div class="trace_title">
-        {{ trace.name }}
+        {{ trace.name }} ({{ distance }})
+    </div>
+    <div class="trace_subtitle">
     </div>
 </div>
 <div id="trackinfo" class="sidegroup">
-    {% if trace %}
+          {{ trace.ctime|date:"d/m/Y" }} par {{ trace.user }}<br />
+    <div class="tracktype">{{ type }} {% endif %} de {{ depart }} à {{ arrivee }} {% if type %}
+    <a href="/trace/{{ trace.id }}.gpx">(GPX)</a>
+       </div>
 
-    <div class="tracktype"> {% if type %} Parcours de {{ type }} {% endif %}
-    </div>
-    {{ trace.ctime|date:"d/m/Y" }} par {{ trace.user }}:
-    <div class="trackdescription">
-        {{ description }}
-    </div>
+<div class="track_section_title hideshow simple-link" >
+    Description
+</div>
+<div class="track_section">
+    {{ description }}<br/>
+    En passant par ou près de:
+    {{ vias }} <br/>
+</div>
+<div class="track_section_title hideshow simple-link" title="Cliquer pour masquer/afficher la section">Tableaux
+</div>
+<div class="track_section charts">
     <table class="traceinfotable">
         <tr>
             <td class="traceinfotable">Distance</td>
@@ -38,15 +49,12 @@
             <td class="traceinfotable">{{ ele_deniv }}</td>
         </tr>
     </table>
-    <a href="/trace/{{ trace.id }}.gpx">télécharger le fichier GPX</a>
-    <a href="/trace/json?t={{ trace.id }}">(json)</a>
-    {% else %}
-    {% endif %}
+
+
 </div>
-<div class="sidetitle" title="Cliquer pour afficher/masquer la section"> Informations geonames</div>
-<div id="info_geonames" class="sidegroup" style="display:none">
-    De {{ depart }} à {{ arrivee }}<br/>
-    <br/>
-    En passant par ou près de: <br/>
-    {{ vias }}
+
+{% include "gps/chart.html" %}
 </div>
+
+{% else %}
+{% endif %}

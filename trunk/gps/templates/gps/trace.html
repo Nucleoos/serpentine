@@ -24,8 +24,7 @@
 {% endblock js_maps %}
 {% block sidebar %}
 {% include "gps/traceinfo.html" %}
-{% include "gps/chart.html" %}
-<div class="sidetitle" id="nearby_title" title="Cliquer pour masquer/afficher la section">
+<div class="sidetitle hideshow" id="nearby_title" title="Cliquer pour masquer/afficher la section">
     Près d'ici
 </div>
 <div id="nearby_content" class="sidegroup" style="display:none">
@@ -36,6 +35,5 @@
 {% block content %}
 {% block main_map %}
 <div id="map_canvas"></div>
-<div id="msg_info">{{ maptype }}</div>
 {% endblock main_map %}
 {% endblock content %}

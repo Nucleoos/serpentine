@@ -30,6 +30,8 @@ def main_context(request):
     d = {}
     #dernières traces 
     d['latest_traces'] = Trace.objects.all().order_by('-ctime')[0:10]
+    #TODO get all properties
+
     #search context
     if request.method == 'GET' and request.GET.has_key('recherche'):
         d['quick_search_form'] = QuickSearchForm(request.GET)

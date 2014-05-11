@@ -4,18 +4,16 @@ body{
     height:100%;
     padding:0px;
     margin:2px;
+    overflow-y:scroll;
 }
 
 #header{
-    height:45px;
+    height:60px;
     font-size:8pt;
     background: -moz-linear-gradient(top,#CFCFCF,white);
     background: -webkit-gradient(linear, center bottom, center top, from(white), to(#CFCFCF)); 
-    border-left: 1px solid;
-    border-right: 1px solid;
-    border-top: 1px solid;
+    border: 1px solid;
     border-color: #CFCFCF;
-    width: 100%;
     margin:0px;
 }
 .inline{
@@ -32,9 +30,10 @@ body{
 }
 
 #title {
-    position: absolute;
+    position: relative;
     float:left;
     margin-left:5px;
+    margin-bottom: 7px;
     font-size:20pt;
     font-family: cursive;
     text-decoration: none;
@@ -62,18 +61,14 @@ a {
 #quick_search{
      position: absolute;
      top: 17px;
-     width: 97%;
+     width: 93%;
      text-align: center;
      z-index:100;
 }
 
 #under_header{
+    clear: both;
     float:left;
-    width: 100%;
-    border-left: 1px solid;
-    border-right: 1px solid;
-    border-bottom: 1px solid;
-    border-color: #CFCFCF;
     margin:0px;
     padding:0px;
 }
@@ -93,6 +88,7 @@ a {
     display: inline-block;
     text-decoration: none;
     width: 110px;
+    padding-top:2px;
     border-top:1px solid;
     border-right: 1px solid;
     border-color: #CFCFCF;
@@ -118,7 +114,7 @@ a {
 }
 #text_content{
     height: 100%;
-    padding: 8px;
+    padding: 0px;
 }
 #sidebar{
     float: right; 
@@ -136,7 +132,7 @@ a {
     font-size:8pt;
 }
 .sidegroup{
-    padding: 5px;
+    padding: 0px;
 }
 .sidegroup ul {   
     margin: 0px;
@@ -162,7 +158,7 @@ a {
     border: 1px solid #CFCFCF;
     border-collapse:collapse;
     margin-top: 10px;
-    padding: 3px;
+    padding: 0px;
     width: 290px;
     height: 25px;
 }
@@ -198,17 +194,17 @@ a {
 .maptools{
     border: 1px solid;
 
-    padding: 5px;
+    padding: 0px;
 }
 .sidetitle{
-    padding-top: 5px;
+    padding-top: 0px;
     border: 1px solid;
     border-color: #CFCFCF;
     cursor: pointer;
-    margin-bottom: 5px;
-    padding-bottom: 1px;
-    padding-left: 3px;
-    padding-top: 5px;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-top: 0px;
     background: -moz-linear-gradient(top,white, #CFCFCF);
     background: -webkit-gradient(linear, center bottom, center top, from(#CFCFCF), to(white));
 
@@ -245,7 +241,7 @@ a {
     float: right;
     margin: 0;
     padding:0px;
-    padding-left: 4px;
+    padding-left: 0px;
     vertical-align: top;
     list-style-type:none;
     color: red;
@@ -290,7 +286,6 @@ a {
 
 .simple-link {
     color: blue;
-    cursor: pointer;
 }
 .droite {
    float: right;
@@ -299,4 +294,14 @@ a {
 .simple-link:hover{
     background-color: #CCCCCC;
     color: red;
+}
+
+.track_section_title {
+    text-align: center;
+    border: 1px solid;
+    border-color: #CFCFCF;
+    cursor: pointer;
+}
+.track_section {
+    display: none;
 }

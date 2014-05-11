@@ -1,24 +1,10 @@
-var fullscreen = false;
-
 function resizeMap() {
-    if (!fullscreen) {
-	$("#map_canvas").width($("#content").width()-$("#sidebar").width()-20);
-	$("#map_canvas").height($(window).height()-$("#header").height()-30 -$("#text_content").height());
-    }
-    else {
-	$("#map_canvas").addClass("absolute");
-	$("#map_canvas").width($(window).width());
-	$("#map_canvas").height($(window).height());
-    }
-    $("#main_content").width($("#content").width()-$("#sidebar").width()-18);
+	$("#main_content").width($("#content").width()-$("#sidebar").width()-10);
+	$("#map_canvas").width($("#main_content").width());
+	$("#map_canvas").height($(window).height()-$("#header").height() -$("#text_content").height()-5);
 }
 
 $(document).ready(function() {
-	$("#fullscreen").click(function(e){
-		e.preventDefault(); 
-		fullscreen = true;
-		resizeMap();
-	    });
 	$("#toggle_plot_data").click(function(e){
 		e.preventDefault(); 
 		var toggle_html =$("#toggle_plot_data").html(); 
@@ -37,7 +23,8 @@ $(document).ready(function() {
 		$.get("/logout");
 		$("#login").html("formulaire");
 	    });
-	$(".sidetitle").click(
+
+	$(".hideshow").click(
 			      function(e){
 				  if ($(this).next().css("display")=="none") {
 				      $(this).next().show(0)}

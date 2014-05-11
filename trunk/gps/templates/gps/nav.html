@@ -5,7 +5,7 @@
     <ul>
         {% for trace in latest_traces %}
         <li>
-            <a id="trace_{{ trace.id }}" class="a_track" href="/trace/{{ trace.id }}">{{ trace.name }} </a> ({{ trace.user }})
+            <a id="trace_{{ trace.id }}" class="a_track" href="/trace/{{ trace.id }}">{{ trace.name }} </a> ({{ trace.trace_property.all }} par {{ trace.user }})
         </li>
         {% endfor %}
     </ul>
@@ -15,7 +15,7 @@
 </div>
 
 {% if mes_traces %}
-<div class="sidetitle">Mes 10 dernières traces</div>
+<div class="sidetitle hideshow">Mes 10 dernières traces</div>
 <div class="sidegroup" id="track_menu">
     <ul>
         {% for trace in mes_traces %}
@@ -28,7 +28,7 @@
 {% endif %}
 </div>
 {% if all_traces %}
-<div class="sidetitle">Toutes les traces</div>
+<div class="sidetitle hideshow">Toutes les traces</div>
 <div class="sidegroup" id="track_menu" style="display: none;">
     <ul>
         {% for trace in all_traces %}

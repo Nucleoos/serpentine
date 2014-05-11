@@ -25,7 +25,7 @@ function initMainVariables() {
     $.jqplot.eventListenerHooks.push(['jqplotMouseMove', showMarker]);
     $.jqplot.postDrawHooks.push(showAlert);
     track_id = "{{ num }}";
-    trackinfo = getTrackInfos(track_id);//"{{ num }}"); //TODO tracker l'exception du track inexistant
+    trackinfo = getTrackInfos(track_id);//"{{ num }}"); //TODO unset track  ?
     bounds = new OpenLayers.Bounds(trackinfo["minlon"],trackinfo["minlat"],trackinfo["maxlon"],trackinfo["maxlat"]);
     initEventsControls();
 }
@@ -47,10 +47,6 @@ function initAfterMapSet() {
     track = getTrackPoints("{{ num }}");
     drawTrack(mainmap,"{{ num }}" ,track, '#0000FF');
     plotTrace(track,"dist","ele");
-    if ("{{ fullscreen }}" == "fullscreen"){
-       fullscreen = true;
-    }
-//    addPanelControls(mainmap,"track");
     resizeMap();
     var center = mainmap.getCenter();
     var cnt = center.transform(mainmap.getProjection(),geographic); 
