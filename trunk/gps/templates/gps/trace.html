@@ -22,6 +22,7 @@
 <script type="text/javascript" src="/static/js/gps/plot.js"></script>
 <script type="text/javascript" src="/js/trace_{{ maptype }}_{{ num }}.js"></script>
 {% endblock js_maps %}
+
 {% block sidebar %}
 {% include "gps/traceinfo.html" %}
 <div class="sidetitle hideshow" id="nearby_title" title="Cliquer pour masquer/afficher la section">
@@ -36,4 +37,5 @@
 {% block main_map %}
 <div id="map_canvas"></div>
 {% endblock main_map %}
+<div id="charts">{% include "gps/chart.html" %}</div>
 {% endblock content %}

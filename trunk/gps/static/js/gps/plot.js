@@ -9,12 +9,12 @@ function plotTrace(track,abs,ord) {
     }
     ticksY = getRoundedTicks(minOrd,maxOrd,5);
     if (track.total_distance > 1) { fmt = '%.0f'; } else { fmt = '%.1f';}
-    options = { show: true, 
+    options = { show: false, //true,
 		seriesColors: ["#FF0000"],
-		axes:{ yaxis:{tickOptions:{fontSize:'7pt',formatString:'%.0f'}, autoscale: true, ticks: ticksY},
-		       xaxis:{tickOptions:{fontSize:'7pt',formatString:fmt}, min:0,  max:track.total_distance}},		
+		axes:{ yaxis:{tickOptions:{showGridline: false,showMark: false, showLabel: false,shadow: false,fontSize:'7pt',formatString:'%.0f'}, autoscale: true, ticks: ticksY},
+		       xaxis:{tickOptions:{showGridline: false,showMark: false, showLabel: false,shadow: false,fontSize:'7pt',formatString:fmt}, min:0,  max:track.total_distance}},
 		series:[{label: ord, lineWidth: 1 , showMarker:false, neighborThreshold: -1}],
-		highlighter: {show: false},
+		highlighter: {show: true}, //false},
 		legend: {location:'nw'},
 		cursor: {zoom: true, showTooltip:false, style: 'default', 
 			 showVerticalLine:true,

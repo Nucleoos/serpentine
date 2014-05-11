@@ -44,10 +44,15 @@ $(document).ready(function() {
 	    });
 
 	$("#map_ign").click(function(e){
-		e.preventDefault(); 
+		e.preventDefault();
 		alert('choix ign par défaut, recharger la page pour appliquer tout de suite');
 		$.get("/setmaptype/ign",{});
 	    });
+
+	$(".chart_action").click(function(e){
+		e.preventDefault();
+	    });
+
 
 	$(window).resize(function() {
 		resizeMap();

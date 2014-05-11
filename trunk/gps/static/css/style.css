@@ -111,6 +111,7 @@ a {
 #main_content{
     clear:both;
     float:left;
+    position: relative;
 }
 #text_content{
     height: 100%;
@@ -132,7 +133,7 @@ a {
     font-size:8pt;
 }
 .sidegroup{
-    padding: 0px;
+    padding: 3px;
 }
 .sidegroup ul {   
     margin: 0px;
@@ -164,8 +165,17 @@ a {
 }
 
 #chartdiv{
-    height:200px;
+    height:150px;
 }
+#charts {
+    position: absolute;
+    bottom:0px;
+    right:0px;
+    width: 90%;
+    opacity:1;
+    z-index:1000;
+}
+
 #speedchartdiv{
     height:200px;
 }
@@ -202,8 +212,8 @@ a {
     border-color: #CFCFCF;
     cursor: pointer;
     margin-bottom: 0px;
-    padding-bottom: 0px;
-    padding-left: 0px;
+    padding-bottom: 3px;
+    padding-left: 3px;
     padding-top: 0px;
     background: -moz-linear-gradient(top,white, #CFCFCF);
     background: -webkit-gradient(linear, center bottom, center top, from(#CFCFCF), to(white));
