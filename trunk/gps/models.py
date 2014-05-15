@@ -197,8 +197,8 @@ class Trace(models.Model):
     def get_info(self):
         """ get un dictionnaire for quick info on the Trace object"""
         tr = {"id": self.id, "name": self.name, "total_time": self.get_formatted_time(),
-              "total_distance": str(round(self.get_total_distance(), 2)) + " km",
-              "avg_speed": str(round(self.get_avg_speed(), 2)) + " km/h"}
+              "total_distance": str(round(self.get_total_distance(), 2)) ,
+              "avg_speed": str(round(self.get_avg_speed(), 1))}
         tr.update(self.get_bounds())
         return tr
 

@@ -1,4 +1,6 @@
 {% extends "gps/base.html" %}
+{% block page_title %} {{ trace.name }} {% endblock page_title %}
+{% block title %} Visualisation de la trace: &laquo;{{ trace.name }}&raquo; {% endblock title %}
 {% block js_plot %}
 <script type="text/javascript" src="/static/js/jqplot/jquery.jqplot.min.js"></script>
 <script type="text/javascript" src="/static/js/jqplot/plugins/jqplot.dateAxisRenderer.min.js"></script>
@@ -25,6 +27,7 @@
 
 {% block sidebar %}
 {% include "gps/traceinfo.html" %}
+{% include "gps/tracetabs.html" %}
 <div class="sidetitle hideshow" id="nearby_title" title="Cliquer pour masquer/afficher la section">
     Près d'ici
 </div>

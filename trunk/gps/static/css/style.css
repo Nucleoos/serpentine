@@ -45,7 +45,9 @@ body{
 .bold{
     font-weight: bold;
 }
-
+.italic {
+    font-style: italic;
+}
 #title {
     position: relative;
     float:left;
@@ -131,7 +133,7 @@ a {
     position: relative;
 }
 #sidebar{
-    float: right; 
+    float: right;
     font-size:9pt;
     width:360px;
 }
@@ -172,7 +174,7 @@ a {
     border: 1px solid #CFCFCF;
     border-collapse:collapse;
     margin-top: 10px;
-    padding: 1px;
+    text-align: center;
     width: 348px;
     height: 18px;
     font-size: 12px;
@@ -231,11 +233,13 @@ a {
     padding-top: 0px;
     background: -moz-linear-gradient(top,white, #CFCFCF);
     background: -webkit-gradient(linear, center bottom, center top, from(#CFCFCF), to(white));
+    font-weight:bold;
+    text-align: center;
 
 }
 .sidetitle:hover{
     background-color: gray;
-    color: white;
+    color: red;
 }
 .invisible{
     visibility:hidden;
