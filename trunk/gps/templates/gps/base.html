@@ -36,13 +36,6 @@
 <div id="under_header"><div id="main_menu"> <ul><li>
     <a href="/">Accueil</a></li><li title="Charger un fichier GPX">
             <a href="/upload">Charger un fichier</a></li></ul></div>
-    <!--<div id="map_switcher" title="Choisir la carte par défaut dans laquelle s'afficheront les parcours">-->
-        <!--<ul>-->
-            <!--<li>Carte préférée</li>-->
-            <!--<li><a id="map_ign" href="">ign</a></li>-->
-            <!--<li><a id="map_osm" href="">osm</a></li>-->
-        <!--</ul>-->
-    <!--</div>-->
 </div>
 </div>
 
@@ -52,7 +45,8 @@
         {% block content %}
         {% endblock content%}
     </div>
-    <div id="sidebar">
+    <div class="hideshow vertical100 simple-link">x</div>
+    <div id="sidebar" >
         {% block sidebar %}
         {% block sidebar_intro %}
         Bienvenue sur Serpentine-GPS, un site de partage de trace GPS. Vous pouvez charger, visualiser et bientôt éditer

@@ -1,7 +1,13 @@
+html{
+    width:99.9%;
+    height:100%;
+
+}
 body{
     font-family: sans-serif;
-    width:99.5%;
-    height:100%;
+    font-size: 12px;
+    width:inherit;
+    height:inherit;
     padding:0px;
     margin:2px;
     overflow-y:scroll;
@@ -15,6 +21,14 @@ body{
     border: 1px solid;
     border-color: #CFCFCF;
     margin:0px;
+}
+#content {
+    height:100%;
+    width:100%;
+}
+
+.hideshow {
+    cursor: pointer;
 }
 .inline{
     display: inline;
@@ -113,10 +127,6 @@ a {
     float:left;
     position: relative;
 }
-#text_content{
-    height: 100%;
-    padding: 0px;
-}
 #sidebar{
     float: right; 
     font-size:9pt;
@@ -149,7 +159,7 @@ a {
 .trackshortinfo{
     font-size: 8pt;
 }
-.trackshortinfo hover{
+.trackshortinfo:hover{
     font-size: 14pt;
 }
 .ajaxgif{
@@ -168,10 +178,7 @@ a {
     height:150px;
 }
 #charts {
-    position: absolute;
-    bottom:0px;
-    right:0px;
-    width: 90%;
+    width: 100%;
     opacity:1;
     z-index:1000;
 }
@@ -312,6 +319,11 @@ a {
     border-color: #CFCFCF;
     cursor: pointer;
 }
-.track_section {
-    display: none;
+
+.vertical100{
+    float:right;
+    height:100%;
+    width: 12px;
+    text-align: center;
+    background-color: #CFCFCF;
 }
