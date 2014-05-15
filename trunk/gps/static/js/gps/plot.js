@@ -25,6 +25,7 @@ function plotTrace(track,abs,ord) {
     };
     plot1 = $.jqplot('chartdiv',[data],options);	
     plot1.replot(options);
+    return plot1;
 }
 
 function getRoundedTicks(minValue, maxValue, nbTicks) {

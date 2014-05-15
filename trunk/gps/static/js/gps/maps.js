@@ -104,7 +104,6 @@ function drawTrack(map, trackname, track,color, adding, width) {
 }
 
 function getModifiedTrack(points){
-    
     var track_points = [];
     for (i in points) {
 	var point = points[i];
@@ -120,13 +119,16 @@ function getIndex(track, distance) {
     return 0;
 }
 
-function showAlert() {
+function drawSelection() {
     //Vérifier s'il s'agit d'un zoom ou pas
-    if (this.axes.xaxis.min > 0){ 
-	var idxmin = getIndex(track, this.axes.xaxis.min);
-	var idxmax = getIndex(track, this.axes.xaxis.max);	    
-	//	alert("min" + this.axes.xaxis.min+ " idx "+idxmin + "/" +this.axes.xaxis.max + " idx "+idxmax);
-	drawTrackPart(mainmap,"Zoom",track,idxmin,idxmax);
+    if (this.axes.xaxis.min > 0){
+        var idxmin = getIndex(track, this.axes.xaxis.min);
+        var idxmax = getIndex(track, this.axes.xaxis.max);
+        //	alert("min" + this.axes.xaxis.min+ " idx "+idxmin + "/" +this.axes.xaxis.max + " idx "+idxmax);
+        drawTrackPart(mainmap,"Zoom",track,idxmin,idxmax);
+    }
+    else {
+        //todo dezoom to previous extent
     }
 }
 

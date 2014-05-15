@@ -1,4 +1,4 @@
-var  mainmap, bounds, trackinfo, track_id, geographic;
+var plot1, bounds, trackinfo, track_id, geographic;
 
 function initEventsControls() {
 $("#postchanges").click(function(e){
@@ -23,7 +23,7 @@ $(".getElevation").click(function(e){
 function initMainVariables() {
     $.jqplot.config.enablePlugins = true;
     $.jqplot.eventListenerHooks.push(['jqplotMouseMove', showMarker]);
-    $.jqplot.postDrawHooks.push(showAlert);
+    $.jqplot.postDrawHooks.push(drawSelection);
     track_id = "{{ num }}";
     trackinfo = getTrackInfos(track_id);//"{{ num }}"); //TODO unset track  ?
     bounds = new OpenLayers.Bounds(trackinfo["minlon"],trackinfo["minlat"],trackinfo["maxlon"],trackinfo["maxlat"]);
@@ -46,11 +46,11 @@ function initAfterMapSet() {
     //addSnappingControls(map);
     track = getTrackPoints("{{ num }}");
     drawTrack(mainmap,"{{ num }}" ,track, '#0000FF');
-    plotTrace(track,"dist","ele");
     resizeMap();
+    plotTrace(track,"dist","ele");
     var center = mainmap.getCenter();
     var cnt = center.transform(mainmap.getProjection(),geographic); 
-    getTracksNearby({{ num }},cnt.lat,cnt.lon);
+    getTracksNearby( {{ num }} , cnt.lat, cnt.lon);
     //Auto refresh mode
     /*
     mainmap.events.on({ "moveend": function (e) {

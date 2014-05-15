@@ -3,7 +3,7 @@ MOBILE_AGENTS = {
     'mobile_safari': r'AppleWebKit/.*Mobile/',
     'blackberry': r'^BlackBerry',
     'opera_mini': r'[Oo]pera [Mm]ini',
-    'android': r'.*Android.*',
+    #'android': r'.*Android.*',
     'samsung_wave': r'.*Dolfin.*Mobile.*',
     # 'chrome':r'.*Chrome.*',
     }

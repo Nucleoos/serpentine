@@ -22,30 +22,40 @@
 </div>
 <div class="track_section_title hideshow simple-link" title="Cliquer pour masquer/afficher la section">Tableaux
 </div>
-<div class="track_section charts">
+<div class="track_section">
     <table class="traceinfotable">
         <tr>
-            <td class="traceinfotable">Distance</td>
+            <th class="traceinfotable bold"></th>
+            <th class="traceinfotable bold">{{ trace.name }}</th>
+            <th class="traceinfotable bold"> Sélection</th>
+            <th class="traceinfotable bold"> Sélection</th>
+        </tr>
+        <tr>
+            <td class="traceinfotable bold">Distance</td>
             <td class="traceinfotable">{{ distance }}</td>
-            <td class="traceinfotable">Durée totale</td>
+        </tr><tr>
+            <td class="traceinfotable bold">Durée totale</td>
             <td class="traceinfotable">{{ total_time }}</td>
         </tr>
         <tr>
-            <td class="traceinfotable">Vitesse moyenne</td>
+            <td class="traceinfotable bold">Vitesse moyenne</td>
             <td class="traceinfotable">{{ avg_speed }}</td>
-            <td class="traceinfotable">Vitesse max</td>
+        </tr><tr>
+            <td class="traceinfotable bold">Vitesse max</td>
             <td class="traceinfotable">{{ max_speed }}</td>
         </tr>
         <tr>
-            <td class="traceinfotable">Altitude Min</td>
+            <td class="traceinfotable bold">Altitude Min</td>
             <td class="traceinfotable">{{ ele_min }}</td>
-            <td class="traceinfotable">Altitude Max</td>
+        </tr><tr>
+            <td class="traceinfotable bold">Altitude Max</td>
             <td class="traceinfotable">{{ ele_max }}</td>
         </tr>
         <tr>
-            <td class="traceinfotable">Amplitude Alt</td>
+            <td class="traceinfotable bold">Amplitude Alt</td>
             <td class="traceinfotable">{{ ele_amplitude }}</td>
-            <td class="traceinfotable">Dénivelé +</td>
+        </tr><tr>
+            <td class="traceinfotable bold">Dénivelé +</td>
             <td class="traceinfotable">{{ ele_deniv }}</td>
         </tr>
     </table>

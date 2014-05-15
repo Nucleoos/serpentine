@@ -42,6 +42,9 @@ body{
 .right{
     text-align: left;
 }
+.bold{
+    font-weight: bold;
+}
 
 #title {
     position: relative;
@@ -169,9 +172,13 @@ a {
     border: 1px solid #CFCFCF;
     border-collapse:collapse;
     margin-top: 10px;
-    padding: 0px;
-    width: 290px;
-    height: 25px;
+    padding: 1px;
+    width: 348px;
+    height: 18px;
+    font-size: 12px;
+}
+.track_section {
+    padding: 3px;
 }
 
 #chartdiv{
@@ -303,6 +310,7 @@ a {
 
 .simple-link {
     color: blue;
+    cursor: pointer;
 }
 .droite {
    float: right;
@@ -317,6 +325,7 @@ a {
     text-align: center;
     border: 1px solid;
     border-color: #CFCFCF;
+    background-color: #EEEEEE;
     cursor: pointer;
 }
 
@@ -325,5 +334,5 @@ a {
     height:100%;
     width: 12px;
     text-align: center;
-    background-color: #CFCFCF;
+    background-color: #EEEEEE;
 }
