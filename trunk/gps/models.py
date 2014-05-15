@@ -85,7 +85,16 @@ class Trace(models.Model):
         self.set_property('ele_min', str(round(self.get_elevation_min(), 0)) + " m")
         return 'done'  #self.getProperties()
 
-    def get_properties(self, *args):
+    def get_calculated_properties(self):
+        properties ={}
+        properties['total_time'] = str(self.get_total_time())
+        properties['distance'] = self.get_total_distance()
+        properties['max_elevation'] = self.get_elevation_max()
+        properties['min_elevation'] = self.get_elevation_min()
+        properties['amplitude_elevation'] = properties['max_elevation']-properties['min_elevation']
+        return  properties
+
+    def get_str_properties(self, *args):
         """ récupère les propriétés de la trace et retourne un dict 
             renvoie tout si aucun argument n'est spécifié"""
         if args == ():
@@ -120,7 +129,7 @@ class Trace(models.Model):
         """ secondes """
         t = Trace_point.objects.filter(trace=self).aggregate(Max("time"), Min("time"))
         td = t["time__max"] - t["time__min"]
-        return td.seconds + td.days * 24 * 3600
+        return td
 
     def get_max_speed(self):
         return Trace_point.objects.filter(trace=self).aggregate(Max("speed"))["speed__max"]
@@ -137,7 +146,7 @@ class Trace(models.Model):
 
     def get_formatted_time(self):
         """ chaine x jours etc """
-        t = self.get_total_time()
+        t = self.get_total_time().seconds
         d = t / (3600 * 24)
         h = (t - d * 24 * 3600) / 3600
         m = (t - d * 24 * 3600 - h * 3600) / 60
@@ -204,7 +213,7 @@ class Trace(models.Model):
 
     def get_json(self):
         """ get json format of the Trace object"""
-        tr = {"name": self.name, "total_time": self.get_total_time(), "total_distance": self.get_total_distance(),
+        tr = {"name": self.name, "total_time": str(self.get_total_time()), "total_distance": self.get_total_distance(),
               "avg_speed": self.get_avg_speed()}
         tr["points"] = self.get_points()
         return json.dumps(tr)
@@ -443,10 +452,10 @@ class Trace(models.Model):
         tp = Trace_point.objects.filter(trace=self).order_by('time')
         dist = tp[tp.count() - 1].distance
         td = tp[tp.count() - 1].time - tp[0].time
-        tt = self.get_total_time()
+        tt = self.get_total_time().seconds
         if tt == 0:
             return 0
-        return 3600 * dist / self.get_total_time()
+        return 3600 * dist / self.get_total_time().seconds
 
         #méthodes statiques
 
@@ -487,7 +496,7 @@ class Trace(models.Model):
         """
         trs = Trace.objects.filter(trace_property__value__icontains=criteria).distinct()
         res = [{'type': 'Parcours', 'id': tr.id, 'nom': tr.name,
-                'properties': tr.get_properties('description', 'depart', 'arrivee', 'vias')} for tr in trs]
+                'properties': tr.get_str_properties('description', 'depart', 'arrivee', 'vias')} for tr in trs]
         return res
 
 

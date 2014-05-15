@@ -1,4 +1,7 @@
+
+{% load replace %}
 <div class="sidetitle hideshow" title="Cliquer pour masquer/afficher la section">Tableaux
+{{ add }}
 </div>
 <div class="track_section">
     <table class="traceinfotable">
@@ -8,10 +11,10 @@
         </tr>
         <tr>
             <td class="traceinfotable bold">Distance (km)</td>
-            <td class="traceinfotable">{{ distance }}</td>
+            <td class="traceinfotable">{{ properties.distance|floatformat:2 }} km </td>
         </tr><tr>
         <td class="traceinfotable bold">Durée totale </td>
-        <td class="traceinfotable">{{ total_time }}</td>
+        <td class="traceinfotable">{{ properties.total_time|formatduration }}</td>
     </tr>
         <tr>
             <td class="traceinfotable bold">Vitesse moyenne (km/h)</td>
@@ -22,14 +25,14 @@
     </tr>
         <tr>
             <td class="traceinfotable bold">Altitude Min (m)</td>
-            <td class="traceinfotable">{{ ele_min }}</td>
+            <td class="traceinfotable">{{ properties.min_elevation|floatformat:0 }}</td>
         </tr><tr>
         <td class="traceinfotable bold">Altitude Max (m)</td>
-        <td class="traceinfotable">{{ ele_max }}</td>
+        <td class="traceinfotable">{{ properties.max_elevation|floatformat:0 }}</td>
     </tr>
         <tr>
             <td class="traceinfotable bold">Amplitude Alt (m)</td>
-            <td class="traceinfotable">{{ ele_amplitude }}</td>
+            <td class="traceinfotable">{{ properties.amplitude_elevation|floatformat:0 }}</td>
         </tr><tr>
         <td class="traceinfotable bold">Dénivelé + (m)</td>
         <td class="traceinfotable">{{ ele_deniv }}</td>

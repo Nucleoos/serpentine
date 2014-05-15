@@ -68,9 +68,10 @@ def view_trace(request, num):
     c['maptype'] = maptype
     tr = Trace.objects.get(id=num)
     c['trace'] = tr
-    for p in tr.get_properties():
+    for p in tr.get_str_properties():
         c[p.name] = p.value
     c['ign_api_key'] = gps.settings.IGN_API_KEY
+    c['properties'] = tr.get_calculated_properties()
     response = render_to_response(utils.get_prefix(request) + 'trace.html', c, context_instance=RequestContext(request))
     #rafraichissement du cookie
     response.set_cookie(key='maptype', value=maptype, max_age=3600 * 24 * 30, expires=None, path='/', domain=None,
@@ -93,8 +94,9 @@ def trace_info_html(request, num):
     c['num'] = num
     tr = Trace.objects.get(id=num)
     c['trace'] = tr
-    for p in tr.get_properties():
+    for p in tr.get_str_properties():
         c[p.name] = p.value
+    c['properties'] = tr.get_calculated_properties()
     return render_to_response('gps/traceinfo.html', c)
 
 
@@ -103,8 +105,18 @@ def trace_short_info_html(request, num):
     c['num'] = num
     tr = Trace.objects.get(id=num)
     c['trace'] = tr
-    ppt = tr.get_properties('distance')
+    ppt = tr.get_str_properties('distance')
     return render_to_response('gps/traceshortinfo.html', c)
+
+def trace_tabs_html(request, num, add = '/15'):
+    c = {}
+    c['num'] = num
+    tr = Trace.objects.get(id=num)
+    c['trace'] = tr
+    c['properties'] = tr.get_calculated_properties()
+    c['add'] = add
+    return render_to_response('gps/tracetabs.html', c)
+
 
 
 def nav_html(request):
