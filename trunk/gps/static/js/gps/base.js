@@ -4,8 +4,8 @@ function resizeMap() {
     $("#map_canvas").height($(window).height()-$("#header").height() -$("#charts").height()-5);
     $("#charts").width($("#main_content").width());
     $("#chartdiv").width($("#main_content").width());
-    if (plot1 != null) { plot1.replot(); }
-    if (mainmap) { mainmap.updateSize(); }
+    if (typeof plot1 != 'undefined') { plot1.replot(); }
+    if (typeof mainmap != 'undefined') { mainmap.updateSize(); }
 }
 
 $(document).ready(function() {
