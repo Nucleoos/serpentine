@@ -184,12 +184,15 @@ a {
 }
 
 #chartdiv{
-    height:150px;
+    height:200px;
 }
 #charts {
     width: 100%;
     opacity:1;
     z-index:1000;
+}
+#chartgroup{
+    position: relative;
 }
 
 #speedchartdiv{
@@ -338,5 +341,15 @@ a {
     height:100%;
     width: 12px;
     text-align: center;
-    background-color: #EEEEEE;
+    background-color: #DDDDDD;
+    /*background: -moz-linear-gradient(left,#CFCFCF,white);*/
+    /*background: -webkit-gradient(linear, right , left, from(white), to(#CFCFCF));*/
+}
+
+#point_info {
+    position: absolute;
+    top:15px;
+    width:100%;
+    text-align: center;
+    z-index:1000;
 }

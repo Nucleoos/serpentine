@@ -71,7 +71,9 @@ def view_trace(request, num):
     for p in tr.get_str_properties():
         c[p.name] = p.value
     c['ign_api_key'] = gps.settings.IGN_API_KEY
-    c['properties'] = tr.get_calculated_properties()
+    ppt = tr.get_properties()
+    for p in ppt:
+        c[p] =[ppt[p]]
     response = render_to_response(utils.get_prefix(request) + 'trace.html', c, context_instance=RequestContext(request))
     #rafraichissement du cookie
     response.set_cookie(key='maptype', value=maptype, max_age=3600 * 24 * 30, expires=None, path='/', domain=None,
@@ -96,7 +98,7 @@ def trace_info_html(request, num):
     c['trace'] = tr
     for p in tr.get_str_properties():
         c[p.name] = p.value
-    c['properties'] = tr.get_calculated_properties()
+    c['properties'] = tr.get_properties()
     return render_to_response('gps/traceinfo.html', c)
 
 
@@ -108,13 +110,28 @@ def trace_short_info_html(request, num):
     ppt = tr.get_str_properties('distance')
     return render_to_response('gps/traceshortinfo.html', c)
 
-def trace_tabs_html(request, num, add = '/15'):
-    c = {}
-    c['num'] = num
-    tr = Trace.objects.get(id=num)
-    c['trace'] = tr
-    c['properties'] = tr.get_calculated_properties()
-    c['add'] = add
+def trace_tabs_html(request, traces , segments=None):
+    c = {'traces':traces}
+    traces = traces.split('/')[1:] #le premier argument est 'traces'
+
+    #initialisation du tableau des propriétés avec la première trace
+    ppt = Trace.objects.get(id=int(traces[0])).get_properties()
+    for p in ppt:
+        c[p] = []
+    #alimentation des propriétés pour le tableau
+    for num in traces:
+        ppt = Trace.objects.get(id=int(num)).get_properties()
+        for p in ppt:
+            c[p].append(ppt[p])
+
+
+    if segments != None:
+        segments = segments.split('/')[1:] #l'indice 0 est segment
+        tr = Trace.objects.get(id=int(segments[0]))
+        ppt = tr.get_segment_properties(segments[1],segments[2])
+        for p in ppt:
+            c[p].append(ppt[p])
+
     return render_to_response('gps/tracetabs.html', c)
 
 

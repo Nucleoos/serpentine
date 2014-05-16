@@ -1,7 +1,7 @@
 
     <div class="sidetitle hideshow" id="titleinfo" title="Cliquer pour masquer/afficher la section">
         <div class="trace_title">
-            {{ trace.name }} ({{ distance }} le {{ trace.ctime|date:"d/m/Y" }})
+            {{ trace.name }} ({{ distance.0|floatformat:0 }}km le {{ trace.ctime|date:"d/m/Y" }})
         </div>
         <div class="trace_subtitle">
         </div>

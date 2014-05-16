@@ -121,11 +121,12 @@ function getIndex(track, distance) {
 
 function drawSelection() {
     //Vérifier s'il s'agit d'un zoom ou pas
-    if (this.axes.xaxis.min > 0){
+    if (this.axes.xaxis.min >= 0){
         var idxmin = getIndex(track, this.axes.xaxis.min);
         var idxmax = getIndex(track, this.axes.xaxis.max);
         //	alert("min" + this.axes.xaxis.min+ " idx "+idxmin + "/" +this.axes.xaxis.max + " idx "+idxmax);
         drawTrackPart(mainmap,"Zoom",track,idxmin,idxmax);
+        getTrackSegmentTables(track_id,idxmin,idxmax)
     }
     else {
         //todo dezoom to previous extent
@@ -171,7 +172,7 @@ function showMarker(e, gridpos, datapos, neighbor, plot) {
     point = point.transform(geographic, mainmap.getProjectionObject());
     var pointFeature = new OpenLayers.Feature.Vector(point,null, marker_style);
     vec_pt.addFeatures(pointFeature);
-    $("#order_num").html(i);
+    $("#point_info").html('km:'+ x.toFixed(2) +' speed:'+ track.points[i].speed.toFixed(2)+' elevation:'+track.points[i].ele.toFixed(0) + '  (idx:'+i+')');
 }
 
 function addMarkerTracks(map, tracks) {
@@ -264,6 +265,7 @@ function getColor() {
 function  addTrack(id) {
    var track=getTrackPoints(id);
    drawTrack(mainmap,id, track,'#333333', true);
+   getTrackTables(10,id)
 }
 
 

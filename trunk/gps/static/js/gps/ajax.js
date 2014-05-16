@@ -131,3 +131,24 @@ function getTrackInfoHtml(tr,div) {
 		mainmap.addPopup(div);
 	    }});
 }
+
+
+function getTrackTables(tr,tr2) {
+     $.ajax({
+	    url: "/tracetabs/traces/"+track_id.toString()+'/'+tr2.toString()+'/',
+	    datatype: 'xml',
+	    async: true,
+	    success: function(data) {
+		    $('#tracetabs').html(data);
+		}});
+}
+
+function getTrackSegmentTables(tr,segstart,segend) {
+     $.ajax({
+	    url: "/tracetabs/traces/"+track_id.toString()+'/segment/'+track_id+'/'+segstart+'/'+segend,
+	    datatype: 'xml',
+	    async: true,
+	    success: function(data) {
+		    $('#tracetabs').html(data);
+		}});
+}

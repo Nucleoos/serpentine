@@ -85,14 +85,34 @@ class Trace(models.Model):
         self.set_property('ele_min', str(round(self.get_elevation_min(), 0)) + " m")
         return 'done'  #self.getProperties()
 
-    def get_calculated_properties(self):
+    def get_properties(self):
         properties ={}
+        properties['name'] = self.name
         properties['total_time'] = str(self.get_total_time())
         properties['distance'] = self.get_total_distance()
         properties['max_elevation'] = self.get_elevation_max()
         properties['min_elevation'] = self.get_elevation_min()
         properties['amplitude_elevation'] = properties['max_elevation']-properties['min_elevation']
+        properties['max_speed'] = self.get_max_speed()
+        properties['avg_speed'] = self.get_avg_speed()
         return  properties
+
+    def get_segment_properties(self,start,end):
+        properties ={}
+        start = str(start)
+        end = str(end)
+        tp = Trace_point.objects.filter(trace=self).filter(order_num__gte= start).filter(order_num__lte =end)
+        agg = tp.aggregate(Max("time"), Min("time"),Max("speed"),Avg("speed"),Max("elevation"),Min("elevation"),Max("distance"),Min("distance"))
+        properties['name'] =  'tr ' + str(self.id) + ' segment ('+start+','+end+')'
+        properties['total_time'] = agg['time__max']-agg['time__min']
+        properties['distance'] = agg['distance__max']-agg['distance__min']
+        properties['max_elevation'] = agg['elevation__max']
+        properties['min_elevation'] = agg['elevation__min']
+        properties['amplitude_elevation'] = agg['elevation__max']-agg['elevation__min']
+        properties['max_speed'] = agg['speed__max']
+        properties['avg_speed'] = agg['speed__avg']
+        return properties
+
 
     def get_str_properties(self, *args):
         """ récupère les propriétés de la trace et retourne un dict 

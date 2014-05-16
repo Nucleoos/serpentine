@@ -9,18 +9,6 @@ function resizeMap() {
 }
 
 $(document).ready(function() {
-    $("#toggle_plot_data").click(function(e){
-        e.preventDefault();
-        var toggle_html =$("#toggle_plot_data").html();
-        if ( toggle_html == "afficher la vitesse"){
-            plotTrace(track,"dist","speed");
-            $("#toggle_plot_data").html("afficher l'altitude");
-        }
-        else {
-            plotTrace(track,"dist","ele");
-            $("#toggle_plot_data").html("afficher la vitesse");
-        }
-    });
 
     $("#logout").click(function(e){
         e.preventDefault();
@@ -34,9 +22,7 @@ $(document).ready(function() {
                 $(this).next().show(0); $(this).next().width(360)} //TODO: getPrevious witdh fo element
             else {$(this).next().hide(0); $(this).next().width(0)};
             resizeMap();
-
         }
-
     );
 
     $("#login_submit").click(function(e){
