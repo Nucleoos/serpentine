@@ -46,6 +46,8 @@ function setOsmMap(bounds,layers) {
     map.addControl(scaleLine);
 
 
+    var mapnik = new OpenLayers.Layer.OSM("osm mapnik");
+    map.addLayer(mapnik);
 
 	if ($.inArray('terrain', layers)>=0) {
     var terrain = new OpenLayers.Layer.Google(
@@ -53,8 +55,6 @@ function setOsmMap(bounds,layers) {
 								    numZoomLevels: 20} );
     map.addLayer(terrain);
     }
-    var mapnik = new OpenLayers.Layer.OSM("osm mapnik");
-    map.addLayer(mapnik);
 
 
     if ($.inArray('hydrid', layers)>=0) {
