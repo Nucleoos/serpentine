@@ -110,7 +110,7 @@ class Trace(models.Model):
         properties['min_elevation'] = agg['elevation__min']
         properties['amplitude_elevation'] = agg['elevation__max']-agg['elevation__min']
         properties['max_speed'] = agg['speed__max']
-        properties['avg_speed'] = agg['speed__avg']
+        properties['avg_speed'] =3600*(agg['distance__max']-agg['distance__min'])/((agg['time__max']-agg['time__min']).seconds +(agg['time__max']-agg['time__min']).days*86400 )
         return properties
 
 
@@ -475,7 +475,7 @@ class Trace(models.Model):
         tt = self.get_total_time().seconds
         if tt == 0:
             return 0
-        return 3600 * dist / self.get_total_time().seconds
+        return 3600 * dist / (self.get_total_time().seconds + self.get_total_time().days*86400)
 
         #méthodes statiques
 
