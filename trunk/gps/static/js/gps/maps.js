@@ -56,13 +56,12 @@ function setOsmMap(bounds,layers) {
     map.addLayer(terrain);
     }
 
-
-    //if ($.inArray('hydrid', layers)>=0) {
+    if ($.inArray('hybrid', layers)>=0) {
     var hybrid = new OpenLayers.Layer.Google(
 					     "google maps hybrid", {type:  google.maps.MapTypeId.HYBRID,'sphericalMercator': true,
 								    numZoomLevels: 20} );
     map.addLayer(hybrid);
-//	}
+	}
 
     mainmap = map;       
 }
