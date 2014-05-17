@@ -52,10 +52,10 @@ function initAfterMapSet() {
     var cnt = center.transform(mainmap.getProjection(),geographic); 
     getTracksNearby( {{ num }} , cnt.lat, cnt.lon);
     //Auto refresh mode
-    /*
+
     mainmap.events.on({ "moveend": function (e) {
 	getTracksNearby({{ num }});
     }});
-    */
+
 }
 

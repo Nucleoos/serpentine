@@ -57,12 +57,12 @@ function setOsmMap(bounds,layers) {
     }
 
 
-    if ($.inArray('hydrid', layers)>=0) {
+    //if ($.inArray('hydrid', layers)>=0) {
     var hybrid = new OpenLayers.Layer.Google(
 					     "google maps hybrid", {type:  google.maps.MapTypeId.HYBRID,'sphericalMercator': true,
 								    numZoomLevels: 20} );
     map.addLayer(hybrid);
-	}
+//	}
 
     mainmap = map;       
 }
@@ -174,8 +174,26 @@ function showMarker(e, gridpos, datapos, neighbor, plot) {
         point = point.transform(geographic, mainmap.getProjectionObject());
         var pointFeature = new OpenLayers.Feature.Vector(point,null, marker_style);
         vec_pt.addFeatures(pointFeature);
-        $("#point_info").html('km:'+ x.toFixed(2) +' speed:'+ track.points[plotidx].speed.toFixed(2)+' elevation:'+track.points[plotidx].ele.toFixed(0) + '  (idx:'+plotidx+')');
+        start = new Date(track.points[0].time)
+        time = new Date(track.points[plotidx].time)
+        delta = formatDelta(time-start)
+        $("#point_info").html('km: '+ x.toFixed(2) +' time: ' + delta+' speed:'+ track.points[plotidx].speed.toFixed(2)+' elevation:'+track.points[plotidx].ele.toFixed(0) + '  (idx:'+plotidx+')');
     }
+}
+/*
+ Formatting timeelta ms
+ */
+function formatDelta(delta) {
+    var strd = ''
+    delta = delta/1000;
+    var days = Math.floor(delta/86400);
+    delta = delta % 86400
+    var hours = Math.floor(delta/3600);
+    delta = delta % 3600
+    var minutes =  Math.floor(delta/60);
+    secs = delta % 60
+    if (days > 0) {strd += days+'j ';}
+    return strd + ("0" + hours).slice(-2)+':'+("0" + minutes).slice(-2)+':'+("0" + secs).slice(-2);
 }
 
 function addMarkerTracks(map, tracks) {

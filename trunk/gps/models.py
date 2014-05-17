@@ -43,6 +43,8 @@ class Trace(models.Model):
             tp.save()
             n += 1
         transaction.commit()
+        self.compute_distances()
+        self.compute_speeds()
         # zfile = zipfile.ZipFile(file+'.zip','w',compression=zipfile.ZIP_DEFLATED)
         # zfile.write(file,file)
         # zfile.close

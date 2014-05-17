@@ -10,10 +10,20 @@ def run():
     start = datetime.now()
     print(start)
     # run_nearby()
-    run_matching_segments()
+    #run_matching_segments()
+
+    run_compute_speeds()
+
     end = datetime.now()
     print(end)
     print('total time spent: ' + str(end - start))
+
+def run_compute_speeds():
+    trs = Trace.objects.all()
+    for tr in trs:
+        print tr
+        tr.compute_distances()
+        tr.compute_speeds()
 
 
 def run_nearby():
