@@ -31,24 +31,24 @@ function plotTrace2(track,abs,ord) {
 function plotTrace(track) {
     var speed = [];
     var ele =[];
+    var speedi = [];
     var maxOrd = 0; var minOrd= 100000;
     for (i in track.points) {
         ele.push([track.points[i]["dist"],track.points[i]["ele"]]);
         speed.push([track.points[i]["dist"],track.points[i]["speed"]]);
     }
-    if (track.total_distance > 1) { fmt = '%.0f'; } else { fmt = '%.1f';}
+    if (track.total_distance > 1) { fmt = '%.0f'; } else { fmt = '%.0f';}
     options = { show: false, //true,
         seriesColors: ["#FF0000","#00AAAA"],
         seriesDefaults: {showMarker:false},
         series:[
             {label:'altitude',lineWidth: 2 , showMarker:false, neighborThreshold: -1},
             {yaxis:'y2axis',label:'vitesse',lineWidth: 2 , showMarker:false, neighborThreshold: -1}
-            //{yaxis:'y3axis'}
         ],
         axes:{
             yaxis:{tickOptions:{showGridline: false,showMark: false, showLabel: false,shadow: false,fontSize:'7pt',formatString:'%.0f'}, autoscale: true},
-            xaxis:{tickOptions:{showGridline: false,showMark: false, showLabel: false,shadow: false,fontSize:'7pt',formatString:fmt}, min:0,  max:track.total_distance}
-        },
+            xaxis:{tickOptions:{showGridline: false,showMark: false, showLabel: false,shadow: false,fontSize:'7pt',formatString:fmt}, min:0,  max:track.total_distance},
+          },
         highlighter: {show: false}, //false},
         legend: {location:'nw'},
         cursor: {zoom: true, showTooltip:false, style: 'default',

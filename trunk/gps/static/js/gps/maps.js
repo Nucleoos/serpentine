@@ -1,4 +1,4 @@
-var  mainmap, geographic, selectControl, clickControl , vec_track, vec_t, viewer,iv; 
+var  mainmap, plotidx, geographic, selectControl, clickControl , vec_track, vec_t, viewer,iv;
 
 function setMainMap(type,bounds,layers) {
     geographic = new OpenLayers.Projection("EPSG:4326"); //projection lat lon
@@ -155,24 +155,27 @@ function drawTrackPart(map, trackname, track, idxmin, idxmax) {
     return lineGeometry;
 }
 
-function showMarker(e, gridpos, datapos, neighbor, plot) {    
-    var vec_pt = mainmap.getLayersBy('name','marqueur_pt')[0];
-    vec_pt.removeAllFeatures();
+function showMarker(e, gridpos, datapos, neighbor, plot) {
     var x = datapos.xaxis; // la position en km sur l'axe
-    var i = getIndex(track,x); //recherche le point d'index du repère en km
-    var marker_style = {
-	externalGraphic: "/static/img/marker.png",
-	'graphicHeight': 25,
-	'graphicWidth': 25,
-	'graphicXOffset': -12.5,
-	'graphicYOffset': -25,      
-	//	pointerEvents: "visiblePainted"
-    };    
-    var point = new OpenLayers.Geometry.Point(track.points[i]["lon"],  track.points[i]["lat"]);
-    point = point.transform(geographic, mainmap.getProjectionObject());
-    var pointFeature = new OpenLayers.Feature.Vector(point,null, marker_style);
-    vec_pt.addFeatures(pointFeature);
-    $("#point_info").html('km:'+ x.toFixed(2) +' speed:'+ track.points[i].speed.toFixed(2)+' elevation:'+track.points[i].ele.toFixed(0) + '  (idx:'+i+')');
+    var i  = getIndex(track,x); //recherche le point d'index du repère en km
+    if (i != plotidx) {
+        plotidx = i;
+        var vec_pt = mainmap.getLayersBy('name','marqueur_pt')[0];
+        vec_pt.removeAllFeatures();
+        var marker_style = {
+            externalGraphic: "/static/img/marker.png",
+            'graphicHeight': 25,
+            'graphicWidth': 25,
+            'graphicXOffset': -12.5,
+            'graphicYOffset': -25,
+            //	pointerEvents: "visiblePainted"
+        };
+        var point = new OpenLayers.Geometry.Point(track.points[plotidx]["lon"],  track.points[plotidx]["lat"]);
+        point = point.transform(geographic, mainmap.getProjectionObject());
+        var pointFeature = new OpenLayers.Feature.Vector(point,null, marker_style);
+        vec_pt.addFeatures(pointFeature);
+        $("#point_info").html('km:'+ x.toFixed(2) +' speed:'+ track.points[plotidx].speed.toFixed(2)+' elevation:'+track.points[plotidx].ele.toFixed(0) + '  (idx:'+plotidx+')');
+    }
 }
 
 function addMarkerTracks(map, tracks) {
