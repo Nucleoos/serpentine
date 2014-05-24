@@ -1,4 +1,4 @@
-function plotTrace2(track,abs,ord) {
+function plotTraceOld(track,abs,ord) {
     var data = [];
     var ticksY= [];
     var maxOrd = 0; var minOrd= 100000;
@@ -28,7 +28,7 @@ function plotTrace2(track,abs,ord) {
     return plot1;
 }
 
-function plotTrace(track) {
+function plotTrace2(track) {
     var speed = [];
     var ele =[];
     var speedi = [];
@@ -62,6 +62,79 @@ function plotTrace(track) {
     plot1.replot(options);
     return plot1;
 }
+
+function plotTrace(track) {
+    var chartwidth = $('#chartdiv').width();
+    var step = 1+Math.floor(track.points.length/chartwidth);
+    var speed = [];
+    var ele =[];
+    for (var i= 0; i< track.points.length-step;i+=step) {
+        var el = track.points[i]["ele"]
+        var sp = track.points[i]["speed"]
+        for(var j =1; j<step;j++) {el+=track.points[i+j]["ele"]; sp+=track.points[i+j]["speed"];}
+        el = el/step; sp = sp/step;
+        ele.push([track.points[i]["dist"],el]);
+        speed.push([track.points[i]["dist"],sp]);
+    }
+    if (track.total_distance > 1) { fmt = '%.0f'; } else { fmt = '%.0f';}
+    options = { show: false, //true,
+        seriesColors: ["#FF0000","#00AAAA"],
+        seriesDefaults: {showMarker:false},
+        series:[
+            {label:'altitude',lineWidth: 2 , showMarker:false, neighborThreshold: -1},
+            {yaxis:'y2axis',label:'vitesse',lineWidth: 2 , showMarker:false, neighborThreshold: -1}
+        ],
+        axes:{
+            yaxis:{tickOptions:{showGridline: false,showMark: false, showLabel: false,shadow: false,fontSize:'7pt',formatString:'%.0f'}, autoscale: true},
+            xaxis:{tickOptions:{showGridline: false,showMark: false, showLabel: false,shadow: false,fontSize:'7pt',formatString:fmt}, min:0,  max:track.total_distance},
+          },
+        highlighter: {show: false}, //false},
+        legend: {location:'nw'},
+        cursor: {zoom: true, showTooltip:false, style: 'default',
+            showVerticalLine:true,
+            showCursorLegend:true,
+            cursorLegendFormatString:'%s',
+            constrainZoomTo: 'x'
+        }
+    };
+    plot1 = $.jqplot('chartdiv',[ele,speed],options);
+    plot1.target.bind('jqplotZoom',handleZoom);
+    //plot1.target.bind('jqplotDblClick',handleZoom);
+    plot1.target.bind('jqplotMouseMove',showMarker);
+    plot1.replot(options);
+
+    return plot1;
+
+}
+
+function handleZoom(ev, gridpos, datapos, plot, cursor) {
+    var idxmin = parseInt(getIndex(track, plot.axes.xaxis.min));
+    var idxmax = parseInt(getIndex(track, plot.axes.xaxis.max));
+    var chartwidth = $('#chartdiv').width();
+    var step = 1+Math.floor((idxmax-idxmin)/chartwidth);
+    var speed = [];
+    var ele =[];
+    for (var i= idxmin; i< idxmax-step;i+=step) {
+        var el = track.points[i]["ele"]
+        var sp = track.points[i]["speed"]
+        for(var j =1; j<step;j++) {el+=track.points[i+j]["ele"]; sp+=track.points[i+j]["speed"];}
+        el = el/step; sp = sp/step;
+        ele.push([track.points[i]["dist"],el]);
+        speed.push([track.points[i]["dist"],sp]);
+    }
+    plot.series[0].data  = ele;
+    plot.series[1].data  = speed;
+    plot.replot();
+/*
+    if (idxmin == 0 && idxmax == track.point.length) {
+        drawTrack(mainmap);
+    } else {
+        drawTrackPart(mainmap,"Zoom",track,idxmin,idxmax);
+    }
+    getTrackSegmentTables(track_id,idxmin,idxmax)
+*/
+}
+
 
 function getRoundedTicks(minValue, maxValue, nbTicks) {
     //returns the rounded ticks for the axe

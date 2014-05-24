@@ -22,7 +22,9 @@ $(".getElevation").click(function(e){
 
 function initMainVariables() {
     $.jqplot.config.enablePlugins = true;
-    $.jqplot.eventListenerHooks.push(['jqplotMouseMove', showMarker]);
+    //$.jqplot.eventListenerHooks.push(['jqplotMouseMove', showMarker]);
+    //$.jqplot.eventListenerHooks.push(['jqplotZoom', handleZoom]);
+        //$.jqplot.eventListenerHooks.push(['jqplotDblClick', plotTrace]);
     $.jqplot.postDrawHooks.push(drawSelection);
     track_id = "{{ num }}";
     trackinfo = getTrackInfos(track_id);//"{{ num }}"); //TODO unset track  ?
