@@ -1,3 +1,4 @@
+
 function plotTraceOld(track,abs,ord) {
     var data = [];
     var ticksY= [];
@@ -64,20 +65,9 @@ function plotTrace2(track) {
 }
 
 function plotTrace(track) {
-    var chartwidth = $('#chartdiv').width();
-    var step = 1+Math.floor(track.points.length/chartwidth);
-    var speed = [];
-    var ele =[];
-    for (var i= 0; i< track.points.length-step;i+=step) {
-        var el = track.points[i]["ele"]
-        var sp = track.points[i]["speed"]
-        for(var j =1; j<step;j++) {el+=track.points[i+j]["ele"]; sp+=track.points[i+j]["speed"];}
-        el = el/step; sp = sp/step;
-        ele.push([track.points[i]["dist"],el]);
-        speed.push([track.points[i]["dist"],sp]);
-    }
+    var series = getSeries(0,track.points.length);
     if (track.total_distance > 1) { fmt = '%.0f'; } else { fmt = '%.0f';}
-    options = { show: false, //true,
+    var options = { show: false, //true,
         seriesColors: ["#FF0000","#00AAAA"],
         seriesDefaults: {showMarker:false},
         series:[
@@ -97,7 +87,7 @@ function plotTrace(track) {
             constrainZoomTo: 'x'
         }
     };
-    plot1 = $.jqplot('chartdiv',[ele,speed],options);
+    plot1 = $.jqplot('chartdiv',series,options);
     plot1.target.bind('jqplotZoom',handleZoom);
     //plot1.target.bind('jqplotDblClick',handleZoom);
     plot1.target.bind('jqplotMouseMove',showMarker);
@@ -110,6 +100,21 @@ function plotTrace(track) {
 function handleZoom(ev, gridpos, datapos, plot, cursor) {
     var idxmin = parseInt(getIndex(track, plot.axes.xaxis.min));
     var idxmax = parseInt(getIndex(track, plot.axes.xaxis.max));
+    series = getSeries(idxmin,idxmax);
+    plot.series[0].data  = series[0];
+    plot.series[1].data  = series[1];
+    plot.replot();
+/*
+    if (idxmin == 0 && idxmax == track.point.length) {
+        drawTrack(mainmap);
+    } else {
+        drawTrackPart(mainmap,"Zoom",track,idxmin,idxmax);
+    }
+    getTrackSegmentTables(track_id,idxmin,idxmax)
+*/
+}
+
+function getSeries(idxmin, idxmax){
     var chartwidth = $('#chartdiv').width();
     var step = 1+Math.floor((idxmax-idxmin)/chartwidth);
     var speed = [];
@@ -122,19 +127,9 @@ function handleZoom(ev, gridpos, datapos, plot, cursor) {
         ele.push([track.points[i]["dist"],el]);
         speed.push([track.points[i]["dist"],sp]);
     }
-    plot.series[0].data  = ele;
-    plot.series[1].data  = speed;
-    plot.replot();
-/*
-    if (idxmin == 0 && idxmax == track.point.length) {
-        drawTrack(mainmap);
-    } else {
-        drawTrackPart(mainmap,"Zoom",track,idxmin,idxmax);
-    }
-    getTrackSegmentTables(track_id,idxmin,idxmax)
-*/
-}
+    return [ele,speed]
 
+}
 
 function getRoundedTicks(minValue, maxValue, nbTicks) {
     //returns the rounded ticks for the axe

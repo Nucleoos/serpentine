@@ -120,7 +120,7 @@ function getIndex(track, distance) {
 
 function drawSelection() {
     //Vérifier s'il s'agit d'un zoom ou pas //this est l'objet jQplot responsable de l'evt
-   if (this.axes.xaxis.min > 0){
+    if (this.axes.xaxis.min > 0){
         var idxmin = getIndex(track, this.axes.xaxis.min);
         var idxmax = getIndex(track, this.axes.xaxis.max);
         //	alert("min" + this.axes.xaxis.min+ " idx "+idxmin + "/" +this.axes.xaxis.max + " idx "+idxmax);
@@ -128,7 +128,8 @@ function drawSelection() {
         getTrackSegmentTables(track_id,idxmin,idxmax)
     }
     else {
-       drawTrack(mainmap,"track");
+        drawTrack(mainmap,"track", track, '#0000FF');
+
         //todo dezoom to previous extent
     }
 }

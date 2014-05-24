@@ -1,4 +1,4 @@
-var plot1, bounds, trackinfo, track_id, geographic;
+var bounds, trackinfo, track_id, geographic;
 
 function initEventsControls() {
 $("#postchanges").click(function(e){
@@ -47,9 +47,10 @@ function initAfterMapSet() {
     //writeInfo(trackinfo);
     //addSnappingControls(map);
     track = getTrackPoints("{{ num }}");
-    drawTrack(mainmap,"{{ num }}" ,track, '#0000FF');
-    resizeMap();
     plotTrace(track,"dist","ele");
+    // draw track is handle automatically after plotDraw
+    // drawTrack(mainmap,"{{ num }}" ,track, '#0000FF');
+    resizeMap();
     var center = mainmap.getCenter();
     var cnt = center.transform(mainmap.getProjection(),geographic); 
     getTracksNearby( {{ num }} , cnt.lat, cnt.lon);
