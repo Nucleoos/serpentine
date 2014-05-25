@@ -75,8 +75,9 @@ function plotTrace(track) {
             {yaxis:'y2axis',label:'vitesse',lineWidth: 2 , showMarker:false, neighborThreshold: -1}
         ],
         axes:{
-            yaxis:{tickOptions:{showGridline: false,showMark: false, showLabel: false,shadow: false,fontSize:'7pt',formatString:'%.0f'}, autoscale: true},
-            xaxis:{tickOptions:{showGridline: false,showMark: false, showLabel: false,shadow: false,fontSize:'7pt',formatString:fmt}, min:0,  max:track.total_distance},
+            yaxis:{tickOptions:{showGridline: false,showMark: false, showLabel: true,shadow: false,fontSize:'7pt',formatString:'%.0f'}, autoscale: true},
+            y2axis:{tickOptions:{showGridline: true,showMark: false, showLabel: true,shadow: false,fontSize:'7pt',formatString:'%.0f'}, autoscale: true},
+            xaxis:{tickOptions:{showGridline: true,showMark: false, showLabel: true,shadow: false,fontSize:'7pt',formatString:'%.0f'}, min:0,  max:track.total_distance},
           },
         highlighter: {show: false}, //false},
         legend: {location:'nw'},
