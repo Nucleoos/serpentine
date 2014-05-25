@@ -88,16 +88,25 @@ function plotTrace(track) {
         }
     };
     plot1 = $.jqplot('chartdiv',series,options);
-    plot1.target.bind('jqplotZoom',handleZoom);
-    //plot1.target.bind('jqplotDblClick',handleZoom);
+    plot1.target.bind('jqplotZoom',handlePlotZoom);
     plot1.target.bind('jqplotMouseMove',showMarker);
+//    plot1.target.bind('mousewheel',mousewheel)
     plot1.replot(options);
-
     return plot1;
-
 }
 
-function handleZoom(ev, gridpos, datapos, plot, cursor) {
+function mousewheel(ev) {
+  /*  if (ev.originalEvent.wheelDelta<0) {
+        var idxmin = parseInt(getIndex(track, plot1.axes.xaxis.min));
+        var idxmax = parseInt(getIndex(track, plot1.axes.xaxis.max));
+        series = getSeries(idxmin/2,idxmax);
+        plot1.series[0].data  = series[0];
+        plot1.series[1].data  = series[1];
+        plot1.replot();
+    }*/
+}
+
+function handlePlotZoom(ev, gridpos, datapos, plot, cursor) {
     var idxmin = parseInt(getIndex(track, plot.axes.xaxis.min));
     var idxmax = parseInt(getIndex(track, plot.axes.xaxis.max));
     series = getSeries(idxmin,idxmax);

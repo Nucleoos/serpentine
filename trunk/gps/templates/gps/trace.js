@@ -48,8 +48,7 @@ function initAfterMapSet() {
     //addSnappingControls(map);
     track = getTrackPoints("{{ num }}");
     plotTrace(track,"dist","ele");
-    // draw track is handle automatically after plotDraw
-    // drawTrack(mainmap,"{{ num }}" ,track, '#0000FF');
+    drawTrack(mainmap,"{{ num }}" ,track, '#0000FF');
     resizeMap();
     var center = mainmap.getCenter();
     var cnt = center.transform(mainmap.getProjection(),geographic); 

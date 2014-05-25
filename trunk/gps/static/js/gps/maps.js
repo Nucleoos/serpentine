@@ -1,4 +1,4 @@
-var  mainmap, plotidx, geographic, selectControl, clickControl , vec_track, vec_t, viewer,iv;
+var  mainmap, plotidx, geographic, selectControl,  vec_track, vec_t, viewer,iv;
 
 function setMainMap(type,bounds,layers) {
     geographic = new OpenLayers.Projection("EPSG:4326"); //projection lat lon
@@ -128,17 +128,30 @@ function drawSelection() {
         getTrackSegmentTables(track_id,idxmin,idxmax)
     }
     else {
-        drawTrack(mainmap,"track", track, '#0000FF');
+       // if (vec_t != undefined) {	mainmap.removeLayer(vec_t);    }
+        if (typeof(vec_track) !== 'undefined') {
+                mainmap.zoomToExtent(vec_track.features[0].geometry.getBounds());
+        }
+        var series = getSeries(0,track.points.length);
+        if (typeof(plot1) !== 'undefined') {
+            if (plot1.series[0].data.length != series[0].length) {
+                plot1.series[0].data  = series[0];
+                plot1.series[1].data  = series[1];
+                plot1.replot();
+            }
 
+          //
+        }
+       // drawTrack(mainmap,"track", track, '#0000FF');
         //todo dezoom to previous extent
     }
 }
 
 function drawTrackPart(map, trackname, track, idxmin, idxmax) {
     if (vec_t != undefined) {
-	map.removeLayer(vec_t);
+	    map.removeLayer(vec_t);
     }
-    vec_t = new OpenLayers.Layer.Vector("track_part");
+    vec_t = new OpenLayers.Layer.Vector(trackname);
     var track_points = [];
     for (i in track.points) {
 	if (parseInt(i) >= parseInt(idxmin) && parseInt(i) < parseInt(idxmax)) {
