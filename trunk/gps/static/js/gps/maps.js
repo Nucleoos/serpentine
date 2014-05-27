@@ -115,7 +115,7 @@ function getIndex(track, distance) {
     for(var i in track.points) {
 	if (track.points[i]["dist"] >= distance) return i;
     }
-    return 0;
+    return i;
 }
 
 function drawSelection() {
