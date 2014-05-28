@@ -40,7 +40,8 @@ body{
     text-align: center;
 }
 .right{
-    text-align: left;
+    text-align: right;
+    float: right;
 }
 .bold{
     font-weight: bold;

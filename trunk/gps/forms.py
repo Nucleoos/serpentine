@@ -16,7 +16,7 @@ class TrackForm(forms.Form):
     description = forms.CharField(widget=forms.Textarea, max_length=2048)
 
 
-class UploadForm(TrackForm):
+class UploadForm(forms.Form):
     fichier = forms.FileField()
 
 

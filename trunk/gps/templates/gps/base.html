@@ -4,11 +4,11 @@
 <head>
     <title>Serpentine GPS - {% block page_title %} visualiser, éditer et partager des traces GPS{% endblock %} </title>
     {% block style %}
-    <link href="/static/css/style.css" rel="stylesheet" type="text/css"></link>
+        <link href="/static/css/style.css" rel="stylesheet" type="text/css"></link>
     {% endblock style %}
     {% block js_base %}
-    <script type="text/javascript" src="/static/js/jquery-1.4.4.js"></script>
-    <script type="text/javascript" src="/static/js/gps/base.js"></script>
+        <script type="text/javascript" src="/static/js/jquery-1.4.4.js"></script>
+        <script type="text/javascript" src="/static/js/gps/base.js"></script>
     {% endblock js_base %}
     {% block js_plot %}{% endblock js_plot %}
     {% block js_maps %}{% endblock js_maps %}
@@ -29,14 +29,28 @@
     </div>
     <div id="subtitle" >
         {% block title %}
-        Visualisez et partagez vos parcours GPS
+            Visualisez et partagez vos parcours GPS
         {% endblock %}
     </div>
 
-<div id="under_header"><div id="main_menu"> <ul><li>
-    <a href="/">Accueil</a></li><li title="Charger un fichier GPX">
-            <a href="/upload">Charger un fichier</a></li></ul></div>
-</div>
+    <div id="under_header"><div id="main_menu">
+        <ul>
+            <li>
+                <a href="/">Accueil</a>
+            </li>
+            <li title="Charger un fichier GPX">
+                <a href="/upload">Charger un fichier</a>
+            </li>
+    {% comment %}        <li>
+                <form class = "button" action="/upload/" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ upload_form.fichier }}
+                  <input class= "button" type="submit" value="Envoyer"/>
+                </form>
+            </li>{% endcomment %}
+        </ul></div>
+
+    </div>
 </div>
 
 <div id="content">
@@ -48,14 +62,14 @@
     <div class="hideshow vertical100 simple-link">x</div>
     <div id="sidebar" >
         {% block sidebar %}
-        {% block sidebar_intro %}
-        Bienvenue sur Serpentine-GPS, un site de partage de trace GPS. Vous pouvez charger, visualiser et bientôt éditer
-        vos traces ... bla bla bla, bla bla bla...
-        {% endblock sidebar_intro %}
-        <div class="nav">
-            {% include "gps/nav.html" %}
-        </div>
-        <!--	<div id="login">
+            {% block sidebar_intro %}
+                Bienvenue sur Serpentine-GPS, un site de partage de trace GPS. Vous pouvez charger, visualiser et bientôt éditer
+                vos traces ... bla bla bla, bla bla bla...
+            {% endblock sidebar_intro %}
+            <div class="nav">
+                {% include "gps/nav.html" %}
+            </div>
+            <!--	<div id="login">
                 Login
               {% if user_logged %}
               Vous êtes connecté <br/>
@@ -73,14 +87,14 @@
 
         </div>
         -->
-        <div id="w3c">
-            <a href="http://validator.w3.org/check?uri=referer">
-                xhtml1.0 strict
-            </a>
-        </div>
-    </div>
+            <div id="w3c">
+                <a href="http://validator.w3.org/check?uri=referer">
+                    xhtml1.0 strict
+                </a>
+            </div>
+            </div>
 
-    {% endblock sidebar%}
+        {% endblock sidebar%}
 </div>
 </body>
 </html>

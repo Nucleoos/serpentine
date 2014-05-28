@@ -7,9 +7,10 @@
         </div>
     </div>
     <div id="trackinfo" class="sidegroup">
-        <div class="bold">{{ type }} par {{ trace.user }} <br /> de {{ depart }} à {{ arrivee }}</div>
+        <div class="bold inline">{{ type }} par {{ trace.user }} <br /> de {{ depart }} à {{ arrivee }}</div>
+        <a class= "right" href="/trace/{{ trace.id }}.gpx">(GPX)</a>
+        <a class= "right" href="/edit/{{ trace.id }}">Modifier </a>
 
-    <a href="/trace/{{ trace.id }}.gpx">(GPX)</a>
 
     <div class="track_section">
         Description: <span class="italic">{{ description }}</span>

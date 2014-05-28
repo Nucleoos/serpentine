@@ -15,18 +15,15 @@ Charger un fichier de trace. Les formats acceptés sont: bla bla bla, bla bla bl
 {% endblock sidebar%}
 {% block content %}
 <div id="text_content">
-    <p>Vous pouvez ici déposer vos fichiers de trace gpx (ou fichier kml Mercury 100 uniquement)
+    <p>Vous pouvez ici déposer vos fichiers de trace gpx
+    </p>
+    <p>Commencez par charger le fichier, vous pourrez ensuite saisir un titre et une description.
     </p>
 
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <div id="upload_form">
-            <table>
-                {{ upload_form.as_table }}
-                <tr>
-                    <td><input type="submit" value="Envoyer"/></td>
-                </tr>
-            </table>
+        <div id="upload_form"> {{ upload_form.fichier }}
+            <input type="submit" value="Envoyer"/>
         </div>
 
     </form>

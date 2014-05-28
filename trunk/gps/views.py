@@ -41,11 +41,14 @@ def main_context(request):
     if request.user.is_authenticated():
         d['user_logged'] = request.user.username
         d['mes_traces'] = Trace.objects.filter(user=User.objects.get(username=request.user.username))[0:10]
+        upload_form = UploadForm()
+        d['upload_form'] = upload_form
     else:
         if request.method == 'POST':
             d['login_form'] = QuickLoginForm(request.POST)
         else:
             d['login_form'] = QuickLoginForm()
+
     d.update(csrf(request))  #gestion protection csrf
     return d
 
@@ -191,27 +194,17 @@ def gpx(request, num):
 def upload(request):
     """ vue qui charge les fichiers de trace depuis un fichier externe gpx, kml     """
 
-    def handle_uploaded_file(f, cd):
+    def handle_uploaded_file(f):
         destination = open(settings.MEDIA_ROOT + f.name, 'w')
         for chunk in f.chunks():
             destination.write(chunk)
         destination.close()
+        # on enregistre un minimum sur l'entête de trace pour pouvoir enrgistrer les points
         tr = Trace()
         tr.user = User.objects.get(username=request.user.username)
-        tr.name = cd['title']
+        tr.name = f.name
         tr.ctime = datetime.datetime.now()
         tr.save()
-        id = tr.id
-        for k in cd.keys():
-            pr = Trace_property.objects.filter(trace__id=id, name=k)
-            if len(pr) > 0:
-                pp = pr[0]
-            else:
-                pp = Trace_property()
-            pp.trace = tr
-            pp.name = k
-            pp.value = cd[k]
-            pp.save()
         tr.create_from_file(settings.MEDIA_ROOT + f.name)
         tr.save()
         return tr
@@ -222,7 +215,7 @@ def upload(request):
             upload_form = UploadForm(request.POST, request.FILES)
             if upload_form.is_valid():
                 cd = upload_form.cleaned_data
-                tr = handle_uploaded_file(request.FILES['fichier'], cd)
+                tr = handle_uploaded_file(request.FILES['fichier'])
                 tr.set_calculated_properties()
                 tr.set_geonames_properties()
                 return HttpResponseRedirect('/trace/' + unicode(tr.id))
@@ -260,8 +253,9 @@ def edit(request, num):
             #TODO todo rechercher les informations en base
             tpr = Trace_property.objects.filter(trace=tr)
             init = {}
+            init['title'] = tr.name
             for p in tpr:
-                if p.name in ('title', 'type', 'description'): init[p.name] = p.value
+                if p.name in ('type', 'description'): init[p.name] = p.value
             track_form = TrackForm(initial=init)
 
         c['track_form'] = track_form

@@ -31,7 +31,7 @@ class Trace(models.Model):
 
     @transaction.commit_manually
     def create_from_file(self, file):
-        """ cree les elements (points) de la traces depuis un fichier kml Mercury100 ou gpx
+        """ cree les elements (points) de la traces depuis un fichier
             met à jour la date de trace à la date de 
             TODO: créer une vraie date de début pour la trace  
         """
