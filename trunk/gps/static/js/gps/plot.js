@@ -25,20 +25,28 @@ function plotTrace(track) {
     plot1 = $.jqplot('chartdiv',series,options);
     plot1.target.bind('jqplotZoom',handlePlotZoom);
     plot1.target.bind('jqplotMouseMove',showMarker);
-//    plot1.target.bind('mousewheel',mousewheel)
+    plot1.target.bind('mousewheel',mousewheel);
     plot1.replot(options);
     return plot1;
 }
 
 function mousewheel(ev) {
-  /*  if (ev.originalEvent.wheelDelta<0) {
-        var idxmin = parseInt(getIndex(track, plot1.axes.xaxis.min));
-        var idxmax = parseInt(getIndex(track, plot1.axes.xaxis.max));
-        series = getSeries(idxmin/2,idxmax);
+    ev.preventDefault();
+   // alert('wheel '+ ev.originalEvent.wheelDelta);
+   if (ev.originalEvent.wheelDelta<0) {
+        var amp =  plot1.axes.xaxis.max -  plot1.axes.xaxis.min;
+        var min =  plot1.axes.xaxis.min - amp/2 ;
+        var max =  plot1.axes.xaxis.max + amp /2;
+        if (min <0) {min = 0;}
+        if (max > track.total_distance) {max = track.total_distance;}
+
+        var series = getSeries(parseInt(getIndex(track, min)),parseInt(getIndex(track, max)));
         plot1.series[0].data  = series[0];
         plot1.series[1].data  = series[1];
+        plot1.axes.xaxis.min = min;
+        plot1.axes.xaxis.max = max;
         plot1.replot();
-    }*/
+    }
 }
 
 function handlePlotZoom(ev, gridpos, datapos, plot, cursor) {
