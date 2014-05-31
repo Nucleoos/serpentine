@@ -211,8 +211,12 @@ function formatDelta(delta) {
 }
 
 function addMarkerTracks(map, tracks) {
+    var markerListeners = {featureclick: onMarkerClick };
+    var boxListeners = {featureclick: onBoxSelect };
+
     //afficher sur une carte les markers d'un tableau de traces passées en paramètre 
-    markers = new OpenLayers.Layer.Vector("markers");
+    markers = new OpenLayers.Layer.Vector("markers", {eventListeners: markerListeners});
+    vec_bounds = new OpenLayers.Layer.Vector("bounds", {eventListeners: boxListeners});
     var marker_style = 
 	{
 	    'graphicHeight': 25,
@@ -223,31 +227,58 @@ function addMarkerTracks(map, tracks) {
 	    cursor: 'pointer',
 	    //      pointerEvents: "visiblePainted"
 	};
-
+    var pointArray = [];
     for(var i in tracks){
-	var point = new OpenLayers.Geometry.Point(tracks[i]["lon"],  tracks[i]["lat"]).transform(geographic, map.getProjectionObject());
-	var pointFeature = new OpenLayers.Feature.Vector(point,tracks[i], marker_style);
-	markers.addFeatures(pointFeature);
+        var point = new OpenLayers.Geometry.Point(tracks[i]["lon"],  tracks[i]["lat"]).transform(geographic, map.getProjectionObject());
+        pointArray.push(point);
+        var pointFeature = new OpenLayers.Feature.Vector(point,tracks[i], marker_style);
+        markers.addFeatures(pointFeature);
+    }
+    //    var rect1 = [pointArray.pop()];
+    //    for (var i in pointArray) {
+    //        if (pointArray[i].getDistance(rect1[1]) < 1 ) {(pointArray.pop())}
+    //    }
+
+    while(pointArray.length>1) {
+        var box = [];
+        p1 = pointArray.pop();
+        box = getBox(p1, pointArray);
+        pointArray = diff(pointArray, box);
+        var multiPoint = new OpenLayers.Geometry.MultiPoint(box);
+        var bounds = multiPoint.getBounds().toGeometry();
+        bounds.resize(2,bounds.getCentroid());
+        var boundFeature = new OpenLayers.Feature.Vector(bounds,null,{label:"tr"+box.length, fillOpacity: 0.3, strokeWidth: 2, strokeColor: "blue", strokeOpacity: 1 });
+        vec_bounds.addFeatures(boundFeature);
     }
 
-    //ajoute un listener sur chaque marqueur
-     selectControl = new OpenLayers.Control.SelectFeature(markers, {
-	     //hover: true,
-	    highlightOnly: true, renderIntent: "temporary",
-	    eventListeners: {
-		featurehighlighted: onFeatureSelect,		
-		//		featureunhighlighted: onFeatureUnselect,
-
-	    }
-	});
-    
-    selectControl.events.on({"featureselected":onFeatureSelect});
-        map.addControl(selectControl);
-    selectControl.activate();
-    map.addLayer(markers);  
+    map.addLayer(markers);
+    map.addLayer(vec_bounds);
 }
-function onFeatureSelect(evt) {
-    feature = evt.feature;   
+
+function diff(A, B) {
+    return A.filter(function (a) {
+        return B.indexOf(a) == -1;
+    });
+}
+
+function getBox(p1,pointArray) {
+    var box = [p1];
+    for (var i in pointArray) {
+        var dist = pointArray[i].distanceTo(p1);
+        if (dist < 1000000) {
+            box.push(pointArray[i]);
+        }
+    }
+    return box;
+}
+
+function onBoxSelect(evt) {
+    var bounds = evt.feature.geometry.bounds;
+    mainmap.zoomToExtent(bounds);
+}
+
+function onMarkerClick(evt) {
+    var feature = evt.feature;
     //    trackinfo = getTrackInfos(feature.attributes.id);
     popup = new OpenLayers.Popup.Anchored("track_popup",
 					  feature.geometry.getBounds().getCenterLonLat(),
@@ -264,15 +295,8 @@ function onFeatureSelect(evt) {
     
     getTrackInfoHtml(feature.attributes.id,popup);	
     //	mainmap.addPopup(popup);	//alert('event');
-
-
-    
 }
-function onFeatureClick(evt) {
-    feature = evt.feature;   
-    alert(feature.attributes.id);
- 
-}
+
 
 function onPopupClose(evt) {
     //    selectControl.unselect(this.feature);
