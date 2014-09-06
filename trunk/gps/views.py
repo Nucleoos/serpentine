@@ -195,7 +195,7 @@ def upload(request):
     """ vue qui charge les fichiers de trace depuis un fichier externe gpx, kml     """
 
     def handle_uploaded_file(f):
-        destination = open(settings.MEDIA_ROOT + f.name, 'w')
+        destination = open(settings.MEDIA_ROOT + 'import', 'w')
         for chunk in f.chunks():
             destination.write(chunk)
         destination.close()
@@ -205,7 +205,7 @@ def upload(request):
         tr.name = f.name
         tr.ctime = datetime.datetime.now()
         tr.save()
-        tr.create_from_file(settings.MEDIA_ROOT + f.name)
+        tr.create_from_file(settings.MEDIA_ROOT + 'import')
         tr.save()
         return tr
 
