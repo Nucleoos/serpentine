@@ -482,13 +482,14 @@ class Trace(models.Model):
         return 3600 * dist / (self.get_total_time().seconds + self.get_total_time().days*86400)
 
     def get_stats(self):
-        return{'best100': self.getBestPerformance(0.1),
-               'best400': self.getBestPerformance(0.4),
-               'bestKm': self.getBestPerformance(1),
-               'best5Km': self.getBestPerformance(5),
-               'best10Km': self.getBestPerformance(10)}
+        dict = {'best 100m': self.get_best_performances(0.1),
+               'best 400m': self.get_best_performances(0.4),
+               'best km': self.get_best_performances(1),
+               'best 5km': self.get_best_performances(5),
+               'best 10km': self.get_best_performances(10)}
+        return dict
 
-    def getBestPerformance(self,distbest):
+    def get_best_performances(self,distbest):
         """
         :param distance: distance du best (400m 1km 1 mile . etc)
         :return: dictionnary meilleur temps, index first point , index last point
@@ -533,7 +534,8 @@ class Trace(models.Model):
                         besttime = (tps[end].time- tps[start].time).seconds
                         result = {'start':start, 'end':end, 'dist':tps[end].distance- tps[start].distance, 'seconds':besttime}
 
-
+        result['allure']= int(result['seconds']/result['dist'])
+        result['speed']=3600*result['dist']/result['seconds']
         return result
 
     def set_start_date_from_first_point(self):

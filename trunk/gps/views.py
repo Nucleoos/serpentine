@@ -77,6 +77,7 @@ def view_trace(request, num):
     ppt = tr.get_properties()
     for p in ppt:
         c[p] =[ppt[p]]
+    c['stats']= tr.get_stats()
     response = render_to_response(utils.get_prefix(request) + 'trace.html', c, context_instance=RequestContext(request))
     #rafraichissement du cookie
     response.set_cookie(key='maptype', value=maptype, max_age=3600 * 24 * 30, expires=None, path='/', domain=None,

@@ -39,15 +39,22 @@ def run_matching_segments():
     print [(segment[0],segment[-1]) for segment in segments]
 
 def run_best_performance():
-    tr = Trace.objects.get(id=27)
+    tr = Trace.objects.get(id=26)
     print tr
-    result = tr.getBestPerformance(10)
-    if result:
-        print 'result = ', result
-        print 'speed ', 3600*result['dist']/result['seconds']
-        print 'tps ', result['seconds']/60 , '\'', result['seconds']- 60*(result['seconds']/60), '\'\''
-        seckm = int(result['seconds']/result['dist'])
-        print 'allure ', seckm/60, seckm-60*(seckm/60)
-    else: print result
+    dict = [('1. best 100m', tr.get_best_performances(0.1)),
+    ('2. best 400m',tr.get_best_performances(0.4)),
+    ('3. best km', tr.get_best_performances(1)),
+    ('4. best 5km', tr.get_best_performances(5)),
+    ('5. best 10km', tr.get_best_performances(10))]
+    print dict
+    for vale in dict:
+        result = vale[1]
+        if result:
+            print vale[0]
+            print 'result = ', result
+            print 'speed ', 3600*result['dist']/result['seconds']
+            print 'tps ', result['seconds']/60 , '\'', result['seconds']- 60*(result['seconds']/60), '\'\''
+            seckm = int(result['seconds']/result['dist'])
+            print 'allure ', seckm/60, seckm-60*(seckm/60)
 
 run()

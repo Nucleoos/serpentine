@@ -19,3 +19,20 @@ def boldify(string, args):
 @register.filter
 def formatduration(args):
     return re.sub('day,','jour',str(args))
+
+@register.filter
+def formattime(args):
+    try:
+        tm = int(args)
+        hours = tm/3600
+        tm = tm -hours*3600
+        min = tm/60
+        tm = tm -60*min
+        sec = tm
+        if hours >0:
+            result = "%02d:" % hours
+        else:
+            result = ''
+        return result+"%02d:" % min +"%02d" % sec
+    except:
+        pass
