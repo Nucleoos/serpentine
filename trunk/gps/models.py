@@ -482,12 +482,19 @@ class Trace(models.Model):
         return 3600 * dist / (self.get_total_time().seconds + self.get_total_time().days*86400)
 
     def get_stats(self):
-        dict = {'best 100m': self.get_best_performances(0.1),
-               'best 400m': self.get_best_performances(0.4),
-               'best km': self.get_best_performances(1),
-               'best 5km': self.get_best_performances(5),
-               'best 10km': self.get_best_performances(10)}
-        return dict
+        dists = [('best 100m',0.1),
+                 ('best 400m',0.4),
+                 ('best km',1),
+                 ('best 5km',5),
+                 ('best 10km',10),
+                 ('best 20km',20),
+                 ('best 50km',50),
+                ]
+        best=[]
+        for d in dists:
+            if d[1] <= self.get_total_distance():
+                best.append((d[0], self.get_best_performances(d[1])))
+        return best
 
     def get_best_performances(self,distbest):
         """

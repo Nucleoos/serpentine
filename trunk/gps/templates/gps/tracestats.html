@@ -1,4 +1,4 @@
-
+{{ stats }}
 {% load replace %}
     <div class="sidetitle hideshow" id="titleinfo" title="Cliquer pour masquer/afficher la section">
         statistiques de la trace
@@ -12,12 +12,12 @@
             <th class="traceinfotable bold">allure (/km)</th>
             <th class="traceinfotable bold">vitesse (km/h)</th>
         </tr>
-    {% for key, values in stats.items %}
+    {% for s in stats %}
         <tr>
-            <td class="traceinfotable bold">{{ key }}</td>
-            <td class="traceinfotable">{{ values.seconds|formattime }}</td>
-            <td class="traceinfotable">{{ values.allure|formattime }}</td>
-            <td class="traceinfotable">{{ values.speed|floatformat:2}}</td>
+            <td class="traceinfotable bold">{{ s.0 }}</td>
+            <td class="traceinfotable">{{ s.1.seconds|formattime }}</td>
+            <td class="traceinfotable">{{ s.1.allure|formattime }}</td>
+            <td class="traceinfotable">{{ s.1.speed|floatformat:2}}</td>
         </tr>
     {% endfor %}
 

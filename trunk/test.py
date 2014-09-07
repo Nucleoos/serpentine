@@ -40,13 +40,8 @@ def run_matching_segments():
 
 def run_best_performance():
     tr = Trace.objects.get(id=26)
-    print tr
-    dict = [('1. best 100m', tr.get_best_performances(0.1)),
-    ('2. best 400m',tr.get_best_performances(0.4)),
-    ('3. best km', tr.get_best_performances(1)),
-    ('4. best 5km', tr.get_best_performances(5)),
-    ('5. best 10km', tr.get_best_performances(10))]
-    print dict
+    print tr.get_stats()
+    """"print dict
     for vale in dict:
         result = vale[1]
         if result:
@@ -56,5 +51,5 @@ def run_best_performance():
             print 'tps ', result['seconds']/60 , '\'', result['seconds']- 60*(result['seconds']/60), '\'\''
             seckm = int(result['seconds']/result['dist'])
             print 'allure ', seckm/60, seckm-60*(seckm/60)
-
+"""
 run()
