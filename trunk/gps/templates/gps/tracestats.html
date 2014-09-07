@@ -16,7 +16,7 @@
             <td class="traceinfotable bold">{{ s.0 }}</td>
             <td class="traceinfotable">{{ s.1.seconds|formattime }}</td>
             <td class="traceinfotable">{{ s.1.allure|formattime }}</td>
-            <td class="traceinfotable">{{ s.1.speed|floatformat:2}}</td>
+            <td class="traceinfotable">{{ s.1.speed|floatformat:1}}</td>
         </tr>
     {% endfor %}
 
