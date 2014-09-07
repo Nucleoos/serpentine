@@ -40,7 +40,7 @@ def main_context(request):
     #login context
     if request.user.is_authenticated():
         d['user_logged'] = request.user.username
-        d['mes_traces'] = Trace.objects.filter(user=User.objects.get(username=request.user.username))[0:10]
+        d['mes_traces'] = Trace.objects.filter(user=User.objects.get(username=request.user.username)).order_by('-tdate')[0:10]
         upload_form = UploadForm()
         d['upload_form'] = upload_form
     else:
@@ -159,7 +159,7 @@ def nav_html(request):
     if request.user.is_authenticated():
         usr = User.objects.get(username=request.user.username)
         c['latest_traces'] = trsin.order_by('-tdate')[:10]
-        c['mes_traces'] = trsin.filter(user=usr)[:10]
+        c['mes_traces'] = trsin.filter(user=usr).order_by('-tdate')[:10]
     else:
         c['latest_traces'] = trsin[:10]
     return render_to_response('gps/nav.html', c)
