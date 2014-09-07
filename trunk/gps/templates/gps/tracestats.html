@@ -1,8 +1,12 @@
 
+{% load replace %}
     <div class="sidetitle hideshow" id="titleinfo" title="Cliquer pour masquer/afficher la section">
         statistiques
     </div>
     <div id="trackstats" class="sidegroup">
        {{ stats }}
+
+       {{ stats.best100.seconds}}
+       {{ stats.best100.timedelta |formatduration}}
     </div>
 

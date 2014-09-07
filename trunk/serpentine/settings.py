@@ -12,7 +12,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'C:/benoit/django/serpentine/spt.db3',                      # Or path to database file if using sqlite3.
+        'NAME': 'E:/Developpement/Serpentine/spt.db3',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -49,7 +49,7 @@ USE_TZ = False
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = 'c:/benoit/django/serpentine/media/'
+MEDIA_ROOT = 'E:/Developpement/Serpentine/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -60,7 +60,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = 'c:/benoit/django/serpentine/static/'
+STATIC_ROOT = 'E:/Developpement/Serpentine/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -71,7 +71,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    "c:/benoit/django/serpentine/gps/static",
+    "E:/Developpement/Serpentine/gps/static",
 )
 
 # List of finder classes that know how to find static files in

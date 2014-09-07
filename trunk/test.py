@@ -12,8 +12,8 @@ def run():
     # run_nearby()
     #run_matching_segments()
 
-    run_compute_speeds()
-
+    #run_compute_speeds()
+    run_best_performance()
     end = datetime.now()
     print(end)
     print('total time spent: ' + str(end - start))
@@ -37,5 +37,17 @@ def run_matching_segments():
     tr = Trace.objects.get(id=tr1)
     segments = tr.get_matching_segments_json(tr2)
     print [(segment[0],segment[-1]) for segment in segments]
+
+def run_best_performance():
+    tr = Trace.objects.get(id=27)
+    print tr
+    result = tr.getBestPerformance(10)
+    if result:
+        print 'result = ', result
+        print 'speed ', 3600*result['dist']/result['seconds']
+        print 'tps ', result['seconds']/60 , '\'', result['seconds']- 60*(result['seconds']/60), '\'\''
+        seckm = int(result['seconds']/result['dist'])
+        print 'allure ', seckm/60, seckm-60*(seckm/60)
+    else: print result
 
 run()

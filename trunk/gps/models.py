@@ -482,8 +482,59 @@ class Trace(models.Model):
         return 3600 * dist / (self.get_total_time().seconds + self.get_total_time().days*86400)
 
     def get_stats(self):
-        return{'stats':'toto'}
+        return{'best100': self.getBestPerformance(0.1),
+               'best400': self.getBestPerformance(0.4),
+               'bestKm': self.getBestPerformance(1),
+               'best5Km': self.getBestPerformance(5),
+               'best10Km': self.getBestPerformance(10)}
 
+    def getBestPerformance(self,distbest):
+        """
+        :param distance: distance du best (400m 1km 1 mile . etc)
+        :return: dictionnary meilleur temps, index first point , index last point
+        """
+        tps = [tp for tp in Trace_point.objects.filter(trace=self).order_by('order_num')]
+        start, end , besttime = 0, tps[-1].order_num-1, (tps[-1].time - tps[0].time).seconds
+        result = None
+        if distbest > tps[-1].distance:
+            return None
+        # On recherche d'abord le premier tronçon qui correspond à la distance recherchée
+        notfound = True
+        jumpsize = end/2
+        while(notfound):
+            while(tps[end].distance - tps[start].distance >= distbest):
+                end = end - jumpsize
+                if jumpsize > 1:
+                    jumpsize = jumpsize/2
+                else:
+                    notfound = False
+                    result = {'start':start, 'end':end, 'dist':tps[end].distance- tps[start].distance, 'seconds':(tps[end].time- tps[start].time).seconds}
+                    break
+            if jumpsize > 1:
+                jumpsize = jumpsize /2
+            else:
+                result = {'start':start, 'end':end, 'dist':tps[end].distance- tps[start].distance, 'seconds':(tps[end].time- tps[start].time).seconds}
+                break
+            while(notfound and tps[end].distance - tps[start].distance < distbest):
+                end = end+jumpsize
+                #print end, tps[end].distance
+            jumpsize = jumpsize/2
+        # sortis de la boucle on a un result non vide qui sert de base à la suite sinon on retourne None
+        if result != None:
+            start , end, besttime  = result['start'], result['end'], result['seconds']
+            while start < tps[-1].order_num-1 and end < tps[-1].order_num-1:
+                start +=1
+                while(tps[end].distance - tps[start].distance <= distbest):
+                    if end < tps[-1].order_num-1:
+                        end+=1
+                    else: break
+                if tps[end].distance - tps[start].distance >= distbest:
+                    if (tps[end].time- tps[start].time).seconds < besttime:
+                        besttime = (tps[end].time- tps[start].time).seconds
+                        result = {'start':start, 'end':end, 'dist':tps[end].distance- tps[start].distance, 'seconds':besttime}
+
+
+        return result
 
     def set_start_date_from_first_point(self):
         firsttp = Trace_point.objects.filter(trace=self).order_by('time')[0]
