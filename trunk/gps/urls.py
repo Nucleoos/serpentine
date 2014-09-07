@@ -12,6 +12,7 @@ urlpatterns = patterns('',
                        (r'^traceinfo/(\d+)', 'gps.views.trace_info_html'),
                        (r'^traceshortinfo/(\d+)', 'gps.views.trace_short_info_html'),
                        (r'^tracetabs/(traces(?:/\d+)+)?/(segment(?:/\d+)+)?', 'gps.views.trace_tabs_html'),
+                       (r'^tracestats/(\d+)', 'gps.views.trace_stats'),
                        #blocks html (nav ... )
                        (r'^nav.html', 'gps.views.nav_html'),
                        (r'^nearby.html', 'gps.views.nearby'),

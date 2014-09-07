@@ -29,7 +29,7 @@ from gps.forms import TrackForm, UploadForm, QuickLoginForm, QuickSearchForm
 def main_context(request):
     d = {}
     #dernières traces 
-    d['latest_traces'] = Trace.objects.all().order_by('-ctime')[0:10]
+    d['latest_traces'] = Trace.objects.all().order_by('-tdate')[0:10]
     #TODO get all properties
 
     #search context
@@ -56,7 +56,7 @@ def main_context(request):
 #html pages 
 def index(request):
     d = {}
-    d['all_traces'] = Trace.objects.all().order_by('-ctime')
+    d['all_traces'] = Trace.objects.all().order_by('-tdate')
     return render_to_response(utils.get_prefix(request) + 'index.html', d, context_instance=RequestContext(request))
 
 
@@ -137,7 +137,13 @@ def trace_tabs_html(request, traces , segments=None):
 
     return render_to_response('gps/tracetabs.html', c)
 
-
+def trace_stats(request, num):
+    c = {}
+    c['num'] = num
+    tr = Trace.objects.get(id=num)
+    c['trace'] = tr
+    c['stats'] = tr.get_stats()
+    return render_to_response('gps/tracestats.html', c)
 
 def nav_html(request):
     """ renvoie le block des liens de navigation des traces interieurs aux bounds de la requete si appel ajax avec bounds
@@ -152,7 +158,7 @@ def nav_html(request):
     trsin = Trace.get_tracks_in_bounds(minlat, minlon, maxlat, maxlon)
     if request.user.is_authenticated():
         usr = User.objects.get(username=request.user.username)
-        c['latest_traces'] = trsin.order_by('-ctime')[:10]
+        c['latest_traces'] = trsin.order_by('-tdate')[:10]
         c['mes_traces'] = trsin.filter(user=usr)[:10]
     else:
         c['latest_traces'] = trsin[:10]
@@ -195,7 +201,7 @@ def upload(request):
     """ vue qui charge les fichiers de trace depuis un fichier externe gpx, kml     """
 
     def handle_uploaded_file(f):
-        destination = open(settings.MEDIA_ROOT + 'import', 'w')
+        destination = open(settings.MEDIA_ROOT + 'import.gpx', 'w')
         for chunk in f.chunks():
             destination.write(chunk)
         destination.close()
@@ -205,7 +211,7 @@ def upload(request):
         tr.name = f.name
         tr.ctime = datetime.datetime.now()
         tr.save()
-        tr.create_from_file(settings.MEDIA_ROOT + 'import')
+        tr.create_from_file(settings.MEDIA_ROOT + 'import.gpx')
         tr.save()
         return tr
 

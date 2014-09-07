@@ -42,6 +42,10 @@ class Trace(models.Model):
             tp.set_values(self, p, 1, n)
             tp.save()
             n += 1
+        if points[0].has_key('time'):
+            self.tdate = points[0]['time']
+        else:
+            sefl.tdate = self.ctime
         transaction.commit()
         # zfile = zipfile.ZipFile(file+'.zip','w',compression=zipfile.ZIP_DEFLATED)
         # zfile.write(file,file)
@@ -477,7 +481,17 @@ class Trace(models.Model):
             return 0
         return 3600 * dist / (self.get_total_time().seconds + self.get_total_time().days*86400)
 
+    def get_stats(self):
+        return{'stats':'toto'}
+
+
+    def set_start_date_from_first_point(self):
+        firsttp = Trace_point.objects.filter(trace=self).order_by('time')[0]
+        self.tdate = firsttp.time
+
         #méthodes statiques
+
+
 
     @staticmethod
     def get_tracks_in_bounds(minlat, minlon, maxlat, maxlon):
