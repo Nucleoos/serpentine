@@ -481,7 +481,8 @@ class Trace(models.Model):
             return 0
         return 3600 * dist / (self.get_total_time().seconds + self.get_total_time().days*86400)
 
-    def get_stats(self):
+    #@transaction.commit_manually
+    def get_stats(self, forcecalc = False):
         dists = [('best 100m',0.1),
                  ('best 400m',0.4),
                  ('best km',1),
@@ -489,15 +490,27 @@ class Trace(models.Model):
                  ('best 10km',10),
                  ('best 20km',20),
                  ('best 50km',50),
-                ]
+                 ]
         best=[]
         for d in dists:
             if d[1] <= self.get_total_distance():
-                best.append((d[0], self.get_best_performances(d[1])))
+                #TODO recherche préalable dans les propriétés de la trace précédent calcul
+                ppt = Trace_property.objects.filter(trace = self).filter(name = d[0])
+                if forcecalc or ppt.count() == 0:
+                    #print 'calcul '+ d[0]
+                    bestperf = self.get_best_performances(d[1])
+                    best.append((d[0], bestperf))
+                    tp = Trace_property()
+                    tp.trace, tp.name, tp.value = self, d[0] , bestperf
+                    tp.save()
+                else:
+                    #print 'lecture', ppt[0].name
+                    best.append((ppt[0].name, eval(ppt[0].value)))
         return best
 
     def get_best_performances(self,distbest):
         """
+        Calcule la meilleure portion de distbest sur la trace par un parcours + ou - optimisé (dychotomie)
         :param distance: distance du best (400m 1km 1 mile . etc)
         :return: dictionnary meilleur temps, index first point , index last point
         """
