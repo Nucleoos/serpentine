@@ -486,6 +486,7 @@ class Trace(models.Model):
         dists = [('best 100m',0.1),
                  ('best 400m',0.4),
                  ('best km',1),
+                 ('best 2 km',2),
                  ('best 5km',5),
                  ('best 10km',10),
                  ('best 20km',20),
