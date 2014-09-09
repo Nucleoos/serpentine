@@ -3,7 +3,7 @@ import os
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'serpentine.settings'
 from datetime import datetime
-from gps.models import Trace, Trace_point
+from gps.models import Trace, Trace_property, Trace_point
 from gps import lib
 
 def run():
@@ -39,7 +39,9 @@ def run_matching_segments():
     print [(segment[0],segment[-1]) for segment in segments]
 
 def run_best_performance():
-    tr = Trace.objects.get(id=26)
+    tr = Trace.objects.get(id=22)
+    ppts = Trace_property.objects.filter(trace = tr)
+
     print tr.get_stats()
     """"print dict
     for vale in dict:
@@ -51,5 +53,5 @@ def run_best_performance():
             print 'tps ', result['seconds']/60 , '\'', result['seconds']- 60*(result['seconds']/60), '\'\''
             seckm = int(result['seconds']/result['dist'])
             print 'allure ', seckm/60, seckm-60*(seckm/60)
-"""
+    """
 run()
