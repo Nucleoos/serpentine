@@ -134,11 +134,6 @@ class Trace(models.Model):
             points.append(p.get_dict())
         return points
 
-    def get_points_new(self):
-        """ renvoie un tableau des points de la trace sous la forme d'un tableau de dictionaires"""
-        tp = Trace_point.objects.filter(trace=self).order_by('time').values()
-        return tp
-
     def clear_points(self):
         tp = Trace_point.objects.filter(trace=self)
         for p in tp:
@@ -495,18 +490,21 @@ class Trace(models.Model):
         best=[]
         for d in dists:
             if d[1] <= self.get_total_distance():
-                #TODO recherche préalable dans les propriétés de la trace précédent calcul
-                ppt = Trace_property.objects.filter(trace = self).filter(name = d[0])
-                if forcecalc or ppt.count() == 0:
+                #TODO recherche préalable dans les records de la trace précédent calcul
+                trec = Trace_record.objects.filter(trace = self).filter(type = d[0])
+                if forcecalc or trec.count() == 0:
                     #print 'calcul '+ d[0]
                     bestperf = self.get_best_performances(d[1])
                     best.append((d[0], bestperf))
-                    tp = Trace_property()
-                    tp.trace, tp.name, tp.value = self, d[0] , bestperf
-                    tp.save()
+                    tr = Trace_record()
+                    tr.trace, tr.type, tr.distance, tr.seconds = self, d[0], bestperf['dist'], bestperf['seconds']
+                    tr.start, tr.end = bestperf['start'], bestperf['end']
+                    tr.save()
                 else:
                     #print 'lecture', ppt[0].name
-                    best.append((ppt[0].name, eval(ppt[0].value)))
+                    best.append((trec[0].type, {'dist':trec[0].distance, 'seconds':trec[0].seconds,
+                                                'allure': trec[0].seconds/trec[0].distance,
+                                                'speed': 3600*trec[0].distance/trec[0].seconds}))
         return best
 
     def get_best_performances(self,distbest):
@@ -658,3 +656,12 @@ class Trace_property(models.Model):
     def __unicode__(self):
         return 'tr' + unicode(self.trace.id) + ' ' + self.name + ': ' + self.value
 
+class Trace_record(models.Model):
+    trace = models.ForeignKey(Trace)
+    start = models.IntegerField()
+    end = models.IntegerField()
+    type = models.CharField(max_length=255) # best 100, 200, etc
+    seconds = models.FloatField()
+    distance = models.FloatField()
+    def __unicode__(self):
+        return self.type + ' ' + self.trace.name + ' ' +unicode(self.seconds) + ' secs'
