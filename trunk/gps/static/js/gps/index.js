@@ -1,8 +1,12 @@
 $(document).ready(
     function() {  
 	var trackindex = getTrackIndex(); // cherche en ajax la liste des traces à afficher
-	var bounds = new OpenLayers.Bounds(trackindex["minlon"],trackindex["minlat"],trackindex["maxlon"],trackindex["maxlat"]);
-	
+    try {
+	     var bounds = new OpenLayers.Bounds(trackindex["minlon"],trackindex["minlat"],trackindex["maxlon"],trackindex["maxlat"]);
+    }
+    catch(e) {
+         var bounds =  new OpenLayers.Bounds(-2,42,4,51);
+        }
 	setMainMap('ol',bounds,['mapnik']);
 	var tracks = [];
 	for (var i in trackindex){
