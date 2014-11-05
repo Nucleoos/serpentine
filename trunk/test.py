@@ -1,10 +1,11 @@
 # coding: utf-8
-import os
+import os, datetime
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'serpentine.settings'
 from datetime import datetime
-from gps.models import Trace, Trace_property, Trace_point
+from gps.models import Trace, Trace_property, Trace_point, User
 from gps import lib
+
 
 def run():
     start = datetime.now()
@@ -13,7 +14,8 @@ def run():
     #run_matching_segments()
 
     #run_compute_speeds()
-    run_best_performance()
+    #run_best_performance()
+    run_import_file()
     end = datetime.now()
     print(end)
     print('total time spent: ' + str(end - start))
@@ -54,4 +56,13 @@ def run_best_performance():
             seckm = int(result['seconds']/result['dist'])
             print 'allure ', seckm/60, seckm-60*(seckm/60)
     """
+
+def run_import_file():
+    tr = Trace()
+    tr.user = User.objects.get(id=1)
+    tr.name = 'test_import'
+    tr.ctime = datetime.now()
+    tr.save()
+    tr.create_from_file('c:/benoit/django/serpentine/media/' + 'import.gpx')
+
 run()

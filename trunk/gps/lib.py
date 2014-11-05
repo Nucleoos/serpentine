@@ -27,7 +27,10 @@ def getPointsFromGpx(g):
     if not t: t = g.getElementsByTagName('rtept')
     ptime = datetime.datetime.now()
     points = []
+    segment = 1 # todo gérer les segments
+    order_num = 0
     for tp in t:
+        order_num += 1
         lat = float(str.replace(str(tp.getAttribute('lat')), ',', '.'))
         lon = float(str.replace(str(tp.getAttribute('lon')), ',', '.'))
         elNode = tp.getElementsByTagName('ele')
@@ -50,70 +53,48 @@ def getPointsFromGpx(g):
                     time_format = '%Y-%m-%d %H:%M:%SZ'
                     ptime = datetime.datetime.fromtimestamp(
                         time.mktime(time.strptime(tp.getElementsByTagName('time')[0].firstChild.data, time_format)))
+        #deal with hr extension
+        hrNode = tp.getElementsByTagName('gpxtpx:hr')
+        if hrNode:
+            hr = int(hrNode[0].firstChild.data)
+        points.append({"segment": segment, "order_num": order_num, "lon": lon, "lat": lat, "elevation": ele, "time": ptime, "heartrate":hr})
 
-        points.append({"lon": lon, "lat": lat, "ele": ele, "time": ptime})
-
-    points = setDistancesAndSpeeds(points)
+    points = setDistancesSpeedsAndHeadings(points)
     return points
 
 
-def getPointsFromMercuryFile(traceFile):
-    f = open(traceFile)
-    points = []
-    times = []
-    tmp_points = []
 
-    for line in f:
-        if re.search('<coordinates>', line):
-            tmp = re.split(' |,', line)
-            for t in tmp:
-                if re.search('\d+', t):
-                    tmp_points.append(t)
 
-        if re.search('<!-- MERCURY', line):
-            tmp_times = re.split(' |,', line)
-            for t in tmp_times:
-                if re.search('\d\d/\d\d/\d\d\d\d', t):
-                    dt = t
-                    date = dt[6:] + '-' + dt[0:2] + '-' + dt[3:5]
-                if re.search('\d\d:\d\d:\d\d', t):
-                    times.append(date + 'T' + t + 'Z')
+def setDistancesSpeedsAndHeadings(points):
 
-    for i in range(len(tmp_points) // 3):
-        points.append({"lon": tmp_points.pop(0), "lat": tmp_points.pop(0), "ele": tmp_points.pop(0)})
-    time_format = '%Y-%m-%dT%H:%M:%SZ'
+    #distances .. todo headings
+    dist, current_lat, current_lon = 0,points[0]['lat'],points[0]['lon']
     for p in points:
-        p['time'] = datetime.datetime.fromtimestamp(time.mktime(time.strptime(times.pop(0), time_format)))
-
-    points = setDistancesAndSpeeds(points)
-    f.close
-    return points
-
-
-def setDistancesAndSpeeds(points):
-    i = 0
-    current_lat = 0.0
-    current_lon = 0.0
-    dist = 0
-    x, t = 0, 0
-    for p in points:
+        if p['order_num'] >= 375:
+            x=0
         x = getDistance(current_lat, current_lon, float(p['lat']), float(p['lon']))
+        current_lat, current_lon = float(p['lat']), float(p['lon'])
         dist = dist + x
         p['distance'] = dist
-        if t == 0:
-            speed = 0
-        else:
-            td = p['time'] - t
-            if td.seconds > 0:
-                speed = 3600 * x / (td.seconds)
-            else:
-                speed = 0
-        p['speed'] = speed
-        current_lat = float(p['lat'])
-        current_lon = float(p['lon'])
-        t = p['time']
-        i = i + 1
 
+    # pour chaque p on calcule la vitesse (d/t entre p+1 et p-1)
+    length = len(points)
+    for i in range(0, length-1):
+        if p['order_num'] >= 370:
+            x=0
+        if i == 0:
+            #premier point
+            td = points[1]['time']-points[0]['time']
+            x = 3600*points[1]['distance']
+            points[i]['speed'] = 3600 * x / (td.seconds) if td.seconds > 0 else 0
+        elif (i == length-1):
+            #dernier point
+            points[i]['speed'] = 0
+        else:
+            #tous les autres points
+            td = points[i+1]['time'] - points[i-1]['time']
+            x = points[i+1]['distance'] - points[i-1]['distance']
+            points[i]['speed'] = 3600 * x / (td.seconds) if td.seconds > 0 else 0
     return points
 
 
@@ -223,3 +204,35 @@ def createGpxXml(points, name):
         trkPointNode.appendChild(timeNode)
     return doc
 
+
+def getPointsFromMercuryFile(traceFile):
+    f = open(traceFile)
+    points = []
+    times = []
+    tmp_points = []
+
+    for line in f:
+        if re.search('<coordinates>', line):
+            tmp = re.split(' |,', line)
+            for t in tmp:
+                if re.search('\d+', t):
+                    tmp_points.append(t)
+
+        if re.search('<!-- MERCURY', line):
+            tmp_times = re.split(' |,', line)
+            for t in tmp_times:
+                if re.search('\d\d/\d\d/\d\d\d\d', t):
+                    dt = t
+                    date = dt[6:] + '-' + dt[0:2] + '-' + dt[3:5]
+                if re.search('\d\d:\d\d:\d\d', t):
+                    times.append(date + 'T' + t + 'Z')
+
+    for i in range(len(tmp_points) // 3):
+        points.append({"lon": tmp_points.pop(0), "lat": tmp_points.pop(0), "ele": tmp_points.pop(0)})
+    time_format = '%Y-%m-%dT%H:%M:%SZ'
+    for p in points:
+        p['time'] = datetime.datetime.fromtimestamp(time.mktime(time.strptime(times.pop(0), time_format)))
+
+    points = setDistancesSpeedsAndHeadings(points)
+    f.close
+    return points

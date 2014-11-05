@@ -25,9 +25,11 @@ class Trace(models.Model):
 
     def __unicode__(self):
         nb_points = Trace_point.objects.filter(trace=self).count()
-        return unicode(self.id) + " " + self.name + " -dist =" + unicode(
+        return unicode(self.id) + " " + self.name
+        """+ " -dist =" + unicode(
             self.get_total_distance()) + self.user.username + " ( " + unicode(self.ctime) + ")" \
                + ' nb pts ' +unicode(nb_points) + 'total time ' + self.get_formatted_time()
+        """
 
     @transaction.commit_manually
     def create_from_file(self, file):
@@ -36,16 +38,14 @@ class Trace(models.Model):
             TODO: créer une vraie date de début pour la trace  
         """
         points = lib.getPointsFromFile(file)
-        n = 1
         for p in points:
             tp = Trace_point()
-            tp.set_values(self, p, 1, n)
+            tp.set_values(self, p)
             tp.save()
-            n += 1
         if points[0].has_key('time'):
             self.tdate = points[0]['time']
         else:
-            sefl.tdate = self.ctime
+            self.tdate = self.ctime
         transaction.commit()
         # zfile = zipfile.ZipFile(file+'.zip','w',compression=zipfile.ZIP_DEFLATED)
         # zfile.write(file,file)
@@ -564,7 +564,6 @@ class Trace(models.Model):
         #méthodes statiques
 
 
-
     @staticmethod
     def get_tracks_in_bounds(minlat, minlon, maxlat, maxlon):
         trs = Trace.objects.filter(trace_point__order_num=1, trace_point__latitude__gt=minlat,
@@ -609,14 +608,20 @@ class Trace(models.Model):
 #Class Trace_point
 class Trace_point(models.Model):
     trace = models.ForeignKey(Trace)
-    order_num = models.IntegerField(null=True)
+    segment = models.IntegerField()
+    order_num = models.IntegerField()
     latitude = models.FloatField()
     longitude = models.FloatField()
+    time = models.DateTimeField()
     elevation = models.FloatField(null=True)
-    time = models.DateTimeField(null=True)
-    distance = models.FloatField()
-    speed = models.FloatField()
-    segment_number = models.IntegerField()
+    distance = models.FloatField(null=True)
+    speed = models.FloatField(null=True)
+    heading = models.IntegerField(null=True)
+    heartrate = models.IntegerField(null=True)
+    cadence = models.IntegerField(null=True)
+    power = models.IntegerField(null=True)
+    temperature = models.IntegerField(null=True)
+    pression = models.IntegerField(null=True)
 
     def __unicode__(self):
         u = "tr" + unicode(self.trace.id)
@@ -627,19 +632,33 @@ class Trace_point(models.Model):
         u = u + " / speed: " + unicode(self.speed)
         return u
 
-    def set_values(self, trace, point, segment_number, order_num):
+    def set_values(self, trace, point):
         """ initialise les elements de Trace point avec un dictionnaire """
         self.trace = trace
         self.latitude = point['lat']
         self.longitude = point['lon']
-        self.distance = point['distance']
-        self.speed = point['speed']
-        self.order_num = order_num
-        if point.has_key('ele'):
-            self.elevation = point['ele']
-        if point.has_key('time'):
-            self.time = point['time']
-        self.segment_number = segment_number
+        self.time = point['time']
+        self.segment = point['segment']
+        self.order_num = point['order_num']
+        if point.has_key('elevation'):
+            self.elevation = point['elevation']
+        if point.has_key('distance'):
+            self.distance = point['distance']      
+        if point.has_key('speed'):
+            self.speed = point['speed']
+        if point.has_key('heading'):
+            self.heading = point['heading']
+        if point.has_key('heartrate'):
+            self.heartrate = point['heartrate']
+        if point.has_key('cadence'):
+            self.cadence = point['cadence']
+        if point.has_key('power'):
+            self.power = point['power']
+        if point.has_key('temperature'):
+            self.temperature = point['temperature']
+        if point.has_key('pression'):
+            self.pression = point['pression']
+
 
     def get_dict(self):
         """ renvoie le dictionnaire de la trace_point """
@@ -665,3 +684,10 @@ class Trace_record(models.Model):
     distance = models.FloatField()
     def __unicode__(self):
         return self.type + ' ' + self.trace.name + ' ' +unicode(self.seconds) + ' secs'
+
+class Trace_point_property(models.Model):
+    trace_point = models.ForeignKey(Trace_point)
+    name = models.CharField(max_length=32)
+    value = models.CharField(max_length=255)
+    def __unicode__(self):
+        return 'Property trace:'+unicode(self.trace_point.trace.id)+' tp_ord:' + unicode(self.trace_point.order_num) + ': ' + self.name + ': ' + self.value
