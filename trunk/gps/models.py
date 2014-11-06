@@ -371,7 +371,7 @@ class Trace(models.Model):
                     return {}
             return match
 
-        tps = Trace_point.objects.filter(trace=self)[::search_big_step] #query with a step equals to tolerance
+        tps = Trace_point.objects.filter(trace=self).order_by('order_num')[::search_big_step] #query with a step equals to tolerance
         matches = [] #liste de points matchants
         t1_order_num = 0
         range_extra=''
@@ -466,7 +466,6 @@ class Trace(models.Model):
                 p0 = p1
                 p1 = p2
         transaction.commit()
-
 
     #getters
     def get_avg_speed(self):
