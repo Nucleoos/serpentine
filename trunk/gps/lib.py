@@ -53,10 +53,9 @@ def getPointsFromGpx(g):
                     time_format = '%Y-%m-%d %H:%M:%SZ'
                     ptime = datetime.datetime.fromtimestamp(
                         time.mktime(time.strptime(tp.getElementsByTagName('time')[0].firstChild.data, time_format)))
-        #deal with hr extension
-        hrNode = tp.getElementsByTagName('gpxtpx:hr')
-        if hrNode:
-            hr = int(hrNode[0].firstChild.data)
+        #deal with extension extensions node
+        hr = int(hrNode[0].firstChild.data) if tp.getElementsByTagName('gpxtpx:hr') else 0
+
         if not(lat==current_lat and lon== current_lon):
             order_num += 1
             points.append({"segment": segment, "order_num": order_num, "lon": lon, "lat": lat, "elevation": ele, "time": ptime, "heartrate":hr})
@@ -82,15 +81,13 @@ def setDistancesSpeedsAndHeadings(points):
     length = len(points)
     newseg = True
     for i in range(0, length):
-        if i >= 412:
-            x=0
-        if newseg:
+        if newseg and i < length-1:
             #premier point d'un segment
             td = points[i+1]['time']-points[i]['time']
             x = points[i+1]['distance']-points[i]['distance']
             points[i]['speed'] = 3600 * x / (td.seconds) if td.seconds > 0 else 0
             newseg = False
-        elif (i == length-1):
+        elif (i >= length-1):
             #dernier point
             points[i]['speed'] = points[i-1]['speed']
         else:

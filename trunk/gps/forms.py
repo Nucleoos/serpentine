@@ -6,6 +6,7 @@ class TrackForm(forms.Form):
     CHOICES = (
         ('Vélo de route', 'Vélo de route'),
         ('VTT', 'VTT'),
+        ('Course à pieds', 'Course à pied'),
         ('Marche à pied', 'Marche à pied'),
         ('Moto', 'Moto'),
         ('Voiture', 'Voiture'),

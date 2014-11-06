@@ -14,8 +14,8 @@ def run():
     #run_matching_segments()
 
     #run_compute_speeds()
-    run_best_performance()
-    # run_import_file()
+    # run_best_performance()
+    run_import_file()
     end = datetime.now()
     print(end)
     print('total time spent: ' + str(end - start))
