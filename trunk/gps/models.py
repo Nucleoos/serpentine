@@ -346,7 +346,7 @@ class Trace(models.Model):
                 avec un order_num >= à order_min
             """
             match = {}
-            tps = Trace_point.objects.filter(trace=tr2_id)
+            tps = Trace_point.objects.filter(trace=tr2_id).order_by('order_num')
             # if num_min != 0:
             #     tps = tps.filter(order_num__lt = num_min + seg2_search_length)
             #tps = tps.filter(order_num__gt = num_min)
