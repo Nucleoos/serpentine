@@ -17,8 +17,10 @@ import gps.settings
 
 
 class Trace(models.Model):
+    TRACE_TYPES = (('VEL','Vélo de route'), ('VTT','VTT'), ('CAP','Course à pied'), ('MAR','Marche'), ('AUT', 'Autre'))
     name = models.CharField(max_length=256)
     user = models.ForeignKey(User)
+    type = models.CharField(max_length=3,choices=TRACE_TYPES,default='CAP')
     parent = models.ForeignKey('self', null=True, blank=True)
     ctime = models.DateTimeField('auto_now_add')
     tdate = models.DateTimeField(null=True)
@@ -686,8 +688,14 @@ class Trace_record(models.Model):
     type = models.CharField(max_length=255) # best 100, 200, etc
     seconds = models.FloatField()
     distance = models.FloatField()
+
     def __unicode__(self):
         return self.type + ' ' + self.trace.name + ' ' +unicode(self.seconds) + ' secs'
+
+    @staticmethod
+    def get_all_records():
+        return Trace_record.objects.all()
+
 
 class Trace_point_property(models.Model):
     trace_point = models.ForeignKey(Trace_point)
@@ -695,3 +703,6 @@ class Trace_point_property(models.Model):
     value = models.CharField(max_length=255)
     def __unicode__(self):
         return 'Property trace:'+unicode(self.trace_point.trace.id)+' tp_ord:' + unicode(self.trace_point.order_num) + ': ' + self.name + ': ' + self.value
+
+class User_profile(models.Model):
+    user = models.ForeignKey(User)

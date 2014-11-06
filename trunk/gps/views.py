@@ -20,7 +20,7 @@ import datetime
 import gps.settings
 from gps import utils
 
-from gps.models import Trace, Trace_point, Trace_property
+from gps.models import Trace, Trace_point, Trace_property, Trace_record
 from gps.forms import TrackForm, UploadForm, QuickLoginForm, QuickSearchForm
 
 #import urls 
@@ -91,6 +91,25 @@ def recherche(request):
         c['resultats'] = Trace.get_search_results(request.GET['recherche'])
         c['criteria'] = request.GET['recherche']
     rsp = render_to_response(utils.get_prefix(request) + 'recherche.html', c, context_instance=RequestContext(request))
+    return rsp
+
+#records
+def records(request):
+    c={'resultats':Trace_record.get_all_records()}
+    rsp = render_to_response('gps/user_records.html', c, context_instance=RequestContext(request))
+    return rsp
+
+#user stuff
+@login_required
+def user_records(request):
+    c={}
+    rsp = render_to_response('gps/user_records.html', c, context_instance=RequestContext(request))
+    return rsp
+
+@login_required
+def user_profile(request):
+    c={}
+    rsp = render_to_response('gps/user_profile.html', c, context_instance=RequestContext(request))
     return rsp
 
 

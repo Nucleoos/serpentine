@@ -13,6 +13,8 @@ urlpatterns = patterns('',
                        (r'^traceshortinfo/(\d+)', 'gps.views.trace_short_info_html'),
                        (r'^tracetabs/(traces(?:/\d+)+)?/(segment(?:/\d+)+)?', 'gps.views.trace_tabs_html'),
                        (r'^tracestats/(\d+)', 'gps.views.trace_stats'),
+                       #records
+                       (r'^records/$', 'gps.views.records'),
                        #blocks html (nav ... )
                        (r'^nav.html', 'gps.views.nav_html'),
                        (r'^nearby.html', 'gps.views.nearby'),
@@ -30,14 +32,15 @@ urlpatterns = patterns('',
                        (r'^trace/json$', 'gps.views.trace_json'),
                        (r'^trace/json_info$', 'gps.views.trace_json_info'),
                        (r'^trace/json_index$', 'gps.views.trace_json_index'),
+                       #User urls
+                       (r'^user/records/$', 'gps.views.user_records'),
+                       (r'^user/profile$', 'gps.views.user_profile'),
                        #JSON urls (called with track number ?t=N&t2=...)
                        (r'^trace/json_segments$', 'gps.views.trace_segment_json'),
                        #Javascript
                        (r'^js/trace_(?P<maptype>ol|ign)_(?P<num>\d+).js', 'gps.views.view_trace_js'),
-
                        #ajax cookies
                        (r'^setmaptype/(?P<maptype>ol|ign)', 'gps.views.set_maptype'),
-
                        #tests
                        (r'^test_cookies', 'gps.views.test_cookies'),
                        (r'^test_ign', 'gps.views.test_ign'),

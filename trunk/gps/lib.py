@@ -54,7 +54,8 @@ def getPointsFromGpx(g):
                     ptime = datetime.datetime.fromtimestamp(
                         time.mktime(time.strptime(tp.getElementsByTagName('time')[0].firstChild.data, time_format)))
         #deal with extension extensions node
-        hr = int(hrNode[0].firstChild.data) if tp.getElementsByTagName('gpxtpx:hr') else 0
+        hrNode = tp.getElementsByTagName('gpxtpx:hr')
+        hr = int(hrNode[0].firstChild.data) if hrNode else 0
 
         if not(lat==current_lat and lon== current_lon):
             order_num += 1
@@ -62,8 +63,6 @@ def getPointsFromGpx(g):
             current_lat, current_lon = lat, lon
     points = setDistancesSpeedsAndHeadings(points)
     return points
-
-
 
 
 def setDistancesSpeedsAndHeadings(points):
@@ -93,7 +92,7 @@ def setDistancesSpeedsAndHeadings(points):
         else:
             #tous les autres points (si td > 30 secondes on démarre un nouveau segment
             td = points[i+1]['time'] - points[i-1]['time']
-            if td.seconds < 30:
+            if td.seconds < 60:
                 x = points[i+1]['distance'] - points[i-1]['distance']
                 points[i]['speed'] = 3600 * x / (td.seconds) if td.seconds > 0 else 0
                 #track for valeur aberrante
