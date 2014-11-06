@@ -29,8 +29,8 @@ def getPointsFromGpx(g):
     points = []
     segment = 1 # todo gérer les segments
     order_num = 0
+    current_lat, current_lon =0,0
     for tp in t:
-        order_num += 1
         lat = float(str.replace(str(tp.getAttribute('lat')), ',', '.'))
         lon = float(str.replace(str(tp.getAttribute('lon')), ',', '.'))
         elNode = tp.getElementsByTagName('ele')
@@ -57,8 +57,10 @@ def getPointsFromGpx(g):
         hrNode = tp.getElementsByTagName('gpxtpx:hr')
         if hrNode:
             hr = int(hrNode[0].firstChild.data)
-        points.append({"segment": segment, "order_num": order_num, "lon": lon, "lat": lat, "elevation": ele, "time": ptime, "heartrate":hr})
-
+        if not(lat==current_lat and lon== current_lon):
+            order_num += 1
+            points.append({"segment": segment, "order_num": order_num, "lon": lon, "lat": lat, "elevation": ele, "time": ptime, "heartrate":hr})
+            current_lat, current_lon = lat, lon
     points = setDistancesSpeedsAndHeadings(points)
     return points
 
@@ -66,35 +68,44 @@ def getPointsFromGpx(g):
 
 
 def setDistancesSpeedsAndHeadings(points):
-
-    #distances .. todo headings
+    #TODO headings
+    #distances ..
     dist, current_lat, current_lon = 0,points[0]['lat'],points[0]['lon']
     for p in points:
-        if p['order_num'] >= 375:
-            x=0
         x = getDistance(current_lat, current_lon, float(p['lat']), float(p['lon']))
         current_lat, current_lon = float(p['lat']), float(p['lon'])
         dist = dist + x
         p['distance'] = dist
 
     # pour chaque p on calcule la vitesse (d/t entre p+1 et p-1)
+    segment = 1
     length = len(points)
-    for i in range(0, length-1):
-        if p['order_num'] >= 370:
+    newseg = True
+    for i in range(0, length):
+        if i >= 412:
             x=0
-        if i == 0:
-            #premier point
-            td = points[1]['time']-points[0]['time']
-            x = 3600*points[1]['distance']
+        if newseg:
+            #premier point d'un segment
+            td = points[i+1]['time']-points[i]['time']
+            x = points[i+1]['distance']-points[i]['distance']
             points[i]['speed'] = 3600 * x / (td.seconds) if td.seconds > 0 else 0
+            newseg = False
         elif (i == length-1):
             #dernier point
-            points[i]['speed'] = 0
+            points[i]['speed'] = points[i-1]['speed']
         else:
-            #tous les autres points
+            #tous les autres points (si td > 30 secondes on démarre un nouveau segment
             td = points[i+1]['time'] - points[i-1]['time']
-            x = points[i+1]['distance'] - points[i-1]['distance']
-            points[i]['speed'] = 3600 * x / (td.seconds) if td.seconds > 0 else 0
+            if td.seconds < 30:
+                x = points[i+1]['distance'] - points[i-1]['distance']
+                points[i]['speed'] = 3600 * x / (td.seconds) if td.seconds > 0 else 0
+                #track for valeur aberrante
+                if points[i]['speed'] > 50 * points[i-1]['speed'] and points[i-1]['speed'] > 0: points[i]['speed'] = points[i-1]['speed']
+            else:
+                newseg = True
+                segment = segment + 1
+                points[i]['speed']= points[i-1]['speed'] #en bout de segment on affecte la valeur du point précédent (à discuter plutôt que 0)
+        points[i]['segment']= segment
     return points
 
 

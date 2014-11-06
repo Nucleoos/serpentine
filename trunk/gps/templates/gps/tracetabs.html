@@ -1,40 +1,32 @@
 
 {% load replace %}
 <div class="sidetitle hideshow" title="Cliquer pour masquer/afficher la section">Tableaux
- {{ traces }} - {{ segments }}</div>
+    {{ traces }} - {{ segments }}</div>
 <div class="track_section">
     <table class="traceinfotable">
         <tr>
-            <th class="traceinfotable bold"></th>
-            {% for n in name %}<th class="traceinfotable bold">{{ n }}</th>{% endfor %}
+            <td class="traceinfotable bold">Vitesse moyenne (km/h)</td>
+            {% for var in avg_speed %}
+                <td class="traceinfotable">{{ var|floatformat:1 }}
+                </td>{% endfor %}
         </tr>
         <tr>
-            <td class="traceinfotable bold">Distance (km)</td>
-            {% for d in distance %}<td class="traceinfotable">{{ d|floatformat:1 }}</td>{% endfor %}
-        </tr><tr>
-        <td class="traceinfotable bold">Durée totale </td>
-            {% for tt in total_time %}<td class="traceinfotable">{{ tt|formatduration }}</td>{% endfor %}
-    </tr>
-        <tr>
-            <td class="traceinfotable bold">Vitesse moyenne (km/h)</td>
-            {% for var in avg_speed %}<td class="traceinfotable">{{ var|floatformat:1 }}</td>{% endfor %}
-        </tr><tr>
-        <td class="traceinfotable bold">Vitesse max (km/h)</td>
-            {% for var in max_speed %}<td class="traceinfotable">{{ var|floatformat:1 }}</td>{% endfor %}
-    </tr>
-        <tr>
-            <td class="traceinfotable bold">Altitude Min (m)</td>
-            {% for var in min_elevation %}<td class="traceinfotable">{{ var|floatformat:0 }}</td>{% endfor %}
-        </tr><tr>
-        <td class="traceinfotable bold">Altitude Max (m)</td>
-            {% for var in max_elevation %}<td class="traceinfotable">{{ var|floatformat:0 }}</td>{% endfor %}
-    </tr>
+            <td class="traceinfotable bold">Vitesse max (km/h)</td>
+            {% for var in max_speed %}
+                <td class="traceinfotable">{{ var|floatformat:1 }}
+                </td>{% endfor %}
+        </tr>
         <tr>
             <td class="traceinfotable bold">Amplitude Alt (m)</td>
-            {% for var in amplitude_elevation %}<td class="traceinfotable">{{ var|floatformat:0}}</td>{% endfor %}
-        </tr><tr>
-        <td class="traceinfotable bold">Dénivelé + (m)</td>
-            {% for var in denivele %}<td class="traceinfotable">{{ var|floatformat:0 }}</td>{% endfor %}
-    </tr>
+            {% for var in amplitude_elevation %}
+                <td class="traceinfotable">{{ var|floatformat:0}}</td>{% endfor %}
+        </tr>
+        <tr>
+            <td class="traceinfotable bold">Dénivelé + (m)
+            </td>
+            {% for var in denivele %}
+            <td class="traceinfotable">{{ var|floatformat:0 }}
+            </td>{% endfor %}
+        </tr>
     </table>
 </div>

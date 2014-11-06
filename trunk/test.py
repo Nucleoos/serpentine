@@ -14,8 +14,8 @@ def run():
     #run_matching_segments()
 
     #run_compute_speeds()
-    #run_best_performance()
-    run_import_file()
+    run_best_performance()
+    # run_import_file()
     end = datetime.now()
     print(end)
     print('total time spent: ' + str(end - start))
@@ -41,7 +41,7 @@ def run_matching_segments():
     print [(segment[0],segment[-1]) for segment in segments]
 
 def run_best_performance():
-    tr = Trace.objects.get(id=22)
+    tr = Trace.objects.get(id=1)
     ppts = Trace_property.objects.filter(trace = tr)
 
     print tr.get_stats()

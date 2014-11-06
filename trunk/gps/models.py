@@ -467,6 +467,8 @@ class Trace(models.Model):
                 p1 = p2
         transaction.commit()
 
+
+    #getters
     def get_avg_speed(self):
         tp = Trace_point.objects.filter(trace=self).order_by('time')
         dist = tp[tp.count() - 1].distance
@@ -535,8 +537,9 @@ class Trace(models.Model):
             else:
                 result = {'start':start, 'end':end, 'dist':tps[end].distance- tps[start].distance, 'seconds':(tps[end].time- tps[start].time).seconds}
                 break
-            while(notfound and tps[end].distance - tps[start].distance < distbest):
+            while(notfound  and tps[end].distance - tps[start].distance < distbest):
                 end = end+jumpsize
+                if  end > tps[-1].order_num-1: end = tps[-1].order_num-1
                 #print end, tps[end].distance
             jumpsize = jumpsize/2
         # sortis de la boucle on a un result non vide qui sert de base à la suite sinon on retourne None
@@ -625,11 +628,13 @@ class Trace_point(models.Model):
 
     def __unicode__(self):
         u = "tr" + unicode(self.trace.id)
-        u = u + " / order_num:" + unicode(self.order_num) + " / lat: " + unicode(self.latitude) + " / lon:" + unicode(self.longitude)
-        u = u + " / elevation: " + unicode(self.elevation)
+        u = u + " / seg:" + unicode(self.segment)
+        u = u + " / num:" + unicode(self.order_num) + " / lat: " + unicode(self.latitude) + " / lon:" + unicode(self.longitude)
+        u = u + " / ele: " + unicode(self.elevation)
         u = u + " / time: " + unicode(self.time)
-        u = u + " / distance: " + unicode(self.distance)
+        u = u + " / dist: " + unicode(self.distance)
         u = u + " / speed: " + unicode(self.speed)
+        u = u + " / hr: " + unicode(self.heartrate)
         return u
 
     def set_values(self, trace, point):
