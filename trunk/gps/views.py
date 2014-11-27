@@ -96,7 +96,7 @@ def recherche(request):
 #records
 def records(request):
     c={'resultats':Trace_record.get_all_records()}
-    rsp = render_to_response('gps/records.html', c, context_instance=RequestContext(request))
+    rsp = render_to_response('gps/user_records.html', c, context_instance=RequestContext(request))
     return rsp
 
 #user stuff
@@ -242,7 +242,7 @@ def upload(request):
             if upload_form.is_valid():
                 cd = upload_form.cleaned_data
                 tr = handle_uploaded_file(request.FILES['fichier'])
-                #tr.set_calculated_properties()
+                tr.set_calculated_properties()
                 tr.set_geonames_properties()
                 return HttpResponseRedirect('/trace/' + unicode(tr.id))
         else:
