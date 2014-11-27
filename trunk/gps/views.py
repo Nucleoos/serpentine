@@ -72,8 +72,7 @@ def view_trace(request, num):
     c['trace'] = tr
     c['properties'] = tr.get_properties()
     c['ign_api_key'] = gps.settings.IGN_API_KEY
-    for s in tr.get_stats():
-        c[s]=
+    c['stats']=tr.get_stats()
     c['bests']= tr.get_bests()
     response = render_to_response('gps/trace.html', c, context_instance=RequestContext(request))
     #rafraichissement du cookie
