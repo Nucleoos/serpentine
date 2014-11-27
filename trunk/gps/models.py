@@ -39,17 +39,21 @@ class Trace(models.Model):
             met à jour la date de trace à la date de 
             TODO: créer une vraie date de début pour la trace  
         """
-        points = lib.getPointsFromFile(file)
-        for p in points:
-            tp = Trace_point()
-            tp.set_values(self, p)
-            tp.save()
-        if points[0].has_key('time'):
-            self.tdate = points[0]['time']
-        else:
-            self.tdate = self.ctime
-        self.save()
-        transaction.commit()
+        try:
+            points = lib.getPointsFromFile(file)
+            for p in points:
+                tp = Trace_point()
+                tp.set_values(self, p)
+                tp.save()
+            if points[0].has_key('time'):
+                self.tdate = points[0]['time']
+            else:
+                self.tdate = self.ctime
+            self.save()
+            transaction.commit()
+        except:
+            transaction.rollback()
+            raise
         # zfile = zipfile.ZipFile(file+'.zip','w',compression=zipfile.ZIP_DEFLATED)
         # zfile.write(file,file)
         # zfile.close
