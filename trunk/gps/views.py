@@ -225,14 +225,13 @@ def upload(request):
         for chunk in f.chunks():
             destination.write(chunk)
         destination.close()
-        # on enregistre un minimum sur l'entête de trace pour pouvoir enrgistrer les points
+        # on enregistre un minimum sur l'entête de trace pour pouvoir enregistrer les points
         tr = Trace()
         tr.user = User.objects.get(username=request.user.username)
         tr.name = f.name
         tr.ctime = datetime.datetime.now()
         tr.save()
         tr.create_from_file(settings.MEDIA_ROOT + 'import.gpx')
-        tr.save()
         return tr
 
     if request.user.is_authenticated():

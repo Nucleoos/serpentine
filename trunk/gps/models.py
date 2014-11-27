@@ -48,6 +48,7 @@ class Trace(models.Model):
             self.tdate = points[0]['time']
         else:
             self.tdate = self.ctime
+        self.save()
         transaction.commit()
         # zfile = zipfile.ZipFile(file+'.zip','w',compression=zipfile.ZIP_DEFLATED)
         # zfile.write(file,file)
@@ -66,6 +67,7 @@ class Trace(models.Model):
             tp.set_values(self, p, 1, n)
             tp.save()
             n = n + 1
+        self.save()
         transaction.commit()
 
     def set_property(self, pname, pvalue):
