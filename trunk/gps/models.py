@@ -511,7 +511,8 @@ class Trace(models.Model):
                     #print 'lecture', ppt[0].name
                     best.append((trec[0].type, {'dist':trec[0].distance, 'seconds':trec[0].seconds,
                                                 'allure': trec[0].seconds/trec[0].distance,
-                                                'speed': 3600*trec[0].distance/trec[0].seconds}))
+                                                'speed': 3600*trec[0].distance/trec[0].seconds,
+                                                'start': trec[0].start, 'end': trec[0].end}))
         return best
 
     def get_best_performances(self,distbest):

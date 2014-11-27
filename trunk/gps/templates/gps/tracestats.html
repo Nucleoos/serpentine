@@ -1,9 +1,9 @@
 {% load replace %}
     <div class="sidetitle hideshow" id="titleinfo" title="Cliquer pour masquer/afficher la section">
-        statistiques de la trace
+        statistiques de la trace;
     </div>
     <div id="trackstats" class="sidegroup">
-
+    {{ bests }}
     <table class="traceinfotable">
         <tr>
             <th class="traceinfotable bold">best</th>
@@ -11,9 +11,9 @@
             <th class="traceinfotable bold">allure (/km)</th>
             <th class="traceinfotable bold">vitesse (km/h)</th>
         </tr>
-    {% for s in stats %}
+    {% for s in bests %}
         <tr>
-            <td class="traceinfotable bold">{{ s.0 }}</td>
+            <td class="traceinfotable bold simple-link" onclick="drawTrackPart(mainmap,'track',track,{{ s.1.start }},{{ s.1.end }})">{{ s.0 }}</td>
             <td class="traceinfotable">{{ s.1.seconds|formattime }}</td>
             <td class="traceinfotable">{{ s.1.allure|formattime }}</td>
             <td class="traceinfotable">{{ s.1.speed|floatformat:1}}</td>
