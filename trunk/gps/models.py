@@ -14,6 +14,8 @@ from django.db.models import Q
 # from ftplib import FTP
 import gps.settings
 # Create your models here.
+import logging
+logger = logging.getLogger()
 
 
 class Trace(models.Model):
@@ -39,16 +41,19 @@ class Trace(models.Model):
             met à jour la date de trace à la date de 
             TODO: créer une vraie date de début pour la trace  
         """
-        points = lib.getPointsFromFile(file)
-        for p in points:
-            tp = Trace_point()
-            tp.set_values(self, p)
-            tp.save()
-        if points[0].has_key('time'):
-            self.tdate = points[0]['time']
-        else:
-            self.tdate = self.ctime
-        transaction.commit()
+        try:
+            points = lib.getPointsFromFile(file)
+            for p in points:
+                tp = Trace_point()
+                tp.set_values(self, p)
+                tp.save()
+            if points[0].has_key('time'):
+                self.tdate = points[0]['time']
+            else:
+                self.tdate = self.ctime
+            transaction.commit()
+        except:
+            transaction.rollback()
         # zfile = zipfile.ZipFile(file+'.zip','w',compression=zipfile.ZIP_DEFLATED)
         # zfile.write(file,file)
         # zfile.close
@@ -640,30 +645,33 @@ class Trace_point(models.Model):
 
     def set_values(self, trace, point):
         """ initialise les elements de Trace point avec un dictionnaire """
-        self.trace = trace
-        self.latitude = point['lat']
-        self.longitude = point['lon']
-        self.time = point['time']
-        self.segment = point['segment']
-        self.order_num = point['order_num']
-        if point.has_key('elevation'):
-            self.elevation = point['elevation']
-        if point.has_key('distance'):
-            self.distance = point['distance']      
-        if point.has_key('speed'):
-            self.speed = point['speed']
-        if point.has_key('heading'):
-            self.heading = point['heading']
-        if point.has_key('heartrate'):
-            self.heartrate = point['heartrate']
-        if point.has_key('cadence'):
-            self.cadence = point['cadence']
-        if point.has_key('power'):
-            self.power = point['power']
-        if point.has_key('temperature'):
-            self.temperature = point['temperature']
-        if point.has_key('pression'):
-            self.pression = point['pression']
+        try:
+            self.trace = trace
+            self.latitude = point['lat']
+            self.longitude = point['lon']
+            self.time = point['time']
+            self.segment = point['segment']
+            self.order_num = point['order_num']
+            if point.has_key('elevation'):
+                self.elevation = point['elevation']
+            if point.has_key('distance'):
+                self.distance = point['distance']
+            if point.has_key('speed'):
+                self.speed = point['speed']
+            if point.has_key('heading'):
+                self.heading = point['heading']
+            if point.has_key('heartrate'):
+                self.heartrate = point['heartrate']
+            if point.has_key('cadence'):
+                self.cadence = point['cadence']
+            if point.has_key('power'):
+                self.power = point['power']
+            if point.has_key('temperature'):
+                self.temperature = point['temperature']
+            if point.has_key('pression'):
+                self.pression = point['pression']
+        except:
+            raise
 
 
     def get_dict(self):
