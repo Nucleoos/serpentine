@@ -97,18 +97,6 @@ class Trace(models.Model):
         self.set_property('ele_min', str(round(self.get_elevation_min(), 0)) + " m")
         return 'done'  #self.getProperties()
 
-    def get_properties(self):
-        properties ={}
-        properties['name'] = self.name
-        properties['total_time'] = str(self.get_total_time())
-        properties['distance'] = self.get_total_distance()
-        properties['max_elevation'] = self.get_elevation_max()
-        properties['min_elevation'] = self.get_elevation_min()
-        properties['amplitude_elevation'] = properties['max_elevation']-properties['min_elevation']
-        properties['max_speed'] = self.get_max_speed()
-        properties['avg_speed'] = self.get_avg_speed()
-        return  properties
-
     def get_segment_properties(self,start,end):
         properties ={}
         start = str(start)
@@ -126,7 +114,7 @@ class Trace(models.Model):
         return properties
 
 
-    def get_str_properties(self, *args):
+    def get_properties(self, *args):
         """ récupère les propriétés de la trace et retourne un dict 
             renvoie tout si aucun argument n'est spécifié"""
         if args == ():
@@ -230,6 +218,7 @@ class Trace(models.Model):
         p = Trace_point.objects.filter(trace=self).aggregate(Avg("latitude"), Avg("longitude"))
         return {'lat': p["latitude__avg"], 'lon': p["longitude__avg"]}
 
+    #TODO supprimer
     def get_info(self):
         """ get un dictionnaire for quick info on the Trace object"""
         tr = {"id": self.id, "name": self.name, "total_time": self.get_formatted_time(),
@@ -254,7 +243,6 @@ class Trace(models.Model):
         on passe une tolerance en longueur pour le match (plus c'est élevé plus on tolère de mismatchs
         TODO: stockage en base des repérages de segments matchés
         TODO: search_small_step est le levier d'amélioration dans le paramétrage
-
         """
         search_big_step = 30  # nombre de points entre 2 tests en recherche grosse maille
         search_small_step = 1  # nombre de points entre 2 tests après avoir trouvé le premier match
@@ -264,7 +252,7 @@ class Trace(models.Model):
         lonlat_delta = 10
         seg2_search_length = 100 #range of points to be search further after first match found
 
-        #TODO: use excluded ranges instead of excluded lists
+        #DONE: use excluded ranges instead of excluded lists
         def get_matching_points(tp1 ,tr2_id, num_min = 0, exclude_list = []):
             """ renvoie pour tp1 les points de t2 susceptible de matcher les points de t1
                 avec un order_num >= à order_min
@@ -485,8 +473,18 @@ class Trace(models.Model):
             return 0
         return 3600 * dist / (self.get_total_time().seconds + self.get_total_time().days*86400)
 
-    #@transaction.commit_manually
-    def get_stats(self, forcecalc = False):
+    def get_stats(self):
+        total_time = self.get_total_time().seconds
+        total_distance = self.get_total_distance()
+        stats = {
+            'distance':total_distance,
+            'seconds':total_time,
+            'allure': total_time/total_distance,
+            'speed': 3600*total_distance/total_time
+        }
+        return stats
+
+    def get_bests(self, forcecalc = False):
         dists = [('best 100m',0.1),
                  ('best 400m',0.4),
                  ('best km',1),

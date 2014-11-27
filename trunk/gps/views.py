@@ -31,7 +31,6 @@ def main_context(request):
     #dernières traces 
     d['latest_traces'] = Trace.objects.all().order_by('-tdate')[0:10]
     #TODO get all properties
-
     #search context
     if request.method == 'GET' and request.GET.has_key('recherche'):
         d['quick_search_form'] = QuickSearchForm(request.GET)
@@ -57,7 +56,7 @@ def main_context(request):
 def index(request):
     d = {}
     d['all_traces'] = Trace.objects.all().order_by('-tdate')
-    return render_to_response(utils.get_prefix(request) + 'index.html', d, context_instance=RequestContext(request))
+    return render_to_response('gps/index.html', d, context_instance=RequestContext(request))
 
 
 def view_trace(request, num):
@@ -71,14 +70,12 @@ def view_trace(request, num):
     c['maptype'] = maptype
     tr = Trace.objects.get(id=num)
     c['trace'] = tr
-    for p in tr.get_str_properties():
-        c[p.name] = p.value
+    c['properties'] = tr.get_properties()
     c['ign_api_key'] = gps.settings.IGN_API_KEY
-    ppt = tr.get_properties()
-    for p in ppt:
-        c[p] =[ppt[p]]
-    c['stats']= tr.get_stats()
-    response = render_to_response(utils.get_prefix(request) + 'trace.html', c, context_instance=RequestContext(request))
+    for s in tr.get_stats():
+        c[s]=
+    c['bests']= tr.get_bests()
+    response = render_to_response('gps/trace.html', c, context_instance=RequestContext(request))
     #rafraichissement du cookie
     response.set_cookie(key='maptype', value=maptype, max_age=3600 * 24 * 30, expires=None, path='/', domain=None,
                         secure=None)
@@ -90,7 +87,7 @@ def recherche(request):
     if request.method == 'GET' and request.GET.has_key('recherche'):
         c['resultats'] = Trace.get_search_results(request.GET['recherche'])
         c['criteria'] = request.GET['recherche']
-    rsp = render_to_response(utils.get_prefix(request) + 'recherche.html', c, context_instance=RequestContext(request))
+    rsp = render_to_response('gps/recherche.html', c, context_instance=RequestContext(request))
     return rsp
 
 #records

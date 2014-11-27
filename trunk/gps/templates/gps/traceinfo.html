@@ -1,23 +1,22 @@
-
-    <div class="sidetitle hideshow" id="titleinfo" title="Cliquer pour masquer/afficher la section">
+   <div class="sidetitle hideshow" id="titleinfo" title="Cliquer pour masquer/afficher la section">
         <div class="trace_title">
-            {{ trace.name }} ({{ distance.0|floatformat:0 }}km le {{ trace.tdate|date:"d/m/Y" }})
+            {{ trace.name }} ({{ stats.dist|floatformat:0 }}km le {{ trace.tdate|date:"d/m/Y" }})
         </div>
         <div class="trace_subtitle">
         </div>
     </div>
     <div id="trackinfo" class="sidegroup">
-        <div class="bold inline">{{ type }} par {{ trace.user }} <br /> de {{ depart }} à {{ arrivee }}</div>
+        <div class="bold inline">{{ trace.type }} par {{ trace.user }} <br /> de {{ properties.depart }} à {{ properties.arrivee }}</div>
         <a class= "right" href="/trace/{{ trace.id }}.gpx">(GPX)</a>
         <a class= "right" href="/edit/{{ trace.id }}">Modifier </a>
 
 
     <div class="track_section">
-        Description: <span class="italic">{{ description }}</span>
+        Description: <span class="italic">{{ properties.description }}</span>
     </div>
     <div class="track_section">
         En passant par ou près de:
-        <span class="italic"> {{ vias }} </span>
+        <span class="italic"> {{ properties.vias }} </span>
     </div>
     </div>
 
