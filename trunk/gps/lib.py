@@ -62,6 +62,10 @@ def getPointsFromGpx(g):
             points.append({"segment": segment, "order_num": order_num, "lon": lon, "lat": lat, "elevation": ele, "time": ptime, "heartrate":hr})
             current_lat, current_lon = lat, lon
     points = setDistancesSpeedsAndHeadings(points)
+    #check points
+    for p in points:
+        if p['time'] == None or p['speed'] == None or p['distance'] == None:
+            raise Exception, 'point pas initialisé ' + str(p['order_num'])
     return points
 
 
