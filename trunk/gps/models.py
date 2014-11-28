@@ -104,6 +104,20 @@ class Trace(models.Model):
             raise
         return self
 
+    @transaction.commit_manually
+    def clear_properties(self, with_geonames = True):
+        """ supprime toutes les propriétés de la trace dans la base de donnée"""
+        try:
+            ppts = Trace_property.objects.filter(trace = self);
+            for p in ppts:
+                p.delete()
+            transaction.commit()
+        except:
+            transaction.rollback()
+            raise
+        return self
+
+
     def get_segment_properties(self,start=-1,end=-1):
         properties ={}
         tp = Trace_point.objects.filter(trace=self)

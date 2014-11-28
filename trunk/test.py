@@ -27,6 +27,7 @@ def run_set_properties():
     trs = Trace.objects.all()
     for tr in trs:
         print tr
+        tr.clear_properties()
         tr.set_properties()
         print tr.get_properties()
 
