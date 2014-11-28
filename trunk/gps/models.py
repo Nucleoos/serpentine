@@ -577,8 +577,8 @@ class Trace(models.Model):
                         besttime = (tps[end].time- tps[start].time).seconds
                         result = {'start':start, 'end':end, 'dist':tps[end].distance- tps[start].distance, 'seconds':besttime}
 
-        result['allure']= int(result['seconds']/result['dist'])
-        result['speed']=3600*result['dist']/result['seconds']
+        result['allure']= int(result['seconds']/result['dist'] if result['dist']>0 else 0)
+        result['speed']=3600*result['dist']/result['seconds'] if result['seconds']>0 else 0
         return result
 
     def set_start_date_from_first_point(self):
