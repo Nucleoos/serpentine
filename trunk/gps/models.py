@@ -18,6 +18,8 @@ import gps.settings
 
 class Trace(models.Model):
     TRACE_TYPES = (('VEL','Vélo de route'), ('VTT','VTT'), ('CAP','Course à pied'), ('MAR','Marche'), ('AUT', 'Autre'))
+    MAIN_PROPERTIES = ('min_lat','min_lon','max_lat','max_lon','max_speed','avg_speed',
+                       'max_hr','avg_hr','total_time','total_distance','amplitude_elevation','min_elevation','max_elevation')
     name = models.CharField(max_length=256)
     user = models.ForeignKey(User)
     type = models.CharField(max_length=3,choices=TRACE_TYPES,default='CAP')
@@ -86,41 +88,56 @@ class Trace(models.Model):
         pp.value = pvalue
         pp.save()
 
-    def set_calculated_properties(self):
-        """ affecte toutes les propriétés calculées de la trace"""
-        self.set_property('distance', str(round(self.get_total_distance(), 2)) + ' km')
-        self.set_property('total_time', self.get_formatted_time())
-        self.set_property('avg_speed', str(round(self.get_avg_speed(), 2)) + " km/h")
-        self.set_property('max_speed', str(round(self.get_max_speed(), 2)) + " km/h")
-        self.set_property('ele_amplitude', str(round(self.get_elevation_amplitude(), 0)) + " m")
-        self.set_property('ele_max', str(round(self.get_elevation_max(), 0)) + " m")
-        self.set_property('ele_min', str(round(self.get_elevation_min(), 0)) + " m")
-        return 'done'  #self.getProperties()
+    @transaction.commit_manually
+    def set_properties(self, with_geonames = True):
+        """ (ré) affecte toutes les propriétés de la trace dans la base de donnée"""
+        #on va chercher les propriétés du segment
+        try:
+            properties = self.get_segment_properties()
+            for ppt in properties:
+                self.set_property(ppt,properties[ppt])
+            if with_geonames:
+                self.set_geonames_properties()
+            transaction.commit()
+        except:
+            transaction.rollback()
+            raise
+        return self
 
-    def get_segment_properties(self,start,end):
+    def get_segment_properties(self,start=-1,end=-1):
         properties ={}
-        start = str(start)
-        end = str(end)
-        tp = Trace_point.objects.filter(trace=self).filter(order_num__gte= start).filter(order_num__lte =end)
-        agg = tp.aggregate(Max("time"), Min("time"),Max("speed"),Avg("speed"),Max("elevation"),Min("elevation"),Max("distance"),Min("distance"))
-        properties['name'] =  'tr ' + str(self.id) + ' segment ('+start+','+end+')'
+        tp = Trace_point.objects.filter(trace=self)
+        if start>0:
+            tp = tp.filter(order_num__gte = str(start))
+        if end > 0:
+            tp = tp.filter(order_num__lte = str(end))
+        agg = tp.aggregate(Max("time"), Min("time"), Max("speed"),Avg("speed"),Max("elevation"),Min("elevation"),Max("distance"),Min("distance"),Min('latitude'), Max('latitude'),
+                           Min('longitude'), Max('longitude'), Max('heartrate'), Min('heartrate'), Avg('heartrate'))
+        properties['title'] =  'tr ' + str(self.id) + ' segment ('+str(start)+','+str(end)+')'
         properties['total_time'] = agg['time__max']-agg['time__min']
         properties['distance'] = agg['distance__max']-agg['distance__min']
         properties['max_elevation'] = agg['elevation__max']
         properties['min_elevation'] = agg['elevation__min']
         properties['amplitude_elevation'] = agg['elevation__max']-agg['elevation__min']
         properties['max_speed'] = agg['speed__max']
-        properties['avg_speed'] =3600*(agg['distance__max']-agg['distance__min'])/((agg['time__max']-agg['time__min']).seconds +(agg['time__max']-agg['time__min']).days*86400 )
+        properties['avg_speed'] =3600*(agg['distance__max']-agg['distance__min'])/((agg['time__max']-agg['time__min']).seconds +(agg['time__max']-agg['time__min']).days*86400)
+        properties['max_lat'] = agg['latitude__max']
+        properties['min_lat'] = agg['latitude__min']
+        properties['max_lon'] = agg['longitude__max']
+        properties['min_lon'] = agg['longitude__max']
+        properties['min_hr'] = agg['heartrate__min']
+        properties['max_hr'] = agg['heartrate__max']
+        properties['avg_hr'] = agg['heartrate__avg']
         return properties
-
 
     def get_properties(self, *args):
         """ récupère les propriétés de la trace et retourne un dict 
             renvoie tout si aucun argument n'est spécifié"""
         if args == ():
-            return Trace_property.objects.filter(trace=self)
+            ppt = Trace_property.objects.filter(trace=self)
         else:
-            return Trace_property.objects.filter(trace=self, name__in=args)
+            ppt = Trace_property.objects.filter(trace=self, name__in=args)
+        return ppt
 
     def get_points(self):
         """ renvoie un tableau des points de la trace sous la forme d'un tableau de dictionaires"""
@@ -134,7 +151,6 @@ class Trace(models.Model):
         tp = Trace_point.objects.filter(trace=self)
         for p in tp:
             p.delete()
-
             #propriétés calculées
 
     def get_total_distance(self):
@@ -158,20 +174,6 @@ class Trace(models.Model):
 
     def get_elevation_min(self):
         return Trace_point.objects.filter(trace=self).aggregate(Min("elevation"))["elevation__min"]
-
-    def get_formatted_time(self):
-        """ chaine x jours etc """
-        t = self.get_total_time().seconds
-        d = t / (3600 * 24)
-        h = (t - d * 24 * 3600) / 3600
-        m = (t - d * 24 * 3600 - h * 3600) / 60
-        s = (t - d * 24 * 3600 - h * 3600 - m * 60)
-        res = ''
-        if d > 0: res = str(d) + 'j '
-        if h > 0: res = res + str(h) + 'h '
-        if m > 0: res = res + str(m) + 'm '
-        res = res + str(s) + 's'
-        return res
 
     def set_geonames_properties(self):
         """Renvoie les villes traversées (depuis geonames.org api postal codes) 
@@ -221,7 +223,7 @@ class Trace(models.Model):
     #TODO supprimer
     def get_info(self):
         """ get un dictionnaire for quick info on the Trace object"""
-        tr = {"id": self.id, "name": self.name, "total_time": self.get_formatted_time(),
+        tr = {"id": self.id, "name": self.name, "total_time": self.get_total_time().seconds,
               "total_distance": str(round(self.get_total_distance(), 2)) ,
               "avg_speed": str(round(self.get_avg_speed(), 1))}
         tr.update(self.get_bounds())
@@ -682,7 +684,6 @@ class Trace_property(models.Model):
     trace = models.ForeignKey(Trace)
     name = models.CharField(max_length=32)
     value = models.CharField(max_length=255)
-
     def __unicode__(self):
         return 'tr' + unicode(self.trace.id) + ' ' + self.name + ': ' + self.value
 

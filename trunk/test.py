@@ -4,6 +4,7 @@ import os, datetime
 os.environ['DJANGO_SETTINGS_MODULE'] = 'serpentine.settings'
 from datetime import datetime
 from gps.models import Trace, Trace_property, Trace_point, User
+from gps import views
 from gps import lib
 
 
@@ -15,10 +16,22 @@ def run():
 
     #run_compute_speeds()
     # run_best_performance()
-    run_import_file()
+    # run_import_file()
+    run_set_properties()
+    #run_tracetabs()
     end = datetime.now()
     print(end)
     print('total time spent: ' + str(end - start))
+
+def run_set_properties():
+    trs = Trace.objects.all()
+    for tr in trs:
+        print tr
+        tr.set_properties()
+        print tr.get_properties()
+
+def run_tracetabs():
+    views.trace_tabs_html(None,'/2','/2/332/445')
 
 def run_compute_speeds():
     trs = Trace.objects.all()
@@ -26,7 +39,6 @@ def run_compute_speeds():
         print tr
         tr.compute_distances()
         tr.compute_speeds()
-
 
 def run_nearby():
     tr = Trace.objects.get(id=1)

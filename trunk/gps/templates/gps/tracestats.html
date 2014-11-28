@@ -1,7 +1,6 @@
 {% load replace %}
     <div class="sidetitle hideshow" id="titleinfo" title="Cliquer pour masquer/afficher la section">
-        statistiques de la trace;
-    </div>
+        Meilleurs segments    </div>
     <div id="trackstats" class="sidegroup">
     <table class="traceinfotable">
         <tr>
@@ -12,7 +11,7 @@
         </tr>
     {% for s in bests %}
         <tr>
-            <td class="traceinfotable bold simple-link" onclick="drawTrackPart(mainmap,'track',track,{{ s.1.start }},{{ s.1.end }})">{{ s.0 }}</td>
+            <td class="traceinfotable bold simple-link" onclick="drawTrackPart(mainmap,'{{ s.0 }}',track,{{ s.1.start }},{{ s.1.end }})">{{ s.0 }}</td>
             <td class="traceinfotable">{{ s.1.seconds|formattime }}</td>
             <td class="traceinfotable">{{ s.1.allure|formattime }}</td>
             <td class="traceinfotable">{{ s.1.speed|floatformat:1}}</td>

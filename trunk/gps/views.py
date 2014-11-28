@@ -70,7 +70,9 @@ def view_trace(request, num):
     c['maptype'] = maptype
     tr = Trace.objects.get(id=num)
     c['trace'] = tr
-    c['properties'] = tr.get_properties()
+    c['properties']={}
+    for ppt in tr.get_properties():
+        c['properties'][ppt.name] = [ppt.value]
     c['ign_api_key'] = gps.settings.IGN_API_KEY
     c['stats']=tr.get_stats()
     c['bests']= tr.get_bests()
@@ -115,8 +117,6 @@ def trace_info_html(request, num):
     c['num'] = num
     tr = Trace.objects.get(id=num)
     c['trace'] = tr
-    for p in tr.get_str_properties():
-        c[p.name] = p.value
     c['properties'] = tr.get_properties()
     return render_to_response('gps/traceinfo.html', c)
 
@@ -126,30 +126,29 @@ def trace_short_info_html(request, num):
     c['num'] = num
     tr = Trace.objects.get(id=num)
     c['trace'] = tr
-    ppt = tr.get_str_properties('distance')
     return render_to_response('gps/traceshortinfo.html', c)
 
 def trace_tabs_html(request, traces , segments=None):
     c = {'traces':traces}
     traces = traces.split('/')[1:] #le premier argument est 'traces'
-
     #initialisation du tableau des propriétés avec la première trace
     ppt = Trace.objects.get(id=int(traces[0])).get_properties()
+    c['properties'] = {}
     for p in ppt:
-        c[p] = []
+        c['properties'][p.name] = []
     #alimentation des propriétés pour le tableau
     for num in traces:
         ppt = Trace.objects.get(id=int(num)).get_properties()
         for p in ppt:
-            c[p].append(ppt[p])
-
+            c['properties'][p.name].append(p.value)
 
     if segments != None:
-        segments = segments.split('/')[1:] #l'indice 0 est segment
+        segments = segments.split('/')[1:]
         tr = Trace.objects.get(id=int(segments[0]))
         ppt = tr.get_segment_properties(segments[1],segments[2])
         for p in ppt:
-            c[p].append(ppt[p])
+            if c['properties'].has_key(p):
+                c['properties'][p].append(unicode(ppt[p]))
 
     return render_to_response('gps/tracetabs.html', c)
 
