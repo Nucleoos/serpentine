@@ -20,7 +20,8 @@ def run_reset_properties():
     trs = Trace.objects.all().order_by('-id')
     for tr in trs:
         print tr
-        tr.clear_properties()
-        tr.set_properties()
-        print tr.get_properties()
+        if tr.id < 106:
+            tr.clear_properties()
+            tr.set_properties()
+            print tr.get_properties()
 run()

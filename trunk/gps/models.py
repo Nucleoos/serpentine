@@ -624,7 +624,7 @@ class Trace(models.Model):
         """
         trs = Trace.objects.filter(trace_property__value__icontains=criteria).distinct()
         res = [{'type': 'Parcours', 'id': tr.id, 'nom': tr.name,
-                'properties': tr.get_str_properties('description', 'depart', 'arrivee', 'vias')} for tr in trs]
+                'properties': tr.get_properties('description', 'depart', 'arrivee', 'vias')} for tr in trs]
         return res
 
 
