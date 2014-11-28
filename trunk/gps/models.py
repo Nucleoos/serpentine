@@ -522,8 +522,6 @@ class Trace(models.Model):
                         tr.trace, tr.type, tr.distance, tr.seconds = self, d[0], bestperf['dist'], bestperf['seconds']
                         tr.start, tr.end = bestperf['start'], bestperf['end']
                         tr.save()
-                    else:
-                        raise Exception, 'bestperf is None'
                 else:
                     #print 'lecture', ppt[0].name
                     best.append((trec[0].type, {'dist':trec[0].distance, 'seconds':trec[0].seconds,
