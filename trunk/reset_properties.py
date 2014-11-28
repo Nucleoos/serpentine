@@ -17,7 +17,7 @@ def run():
     print('total time spent: ' + str(end - start))
 
 def run_reset_properties():
-    trs = Trace.objects.all()
+    trs = Trace.objects.all().order_by('-id')
     for tr in trs:
         print tr
         tr.clear_properties()
