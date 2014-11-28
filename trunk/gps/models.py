@@ -536,7 +536,7 @@ class Trace(models.Model):
         :param distance: distance du best (400m 1km 1 mile . etc)
         :return: dictionnary meilleur temps, index first point , index last point
         """
-        tps = [tp for tp in Trace_point.objects.filter(trace=self).order_by('order_num')]
+        tps = [tp for tp in Trace_point.objects.filter(trace=self).order_by('time')]
         start, end , besttime = 0, tps[-1].order_num-1, (tps[-1].time - tps[0].time).seconds
         result = None
         if distbest > tps[-1].distance:
