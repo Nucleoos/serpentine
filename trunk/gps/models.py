@@ -18,8 +18,6 @@ import gps.settings
 
 class Trace(models.Model):
     TRACE_TYPES = (('VEL','Vélo de route'), ('VTT','VTT'), ('CAP','Course à pied'), ('MAR','Marche'), ('AUT', 'Autre'))
-    MAIN_PROPERTIES = ('min_lat','min_lon','max_lat','max_lon','max_speed','avg_speed',
-                       'max_hr','avg_hr','total_time','total_distance','amplitude_elevation','min_elevation','max_elevation')
     name = models.CharField(max_length=256)
     user = models.ForeignKey(User)
     type = models.CharField(max_length=3,choices=TRACE_TYPES,default='CAP')
@@ -134,7 +132,7 @@ class Trace(models.Model):
         properties['min_elevation'] = agg['elevation__min']
         properties['amplitude_elevation'] = agg['elevation__max']-agg['elevation__min']
         properties['max_speed'] = agg['speed__max']
-        properties['avg_speed'] =3600*(agg['distance__max']-agg['distance__min'])/((agg['time__max']-agg['time__min']).seconds +(agg['time__max']-agg['time__min']).days*86400)
+        properties['avg_speed'] = 3600*(agg['distance__max']-agg['distance__min'])/((agg['time__max']-agg['time__min']).seconds +(agg['time__max']-agg['time__min']).days*86400) if (agg['time__max']-agg['time__min']).seconds > 0 else 0
         properties['max_lat'] = agg['latitude__max']
         properties['min_lat'] = agg['latitude__min']
         properties['max_lon'] = agg['longitude__max']
