@@ -525,8 +525,8 @@ class Trace(models.Model):
                 else:
                     #print 'lecture', ppt[0].name
                     best.append((trec[0].type, {'dist':trec[0].distance, 'seconds':trec[0].seconds,
-                                                'allure': trec[0].seconds/trec[0].distance,
-                                                'speed': 3600*trec[0].distance/trec[0].seconds,
+                                                'allure': trec[0].seconds/trec[0].distance if trec[0].distance > 0 else 0,
+                                                'speed': 3600*trec[0].distance/trec[0].seconds if trec[0].seconds >0 else 0,
                                                 'start': trec[0].start, 'end': trec[0].end}))
         return best
 
