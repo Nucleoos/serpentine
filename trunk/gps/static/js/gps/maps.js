@@ -124,7 +124,7 @@ function drawSelection() {
         var idxmin = getIndex(track, this.axes.xaxis.min);
         var idxmax = getIndex(track, this.axes.xaxis.max);
         //	alert("min" + this.axes.xaxis.min+ " idx "+idxmin + "/" +this.axes.xaxis.max + " idx "+idxmax);
-        drawTrackPart(mainmap,"Zoom",track,idxmin,idxmax);
+        drawTrackPart(mainmap,"Zoom",track,idxmin,idxmax,true);
         getTrackSegmentTables(track_id,idxmin,idxmax)
     }
     else {
@@ -147,17 +147,18 @@ function drawSelection() {
     }
 }
 
-function drawTrackPart(map, trackname, track, idxmin, idxmax) {
+function drawTrackPart(map, trackname, track, idxmin, idxmax,zoom) {
+
     if (vec_t != undefined) {
 	    map.removeLayer(vec_t);
     }
     vec_t = new OpenLayers.Layer.Vector(trackname);
     var track_points = [];
     for (i in track.points) {
-	if (parseInt(i) >= parseInt(idxmin) && parseInt(i) < parseInt(idxmax)) {
-	    var point = new OpenLayers.Geometry.Point(track.points[i]["lon"],  track.points[i]["lat"]);
-	    track_points.push(point.transform(geographic,map.getProjectionObject()));
-	}
+        if (parseInt(i) >= parseInt(idxmin) && parseInt(i) < parseInt(idxmax)) {
+            var point = new OpenLayers.Geometry.Point(track.points[i]["lon"],  track.points[i]["lat"]);
+            track_points.push(point.transform(geographic,map.getProjectionObject()));
+        }
     }
     var line_style = { strokeWidth: 5, strokeColor: '#FF0000', strokeOpacity: 0.7 };
     var lineGeometry =   new OpenLayers.Geometry.LineString(track_points);
@@ -165,7 +166,9 @@ function drawTrackPart(map, trackname, track, idxmin, idxmax) {
     vec_t.addFeatures(lineFeature);
     map.addLayer(vec_t);
     var bnds = lineGeometry.getBounds();
-    map.zoomToExtent(bnds);
+    if (zoom) {
+        map.zoomToExtent(bnds);
+    }
     return lineGeometry;
 }
 
