@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.http import HttpResponse
 #from views import *
 
 urlpatterns = patterns('',
@@ -44,4 +45,7 @@ urlpatterns = patterns('',
                        #tests
                        (r'^test_cookies', 'gps.views.test_cookies'),
                        (r'^test_ign', 'gps.views.test_ign'),
+                       #robots deny
+                       (r'^robots.txt$', lambda r: HttpResponse("User-agent: *\nDisallow: /", mimetype="text/plain")),
 )
+
