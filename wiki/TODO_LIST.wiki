@@ -5,18 +5,27 @@
      * Visualise comparison
 
   * Simplify track import 
-     * TODO: Load first - describe after
+     * DONE: Load first - describe after
      * TODO: Trim or slice first import 
      * TODO: Garmin plugin import
      * TODO: Android import (with an app ? ) 
 
   * UI
-     * Maps Index: draw squares with summary info if too many tr points  
+     * ? Maps Index: draw squares with summary info if too many tr points  
      * TODO: better access to features 
-     * Multiple Tracks plot + tables + map 
-     * Include gmaps terrain 
-     * Check 
+     * DONE: Multiple Tracks plot + tables + map 
+     * DONE: Include gmaps terrain 
+     * DONE: Show best
 
+  * Profil
+    * TODO: Activities calendar
+    * TODO: Show bests records
+    * TODO: Account preferences
+
+  * Code:
+    * TODO: grow Models as packages
+    * TODO: reorganise javascript
+    * TODO: Package lib features in class 
 
   * Restore IGN features
  
