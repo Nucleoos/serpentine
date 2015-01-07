@@ -35,13 +35,16 @@
 <div id="tracestats">
 {% include "gps/tracestats.html" %}
 </div>
+<div id="nav">
+{% include "gps/nav.html" %}
+</div>
+
 <div class="sidetitle hideshow" id="nearby_title" title="Cliquer pour masquer/afficher la section">
     Près d'ici
 </div>
 <div id="nearby_content" class="sidegroup" style="display:none">
     {% include "gps/nearby.html" %}
 </div>
-{% include "gps/modifications.html" %}
 {% endblock sidebar%}
 {% block content %}
 {% block main_map %}

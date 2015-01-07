@@ -38,8 +38,6 @@ urlpatterns = patterns('',
                        (r'^user/profile$', 'gps.views.user_profile'),
                        #JSON urls (called with track number ?t=N&t2=...)
                        (r'^trace/json_segments$', 'gps.views.trace_segment_json'),
-                       #Javascript
-                       (r'^js/trace_(?P<maptype>ol|ign)_(?P<num>\d+).js', 'gps.views.view_trace_js'),
                        #ajax cookies
                        (r'^setmaptype/(?P<maptype>ol|ign)', 'gps.views.set_maptype'),
                        #tests

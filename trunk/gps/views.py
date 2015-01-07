@@ -164,12 +164,14 @@ def nav_html(request):
     """ renvoie le block des liens de navigation des traces interieurs aux bounds de la requete si appel ajax avec bounds
     """
     c = {}
-    if request.method == 'GET':
-        #TODO tester l'existence des cles
+    if request.method == 'GET' and request.GET.has_key('minlat') and request.GET.has_key('maxlat') and request.GET.has_key('minlon') and request.GET.has_key('maxlon'):
         minlat = float(request.GET['minlat'])
         minlon = float(request.GET['minlon'])
         maxlat = float(request.GET['maxlat'])
         maxlon = float(request.GET['maxlon'])
+    else:
+        minlat, minlon = 0,0
+        maxlat, maxlon = 90,90
     trsin = Trace.get_tracks_in_bounds(minlat, minlon, maxlat, maxlon)
     if request.user.is_authenticated():
         usr = User.objects.get(username=request.user.username)
