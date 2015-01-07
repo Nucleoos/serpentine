@@ -172,6 +172,11 @@ function drawTrackPart(map, trackname, track, idxmin, idxmax,zoom) {
     return lineGeometry;
 }
 
+function trackZoom(map, trackname, track, idxmin, idxmax,zoom) {
+    drawTrackPart(map, trackname, track, idxmin, idxmax,zoom);
+    plotZoom(idxmin,idxmax);
+}
+
 function showMarker(e, gridpos, datapos, neighbor, plot) {
     var x = datapos.xaxis; // la position en km sur l'axe
     var i  = getIndex(track,x); //recherche le point d'index du repère en km

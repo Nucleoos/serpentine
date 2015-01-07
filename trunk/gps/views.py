@@ -332,7 +332,7 @@ def logout(request):
 
 #javascript json
 def view_trace_js(request, num, maptype):
-    t = loader.get_template('gps/trace.js')
+    t = loader.get_template('gps/static/js/gps/trace.js')
     c = {}
     c['num'] = num
     if maptype == None: maptype = "ol"

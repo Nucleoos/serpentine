@@ -11,7 +11,7 @@
         </tr>
     {% for s in bests %}
         <tr>
-            <td class="traceinfotable bold simple-link" onclick="drawTrackPart(mainmap,'{{ s.0 }}',track,{{ s.1.start }},{{ s.1.end }},true)"  onmouseover="drawTrackPart(mainmap,'{{ s.0 }}',track,{{ s.1.start }},{{ s.1.end }},false)">{{ s.0 }}</td>
+            <td class="traceinfotable bold simple-link" onclick="trackZoom(mainmap,'{{ s.0 }}',track,{{ s.1.start }},{{ s.1.end }},true)"  onmouseover="drawTrackPart(mainmap,'{{ s.0 }}',track,{{ s.1.start }},{{ s.1.end }},false)">{{ s.0 }}</td>
             <td class="traceinfotable">{{ s.1.seconds|formattime }}</td>
             <td class="traceinfotable">{{ s.1.allure|formattime }}</td>
             <td class="traceinfotable">{{ s.1.speed|floatformat:1}}</td>

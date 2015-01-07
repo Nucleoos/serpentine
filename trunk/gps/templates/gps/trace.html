@@ -22,7 +22,8 @@
 <script type="text/javascript" src="/static/js/gps/ajax.js"></script>
 <script type="text/javascript" src="/static/js/gps/maps.js"></script>
 <script type="text/javascript" src="/static/js/gps/plot.js"></script>
-<script type="text/javascript" src="/js/trace_{{ maptype }}_{{ num }}.js"></script>
+<script type="text/javascript"> track_id = {{ num }}</script>
+<script type="text/javascript" src="/static/js/gps/trace.js"></script>
 {% endblock js_maps %}
 
 {% block sidebar %}

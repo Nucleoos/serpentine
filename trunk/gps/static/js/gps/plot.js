@@ -66,6 +66,15 @@ function handlePlotZoom(ev, gridpos, datapos, plot, cursor) {
 */
 }
 
+function plotZoom(idxmin,idxmax) {
+    var series = getSeries(idxmin,idxmax);
+    plot1.series[0].data  = series[0];
+    plot1.series[1].data  = series[1];
+    plot1.axes.xaxis.min = track.points[idxmin].dist;
+    plot1.axes.xaxis.max=track.points[idxmax].dist;
+    plot1.replot();
+}
+
 function getSeries(idxmin, idxmax){
     var chartwidth = $('#chartdiv').width();
     var step = 1+Math.floor((idxmax-idxmin)/chartwidth);

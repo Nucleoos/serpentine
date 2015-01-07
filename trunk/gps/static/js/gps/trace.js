@@ -26,7 +26,6 @@ function initMainVariables() {
     //$.jqplot.eventListenerHooks.push(['jqplotZoom', handleZoom]);
         //$.jqplot.eventListenerHooks.push(['jqplotDblClick', plotTrace]);
     $.jqplot.postDrawHooks.push(drawSelection);
-    track_id = "{{ num }}";
     trackinfo = getTrackInfos(track_id);//"{{ num }}"); //TODO unset track  ?
     bounds = new OpenLayers.Bounds(trackinfo["minlon"],trackinfo["minlat"],trackinfo["maxlon"],trackinfo["maxlat"]);
     initEventsControls();
@@ -35,8 +34,8 @@ function initMainVariables() {
 $(document).ready(function() {  
     initMainVariables();
     resizeMap();
-    setMainMap('{{ maptype }}',bounds,['terrain','hybrid']);
-    if ('{{ maptype }}'=='ol') { initAfterMapSet();}
+    setMainMap('ol',bounds,['terrain','hybrid']);
+    initAfterMapSet();
 });
 
 
@@ -46,17 +45,17 @@ function initAfterMapSet() {
     mainmap.addLayer(vec_pt);   
     //writeInfo(trackinfo);
     //addSnappingControls(map);
-    track = getTrackPoints("{{ num }}");
+    track = getTrackPoints(track_id);
     plotTrace(track,"dist","ele");
-    drawTrack(mainmap,"{{ num }}" ,track, '#0000FF');
+    drawTrack(mainmap,track_id ,track, '#0000FF');
     resizeMap();
     var center = mainmap.getCenter();
     var cnt = center.transform(mainmap.getProjection(),geographic); 
-    getTracksNearby( {{ num }} , cnt.lat, cnt.lon);
+    getTracksNearby( track_id , cnt.lat, cnt.lon);
     //Auto refresh mode
 
     mainmap.events.on({ "moveend": function (e) {
-	getTracksNearby({{ num }});
+	getTracksNearby(track_id);
     }});
 
 }
