@@ -22,7 +22,7 @@
 <script type="text/javascript" src="/static/js/gps/ajax.js"></script>
 <script type="text/javascript" src="/static/js/gps/maps.js"></script>
 <script type="text/javascript" src="/static/js/gps/plot.js"></script>
-<script type="text/javascript"> track_id = {{ num }}</script>
+<script type="text/javascript"> var track_id = {{ num }}</script>
 <script type="text/javascript" src="/static/js/gps/trace.js"></script>
 {% endblock js_maps %}
 
@@ -32,18 +32,24 @@
 <div id="tracetabs">
 {% include "gps/tracetabs.html" %}
 </div>
-<div id="tracestats">
+
+<div id="tracelaps">
+{% include "gps/tracelaps.html" %}
+</div>
+<div id="tracestatistics">
 {% include "gps/tracestats.html" %}
 </div>
-<div id="nav">
-{% include "gps/nav.html" %}
-</div>
+
 
 <div class="sidetitle hideshow" id="nearby_title" title="Cliquer pour masquer/afficher la section">
     Près d'ici
 </div>
-<div id="nearby_content" class="sidegroup" style="display:none">
+<div id="nearby_content" class="sidegroup hidden">
     {% include "gps/nearby.html" %}
+</div>
+
+<div id="nav">
+{% include "gps/nav.html" %}
 </div>
 {% endblock sidebar%}
 {% block content %}

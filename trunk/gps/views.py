@@ -76,6 +76,7 @@ def view_trace(request, num):
     c['ign_api_key'] = gps.settings.IGN_API_KEY
     c['stats']=tr.get_stats()
     c['bests']= tr.get_bests()
+    c['laps']=tr.get_laps()
     response = render_to_response('gps/trace.html', c, context_instance=RequestContext(request))
     #rafraichissement du cookie
     response.set_cookie(key='maptype', value=maptype, max_age=3600 * 24 * 30, expires=None, path='/', domain=None,
@@ -159,6 +160,15 @@ def trace_stats(request, num):
     c['trace'] = tr
     c['stats'] = tr.get_stats()
     return render_to_response('gps/tracestats.html', c)
+
+def trace_laps(request, num):
+    c = {}
+    c['num'] = num
+    tr = Trace.objects.get(id=num)
+    c['trace'] = tr
+    c['laps'] = tr.get_laps()
+    return render_to_response('gps/tracelaps.html', c)
+
 
 def nav_html(request):
     """ renvoie le block des liens de navigation des traces interieurs aux bounds de la requete si appel ajax avec bounds

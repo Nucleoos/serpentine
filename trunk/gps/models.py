@@ -13,6 +13,7 @@ from django.db.models import Q
 # import os
 # from ftplib import FTP
 import gps.settings
+import math
 # Create your models here.
 
 
@@ -497,6 +498,28 @@ class Trace(models.Model):
             'speed': 3600*total_distance/total_time
         }
         return stats
+
+
+    def get_laps(self):
+        total_distance = self.get_total_distance()
+        laps = []
+        tps = Trace_point.objects.filter(trace=self).order_by('distance')
+        min, max = 0,0 #le lap
+        for i in range(1,(int(math.floor(total_distance)))):
+            max = i
+            lappts = [ppt for ppt in tps.filter(distance__gte=min).filter(distance__lte=max+0.02)] #petite marge de 2m pour minimiser l'effet "inférieur à"
+            bpms = [b.heartrate for b in lappts]
+            bpmavg = sum(bpms)/len(bpms)
+            distance = lappts[-1].distance - lappts[0].distance
+            seconds = (lappts[-1].time - lappts[0].time).seconds
+            laps.append(('km'+str(i), {'dist':distance, 'seconds':seconds,
+                                    'allure': seconds/distance if distance > 0 else 0,
+                                    'speed': 3600*distance/seconds if seconds >0 else 0,
+                                    'start': lappts[0].order_num, 'end': lappts[-1].order_num,
+                                    'heartrate': bpmavg}))
+            min = i
+        return laps
+
 
     def get_bests(self, forcecalc = False):
         dists = [('best 100m',0.1),

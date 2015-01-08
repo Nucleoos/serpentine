@@ -17,8 +17,10 @@ def run():
     #run_compute_speeds()
     # run_best_performance()
     # run_import_file()
-    run_set_properties()
+    # run_set_properties()
     #run_tracetabs()
+    #run_best_performance()
+    run_laps()
     end = datetime.now()
     print(end)
     print('total time spent: ' + str(end - start))
@@ -69,6 +71,13 @@ def run_best_performance():
             seckm = int(result['seconds']/result['dist'])
             print 'allure ', seckm/60, seckm-60*(seckm/60)
     """
+
+
+def run_laps():
+    tr = Trace.objects.get(id=12)
+    ppts = Trace_property.objects.filter(trace = tr)
+
+    print tr.get_laps()
 
 def run_import_file():
     tr = Trace()

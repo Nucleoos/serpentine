@@ -354,3 +354,7 @@ a {
     text-align: center;
     z-index:1000;
 }
+
+.hidden {
+    display: none;
+}
