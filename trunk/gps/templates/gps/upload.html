@@ -11,15 +11,15 @@ Charger une nouvelle trace
 {% endblock title %}
 
 {% block sidebar %}
+Charger un fichier de trace. Les formats acceptés sont: bla bla bla, bla bla bla...
 {% endblock sidebar%}
 {% block content %}
-<div class="user_message">
+<div id="text_content">
     <p>Vous pouvez ici déposer vos fichiers de trace gpx
     </p>
     <p>Commencez par charger le fichier, vous pourrez ensuite saisir un titre et une description.
     </p>
-</div>
-<div class="centered form  upload" >
+
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div id="upload_form"> {{ upload_form.fichier }}

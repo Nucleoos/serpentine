@@ -6,13 +6,13 @@ function getTrackPoints(tr) {
     //renvoie l'ensemble des infos + points d'une trace
     var points;
     $.ajax({
-        url: "/trace/json",
-        datatype: 'json',
-        data: ({t:tr}),
-        async: false,
-        success: function(data) {
-            points = JSON.parse(data);
-        }});
+	    url: "/trace/json",
+	    datatype: 'json', 
+	    data: ({t:tr}),
+	    async: false,
+	    success: function(data) {
+		points = JSON.parse(data);		
+	    }});
     return points;
 }
 

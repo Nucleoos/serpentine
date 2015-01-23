@@ -1,20 +1,6 @@
 <div class="nav1">
-{% if mes_traces %}
-<div class="section_title hideshow">Mes 10 dernières traces</div>
-<div class="section_group" id="track_menu">
-    <ul>
-        {% for trace in mes_traces %}
-        <li>
-            <a id="trace_{{ trace.id }}" class="a_track" href="/trace/{{ trace.id }}">{{ trace.name }} </a> ({{ trace.user }})
-        </li>
-        {% endfor %}
-    </ul>
-</div>
-{% endif %}
-</div>
-{% if all_traces %}
-<div class="section_title hideshow">Les 10 dernières traces publiées (tous utilisateurs)</div>
-<div class="section_group" id="track_menu">
+<div class="sidetitle hideshow">Les 10 dernières traces</div>
+<div class="sidegroup" id="track_menu">
     {% if latest_traces %}
     <ul>
         {% for trace in latest_traces %}
@@ -27,8 +13,23 @@
     Pas de traces disponibles dans cette zone...
     {% endif %}
 </div>
-<div class="section_title hideshow">Toutes les traces</div>
-<div class="section_group hidden" id="track_menu">
+
+{% if mes_traces %}
+<div class="sidetitle hideshow">Mes 10 dernières traces</div>
+<div class="sidegroup" id="track_menu">
+    <ul>
+        {% for trace in mes_traces %}
+        <li>
+            <a id="trace_{{ trace.id }}" class="a_track" href="/trace/{{ trace.id }}">{{ trace.name }} </a> ({{ trace.user }})
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+</div>
+{% if all_traces %}
+<div class="sidetitle hideshow">Toutes les traces</div>
+<div class="sidegroup hidden" id="track_menu">
     <ul>
         {% for trace in all_traces %}
         <li>

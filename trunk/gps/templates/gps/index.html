@@ -1,19 +1,24 @@
 {% extends "gps/base.html" %}
-{% block js %}
-    {{ block.super }}
-{% endblock js %}
-{% block main_content %}
-    <div class="user_message">
-    Bienvenue sur Serpentine-GPS, un site qui vous permet de visualiser, analyser et partager vos traces GPS.
-    Ce site est en cours de développement, certaines fonctionnalités ne sont pas stables ou pas encore disponibles, néanmoins on peut déjà faire pas mal de choses.
-    La page <a href="https://code.google.com/p/serpentine/">google code</a> vous permet de savoir où on en est de l'avancement des développements.
-    Je vous invite à ajouter des souhaits et bug reports <a href="https://code.google.com/p/serpentine/issues/list">ici</a> pour m'aider si vous en avez envie.
-    </div>
+{% block js_maps %}
+<script type="text/javascript" src="/static/js/openlayers/OpenLayers.js"></script>
+<script type="text/javascript" src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
+<!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>-->
 
-    <div class="main_text nav">
-    <p>Choisissez d'abord une trace à visualiser</p>
-        {% include "gps/nav.html" %}
-    </div>
-{% endblock main_content%}
+<script type="text/javascript" src="/static/js/gps/ajax.js"></script>
+<script type="text/javascript" src="/static/js/gps/maps.js"></script>
+<script type="text/javascript" src="/static/js/gps/index.js"></script>
 
+{% endblock js_maps %}
+
+{% block openlayer %}
+{% endblock openlayer %}
+
+{% block content %}
+{% block main_map %}
+<div id="map_canvas"
+     title="Zoomer sur une région pour afficher les liens vers les parcours de cette région. Cliquer sur les marqueurs pour avoir plus d'infos sur le parcours"></div>
+
+{% endblock main_map %}
+
+{% endblock content %}
 
