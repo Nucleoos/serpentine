@@ -1,0 +1,16 @@
+{% if closest_tracks %}
+<span class="simple-link droite" onclick="getTracksNearby({{ num }});">(rafraîchir)</span>
+<ul>
+    {% for trace, dist in closest_tracks %}
+    <li>
+            <a class="simple-link" href="/trace/{{ trace.id }}"> {{ trace.name }} </a> à {{ dist|floatformat:1 }} km
+            |<span id="trace_{{ trace.id }}" onclick="addTrack({{ trace.id }})" class="simple-link" title="ajouter à la carte courante"> +add </span>|
+            <span id="seg_{{ trace.id }}" onclick="getMatchingPoints({{ tr_id }},{{ trace.id }})" class="simple-link" title="rechercher les segments communs"> +match </span>
+   {% endfor %}
+</ul>
+
+{% else %}
+Pas de traces assez proches
+{% endif %}
+
+
