@@ -78,16 +78,16 @@ a {
 #sidebar a{
     font-size:8pt;
 }
-.sidegroup{
+.section_group {
     display:none;
     padding: 5px;
 }
-.sidegroup ul {   
+.section_group ul {
     margin: 0px;
     padding: 0px;
     display: inline;
 }
-.sidegroup ul li {
+.section_group ul li {
     display: block;
 }
 

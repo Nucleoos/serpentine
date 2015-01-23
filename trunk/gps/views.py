@@ -10,7 +10,7 @@ from django.core.context_processors import csrf
 from django.http import HttpResponseRedirect
 # from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import authenticate, login, logout
+from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_page
 
@@ -26,6 +26,7 @@ from gps.forms import TrackForm, UploadForm, QuickLoginForm, QuickSearchForm
 #import urls 
 
 #Main context processor (defined in settings.py)
+@login_required
 def main_context(request):
     d = {}
     #dernières traces 
@@ -52,13 +53,14 @@ def main_context(request):
     return d
 
 
-#html pages 
+#html pages
+@login_required
 def index(request):
     d = {}
     d['all_traces'] = Trace.objects.all().order_by('-tdate')
     return render_to_response('gps/index.html', d, context_instance=RequestContext(request))
 
-
+@login_required
 def view_trace(request, num):
     c = {}
     c['num'] = num
@@ -83,7 +85,7 @@ def view_trace(request, num):
                         secure=None)
     return response
 
-
+@login_required
 def recherche(request):
     c = {}
     if request.method == 'GET' and request.GET.has_key('recherche'):
@@ -93,6 +95,7 @@ def recherche(request):
     return rsp
 
 #records
+@login_required
 def records(request):
     c={'resultats':Trace_record.get_all_records()}
     rsp = render_to_response('gps/user_records.html', c, context_instance=RequestContext(request))
@@ -113,6 +116,7 @@ def user_profile(request):
 
 
 #html ajax
+@login_required
 def trace_info_html(request, num):
     c = {}
     c['num'] = num
@@ -121,7 +125,7 @@ def trace_info_html(request, num):
     c['properties'] = tr.get_properties()
     return render_to_response('gps/traceinfo.html', c)
 
-
+@login_required
 def trace_short_info_html(request, num):
     c = {}
     c['num'] = num
@@ -129,6 +133,7 @@ def trace_short_info_html(request, num):
     c['trace'] = tr
     return render_to_response('gps/traceshortinfo.html', c)
 
+@login_required
 def trace_tabs_html(request, traces , segments=None):
     c = {'traces':traces}
     traces = traces.split('/')[1:] #le premier argument est 'traces'
@@ -153,6 +158,7 @@ def trace_tabs_html(request, traces , segments=None):
 
     return render_to_response('gps/tracetabs.html', c)
 
+@login_required
 def trace_stats(request, num):
     c = {}
     c['num'] = num
@@ -161,6 +167,7 @@ def trace_stats(request, num):
     c['stats'] = tr.get_stats()
     return render_to_response('gps/tracestats.html', c)
 
+@login_required
 def trace_laps(request, num):
     c = {}
     c['num'] = num
@@ -169,7 +176,7 @@ def trace_laps(request, num):
     c['laps'] = tr.get_laps()
     return render_to_response('gps/tracelaps.html', c)
 
-
+@login_required
 def nav_html(request):
     """ renvoie le block des liens de navigation des traces interieurs aux bounds de la requete si appel ajax avec bounds
     """
@@ -191,7 +198,7 @@ def nav_html(request):
         c['latest_traces'] = trsin[:10]
     return render_to_response('gps/nav.html', c)
 
-
+@login_required
 def nearby(request):
     c = {}
     lat, lon , tr_id = 0 ,0 ,0
@@ -258,7 +265,7 @@ def upload(request):
     else:
         return HttpResponseRedirect('/login/')
 
-
+@login_required
 def edit(request, num):
     if request.user.is_authenticated():
         c = {}
@@ -297,6 +304,7 @@ def edit(request, num):
 
 
 #modify des tracks points
+@login_required
 def modify(request):
     if request.method == 'POST':
         track = request.POST['track']
@@ -313,6 +321,7 @@ def modify(request):
 
 
 #login logout and register
+@login_required
 def register(request):
     c = {}
     if request.method == 'POST':
@@ -329,13 +338,12 @@ def register(request):
 
 def login(request):
     if request.POST.__contains__('username'):
-        user = authenticate(username=request.POST['username'], password=request.POST['password'])
+        user = auth.authenticate(username=request.POST['username'], password=request.POST['password'])
     else:
         user = ''
     if user:
         auth.login(request, user)
     return HttpResponseRedirect("/")
-
 
 def logout(request):
     auth.logout(request)
@@ -343,6 +351,7 @@ def logout(request):
 
 
 #javascript json
+@login_required
 def view_trace_js(request, num, maptype):
     t = loader.get_template('gps/static/js/gps/trace.js')
     c = {}
@@ -360,7 +369,7 @@ def trace_json(request):
         points = Trace.objects.get(id=t).get_json()
         return HttpResponse(points, mimetype='application/javascript')
 
-
+@login_required
 def trace_json_info(request):
     if request.method == 'GET':
         t = int(request.GET['t'])
@@ -377,7 +386,7 @@ def trace_segment_json(request):
             return HttpResponse(points, content_type='application/javascript')
     return HttpResponse('{error}', content_type='application/javascript' )
 
-
+@login_required
 def trace_json_index(request):
     #    if request.method == 'GET':
     traces = Trace.objects.all()
@@ -394,14 +403,15 @@ def trace_json_index(request):
     index.update(bounds)
     return HttpResponse(json.dumps(index), mimetype='application/javascript')
 
-
+@login_required
 def set_maptype(request, maptype):
     response = HttpResponse('')
     response.set_cookie(key='maptype', value=maptype, max_age=85000, expires=None, path='/', domain=None, secure=None)
     return response
 
 
-# tests 
+# tests
+@login_required
 def test_cookies(request):
     """test des cookies 
     """
@@ -410,7 +420,7 @@ def test_cookies(request):
     resp = render_to_response('gps/test_cookies.html', c)
     return resp
 
-
+@login_required
 def test_ign(request):
     """ tests api ign
     """
