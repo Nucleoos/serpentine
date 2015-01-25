@@ -1,0 +1,39 @@
+{% extends "gps/base.html" %}
+{% load replace %}
+{% block title %}
+Résultats de la recherche
+{% endblock %}
+{% block content %}
+<p style="background-color:red;">Résultats de recherche sur &laquo;{{ criteria }}&raquo; (en cours de développement !!!
+    )</p>
+<div id="searchfilters">
+</div>
+<table class="searchresults" width="100%" cellspacing="0" cellpadding="0">
+    <tr>
+        <th></th>
+        <th>Type</th>
+        <th>id</th>
+        <th>Nom</th>
+        <th>Description</th>
+    </tr>
+    {% for resultat in resultats %}
+    <tr class="{% cycle odd,even %}">
+        <td>{{ forloop.counter }}</td>
+        <td><a href="/trace/{{ resultat.id }}?recherche={{ criteria }}">{{ resultat.type }}</a></td>
+        <td><a href="/trace/{{ resultat.id }}?recherche={{ criteria }}">{{ resultat.id }}</a></td>
+        <td><a href="/trace/{{ resultat.id }}?recherche={{ criteria }}">{{ resultat.nom|boldify:criteria|safe }}</a>
+        </td>
+        <td>
+            <a href="/trace/{{ resultat.id }}?recherche={{ criteria }}">
+                {% for p in resultat.properties %} ({{ p.value|boldify:criteria|safe }}) {% endfor %}
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% block sidebar_intro %}
+{% endblock sidebar_intro %}
+{% endblock content %}
+
