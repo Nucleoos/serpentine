@@ -1,0 +1,360 @@
+html{
+    width:99.9%;
+    height:100%;
+
+}
+body{
+    font-family: sans-serif;
+    font-size: 12px;
+    width:inherit;
+    height:inherit;
+    padding:0px;
+    margin:2px;
+    overflow-y:scroll;
+}
+
+#header{
+    height:60px;
+    font-size:8pt;
+    background: -moz-linear-gradient(top,#CFCFCF,white);
+    background: -webkit-gradient(linear, center bottom, center top, from(white), to(#CFCFCF)); 
+    border: 1px solid;
+    border-color: #CFCFCF;
+    margin:0px;
+}
+#content {
+    height:100%;
+    width:100%;
+}
+
+.hideshow {
+    cursor: pointer;
+}
+.inline{
+    display: inline;
+}
+.left{
+    text-align: left;
+}
+.center{
+    text-align: center;
+}
+.right{
+    text-align: right;
+    float: right;
+}
+.bold{
+    font-weight: bold;
+}
+.italic {
+    font-style: italic;
+}
+#title {
+    position: relative;
+    float:left;
+    margin-left:5px;
+    margin-bottom: 7px;
+    font-size:27px;
+    font-family: cursive;
+    text-decoration: none;
+    #background-image:url("/static/img/serpentine.jpg");
+    z-index:200;
+}
+
+
+a:hover{
+    color: red;
+}
+
+a {
+   padding:0px;
+   margin:0px;
+   text-decoration: none;
+}
+
+#subtitle{
+    font-size: 12pt;
+    float: right;
+    margin: 10px 10px 0px 0px;
+}
+
+#quick_search{
+     position: absolute;
+     top: 17px;
+     width: 93%;
+     text-align: center;
+     z-index:100;
+}
+
+#under_header{
+    clear: both;
+    float:left;
+    margin:0px;
+    padding:0px;
+}
+
+#main_menu a{
+ width: 100%;
+ display: inline-block;
+}
+
+#main_menu ul{
+    margin: 0px;
+    padding:0px;
+}
+
+#main_menu li {
+    float: left;
+    display: inline-block;
+    text-decoration: none;
+    width: 110px;
+    padding-top:2px;
+    border-top:1px solid;
+    border-right: 1px solid;
+    border-color: #CFCFCF;
+    list-style-type:none;
+    font-size: 12px;
+    text-align: center;
+    padding:0px;
+    margin:0px;
+}
+#main_menu li:hover{
+    background-color: #CCCCCC;
+}
+
+#map_switcher{
+    background-color:red;
+    float: right;
+    display: inline;
+}
+
+#main_content{
+    clear:both;
+    float:left;
+    position: relative;
+}
+#sidebar{
+    float: right;
+    font-size:9pt;
+    width:360px;
+}
+#sidebar ul{
+    padding:0px;
+}
+#sidebar li{
+    list-style-type:none;
+    padding:0px;
+}
+#sidebar a{
+    font-size:8pt;
+}
+.sidegroup{
+    padding: 3px;
+}
+.sidegroup ul {   
+    margin: 0px;
+    padding: 0px;
+    display: inline;
+}
+.sidegroup ul li {
+    display: block;
+}
+.trackinfo{
+    font-size: 8pt;
+}
+.trackshortinfo{
+    font-size: 8pt;
+}
+.trackshortinfo:hover{
+    font-size: 14pt;
+}
+.ajaxgif{
+    text-align: center;
+}
+.traceinfotable {
+    border: 1px solid #CFCFCF;
+    border-collapse:collapse;
+    margin-top: 10px;
+    text-align: center;
+    width: 348px;
+    height: 18px;
+    font-size: 12px;
+}
+.track_section {
+    padding: 3px;
+}
+
+#chartdiv{
+    height:190px;
+}
+#charts {
+    width: 100%;
+    opacity:1;
+    z-index:1000;
+}
+#chartgroup{
+    position: relative;
+}
+
+#speedchartdiv{
+    height:200px;
+}
+#map_canvas{
+    opacity: 0.99;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+    border-color: #CFCFCF;
+
+}
+
+#w3c{
+    float: right;
+    font-size:8pt;
+}
+.margintop{
+    margin-top:20px;
+}
+
+#track_popup_contentDiv{
+    opacity:0.8;
+    border: 1px solid;
+
+}
+.maptools{
+    border: 1px solid;
+
+    padding: 0px;
+}
+.sidetitle{
+    padding-top: 0px;
+    border: 1px solid;
+    border-color: #CFCFCF;
+    cursor: pointer;
+    margin-bottom: 0px;
+    padding-bottom: 3px;
+    padding-left: 3px;
+    padding-top: 0px;
+    background: -moz-linear-gradient(top,white, #CFCFCF);
+    background: -webkit-gradient(linear, center bottom, center top, from(#CFCFCF), to(white));
+    font-weight:bold;
+    text-align: center;
+
+}
+.sidetitle:hover{
+    background-color: gray;
+    color: red;
+}
+.invisible{
+    visibility:hidden;
+}
+.absolute{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+
+#upload_form td, th{
+   text-align: left;
+   font-weight: normal;
+   vertical-align: top;
+
+}
+#upload_form td{
+   display: inline;
+   float: left;
+}
+#upload_form input, textarea{
+    border: 1px solid gray;
+    display: inline;
+}
+.errorlist{
+    display:inline;
+    float: right;
+    margin: 0;
+    padding:0px;
+    padding-left: 0px;
+    vertical-align: top;
+    list-style-type:none;
+    color: red;
+}
+.trace_title{
+    font-weight: bold;
+}
+
+.trace_title a {
+    font-weight: normal;
+}
+
+.searchresults{
+    border-collapse:collapse;
+    font-size: 12px;
+}
+.searchresults th {
+    background-color:#00AA99;
+    font-weight: bold;
+    color: white;
+}
+.searchresults td, th{
+    border: 1px solid black;
+    padding: 3px;
+}
+.searchresults tr:hover{
+    background-color:#D2D2D2;
+    cursor:pointer;
+}
+.searchresults a{
+    display: block;
+    width:100%;
+    height: 100%;
+    text-decoration:none;
+}
+
+.odd {
+}
+.even {
+  background-color: #EEEEEE;
+}
+
+.simple-link {
+    color: blue;
+    cursor: pointer;
+}
+.droite {
+   float: right;
+}
+
+.simple-link:hover{
+    background-color: #CCCCCC;
+    color: red;
+}
+
+.track_section_title {
+    text-align: center;
+    border: 1px solid;
+    border-color: #CFCFCF;
+    background-color: #EEEEEE;
+    cursor: pointer;
+}
+
+.vertical100{
+    float:right;
+    height:100%;
+    width: 12px;
+    text-align: center;
+    background-color: #DDDDDD;
+    /*background: -moz-linear-gradient(left,#CFCFCF,white);*/
+    /*background: -webkit-gradient(linear, right , left, from(white), to(#CFCFCF));*/
+}
+
+#point_info {
+    position: absolute;
+    top:15px;
+    width:100%;
+    text-align: center;
+    z-index:1000;
+}
+
+.hidden {
+    display: none;
+}

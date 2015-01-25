@@ -1,0 +1,32 @@
+<html>
+
+<script type="text/javascript">
+    var VIEWER = null ;
+    var iv ;
+
+    function init(){
+        VIEWER = iv.getViewer();
+
+    }
+
+    window.onload= function() {
+        iv = Geoportal.load('viewerDiv',
+                '4440190236596604228',
+                {lon:0.6,lat:46},
+                //ZOOM,
+                {
+                   //OPTIONS
+                   onView : init
+                }
+    );
+    }
+
+
+</script>
+
+<body>
+Test ign api V2
+<div id="viewerDiv"></div>
+<script type="text/javascript" src="http://api.ign.fr/geoportail/api/js/2.0/Geoportal.js"></script>
+</body>
+</html>
