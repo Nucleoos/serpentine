@@ -1,6 +1,6 @@
 function plotTrace(track) {
     var series = getSeries(0,track.points.length);
-    if (track.total_distance > 1) { fmt = '%.0f'; } else { fmt = '%.0f';}
+    if (track.total_distance > 10) { fmt = '%.0f'; } else { fmt = '%.0f';}
     var options = { show: false, //true,
         seriesColors: ["#FF0000","#00AAAA"],
         seriesDefaults: {showMarker:false},
@@ -10,8 +10,8 @@ function plotTrace(track) {
         ],
         axes:{
             yaxis:{tickOptions:{showGridline: false,showMark: false, showLabel: true,shadow: false,fontSize:'7pt',formatString:'%.0f'}, autoscale: true},
-            y2axis:{tickOptions:{showGridline: true,showMark: false, showLabel: true,shadow: false,fontSize:'7pt',formatString:'%.0f'}, autoscale: true},
-            xaxis:{tickOptions:{showGridline: true,showMark: false, showLabel: true,shadow: false,fontSize:'7pt',formatString:'%.0f'}, min:0,  max:track.total_distance},
+            y2axis:{tickOptions:{showGridline: true,showMark: false, showLabel: true,shadow: false,fontSize:'7pt',formatString:'%.0f'}, min:0},
+            xaxis:{tickOptions:{showGridline: true,showMark: false, showLabel: true,shadow: false,fontSize:'7pt',formatString:fmt},  min:0,  max:track.total_distance},
           },
         highlighter: {show: false}, //false},
         legend: {location:'nw'},
