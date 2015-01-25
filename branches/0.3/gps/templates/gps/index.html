@@ -1,0 +1,24 @@
+{% extends "gps/base.html" %}
+{% block js_maps %}
+<script type="text/javascript" src="/static/js/openlayers/OpenLayers.js"></script>
+<script type="text/javascript" src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
+<!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>-->
+
+<script type="text/javascript" src="/static/js/gps/ajax.js"></script>
+<script type="text/javascript" src="/static/js/gps/maps.js"></script>
+<script type="text/javascript" src="/static/js/gps/index.js"></script>
+
+{% endblock js_maps %}
+
+{% block openlayer %}
+{% endblock openlayer %}
+
+{% block content %}
+{% block main_map %}
+<div id="map_canvas"
+     title="Zoomer sur une région pour afficher les liens vers les parcours de cette région. Cliquer sur les marqueurs pour avoir plus d'infos sur le parcours"></div>
+
+{% endblock main_map %}
+
+{% endblock content %}
+

@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<gpx creator="Python GPX lib B.Damay V0.1 beta" version="1.0" xmlns="http://www.topografix.com/GPX/1/0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd">
+  <time></time>
+  <trk>
+    <name>{% if trace %} {{ trace }} {% endif %}</name>
+    <trkseg> {% for pt in points %} 
+      <trkpt lat="{{ pt.lat }}"  lon= "{{ pt.lon }}">
+	<ele>{{ pt.ele }}</ele>
+	<time>{{ pt.time }}</time>
+      </trkpt> {% endfor %}
+    </trkseg>
+  </trk>
+</gpx>
