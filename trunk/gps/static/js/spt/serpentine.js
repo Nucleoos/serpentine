@@ -1,7 +1,7 @@
 /* main js for serpentine */
 $(document).ready(function() {
     //un track est défini
-    var SPT = ui({
+    SPT = Ui({
         mainmap_div: 'map_canvas',
         maintrack: ((typeof track_id !== 'undefined')? track_id : null)
     });
@@ -12,29 +12,41 @@ $(document).ready(function() {
 /**
  *  TRACK UI object
  *  */
-var ui = function(spec,my) {
+var Ui = function(spec,my) {
     var that = {};
-    that.mainmap_div = spec.mainmap_div;
     that.width = $(document).width();
     that.height = $(document).height();
     if (spec.maintrack !== null){
-        that.maintrack = track({id:spec.maintrack});
+        that.maintrack = Track({id:spec.maintrack});
     }
     /***
      * Initialise UI - bind main events etc.
-     */
+     *
+     * */
     that.initialise = function() {
         // event on click hideshow class
         // hides or show the next div
         $(".hideshow").click(
             function(e){
                 if ($(this).next().css("display")=="none") {
-                    $(this).next().show(0); $(this).next().width($(this).width())} //TODO: getPrevious witdh fo element
+                    $(this).next().show(0); $(this).next().width($(this).width())}
                 else {$(this).next().hide(0); $(this).next().width(0)};
-                resizeMap();
             }
         );
+        this.resize();
+        this.mainmap = Map({id:1, map_div: spec.mainmap_div, type: 'ol'});
+        this.mainmap.zoomToExtent(bounds,true);
     }
+
+    that.resize = function()  {
+        $("#main_content").width($("#content").width()-$("#sidebar").width());
+        $("#map_canvas").width($("#main_content").width());
+        $("#map_canvas").height($(window).height()-$("#header").height() -$("#charts").height() -$(".user_message").outerHeight(true));
+        $("#charts").width($("#main_content").width());
+        $("#chartdiv").width($("#main_content").width());
+        if (typeof this.mainmap != 'undefined') { this.mainmap.updateSize(); }
+    }
+
     that.toString = function() {
         return "UI - "+this.mainmap_div + ' height:'+ this.height;
 
@@ -46,7 +58,7 @@ var ui = function(spec,my) {
  * track object
  */
 // constructor
-var track = function(spec,my) {
+var Track = function(spec,my) {
     var that = {}; // the object to be returned
     my = my || {}
     that.id = spec.id;
@@ -71,3 +83,20 @@ var track = function(spec,my) {
     return that;
 }
 
+var Map = function(spec,my) {
+    cartographic = new OpenLayers.Projection("EPSG:900913");
+    geographic = new OpenLayers.Projection("EPSG:4326");
+    bounds =  new OpenLayers.Bounds(-2,42,4,51).transform(geographic, cartographic);
+
+    var options = {
+	    projection: cartographic,
+	    displayProjection: geographic,
+	    units: "m"
+    };
+    var map = new OpenLayers.Map(spec.map_div,options);
+    //map.cartographic = cartographic;
+    //map.geographic = geographic;
+    var mapnik = new OpenLayers.Layer.OSM("osm mapnik");
+    map.addLayer(mapnik);
+    return map;
+}
