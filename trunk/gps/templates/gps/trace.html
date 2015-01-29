@@ -12,48 +12,42 @@
 {% block js %}
     {{ block.super }}
     {% if maptype == "ign" %}
-        <script type="text/javascript" src="http://api.ign.fr/geoportail/api/js/2.0/Geoportal.js"></script>
-    {% elif maptype == "oli" %}
+        <script type="text/javascript" src="http://api.ign.fr/geoportail/api/js/2.1/Geoportal.js"></script>
+    {% elif maptype == "ol" %}
         <script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"></script>
         <script type="text/javascript" src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
     {% endif %}
-        <script type="text/javascript"> var track_id = {{ num }}</script>
-    {% comment %}<script type="text/javascript" src="/static/js/gps/ajax.js"></script>
-    <script type="text/javascript" src="/static/js/gps/maps.js"></script>
-<script type="text/javascript" src="/static/js/gps/plot.js"></script>
-<script type="text/javascript" src="/static/js/gps/trace.js"></script>{% endcomment %}
+    <script type="text/javascript"> sptui = {type: 'track', track_id: {{ num }}, mainmap_div: 'map_canvas', map_type: '{{ maptype }}'};</script>
+
 {% endblock js %}
-{% block content %}
-    {% block main_map %}
-        <div id="map_canvas"></div>
-    {% endblock main_map %}
-    <div id="charts">{% include "gps/chart.html" %}</div>
-{% endblock content %}
+        {% block main_content %}
+            <div id="map_canvas"></div>
+            <div id="charts" class="resize-height">{% include "gps/chart.html" %}</div>
+        {% endblock main_content %}
+    {% block sidebar %}
+        {% include "gps/traceinfo.html" %}
 
-{% block sidebar %}
-    {% include "gps/traceinfo.html" %}
+        <div id="tracetabs" class="section_group">
+            {% include "gps/tracetabs.html" %}
+        </div>
 
-    <div id="tracetabs">
-        {% include "gps/tracetabs.html" %}
-    </div>
-
-    <div id="tracelaps">
-        {% include "gps/tracelaps.html" %}
-    </div>
-    <div id="tracestatistics">
-        {% include "gps/tracestats.html" %}
-    </div>
+        <div id="tracelaps">
+            {% include "gps/tracelaps.html" %}
+        </div>
+        <div id="tracestatistics">
+            {% include "gps/tracestats.html" %}
+        </div>
 
 
-    <div class="sidetitle hideshow" id="nearby_title" title="Cliquer pour masquer/afficher la section">
-        Près d'ici
-    </div>
-    <div id="nearby_content" class="section_group hidden">
-        {% include "gps/nearby.html" %}
-    </div>
+        <div class="section_title hideshow" id="nearby_title" title="Cliquer pour masquer/afficher la section">
+            Près d'ici
+        </div>
+        <div id="nearby_content" class="section_group hidden">
+            {% include "gps/nearby.html" %}
+        </div>
 
-    <div id="nav">
-        {% include "gps/nav.html" %}
-    </div>
-{% endblock sidebar%}
+        <div id="nav">
+            {% include "gps/nav.html" %}
+        </div>
+    {% endblock sidebar%}

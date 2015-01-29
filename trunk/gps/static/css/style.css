@@ -113,6 +113,11 @@ a{
     margin-top: 10px;
 }
 
+/*************************/
+/*** Charts             **/
+/*************************/
+
+
 /***********/
 /* Sidebar */
 /***********/
@@ -205,4 +210,19 @@ a{
     width: 12px;
     text-align: center;
     background-color: #DDDDDD;
+}
+
+/** DIVERS **/
+.resize-height{
+    resize: vertical;
+    overflow: auto;
+    min-height: 10px;
+    border: 3px solid;
+}
+
+.resize-width{
+    min-width: 100px;
+    resize: horizontal;
+    overflow: auto;
+    border: 3px solid;
 }
