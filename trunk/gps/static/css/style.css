@@ -15,6 +15,21 @@ a{
     text-decoration: none;
 }
 
+table {
+    border: 1px solid #AAAAAA;
+    border-collapse:collapse;
+    text-align: center;
+    width: 100%;
+    padding: 2px;
+    font-size: 9pt;
+}
+td{
+    border: 1px solid #CCCCCC;
+}
+th{
+    border: 1px solid #CCCCCC;
+    background-color: #EEEEEE;
+}
 /* ENTETE */
 #header{
     height:60px;
@@ -124,6 +139,7 @@ a{
 
 #sidebar{
     float: right;
+    font-size: 10pt;
 }
 
 /**************/
@@ -211,6 +227,17 @@ a{
     text-align: center;
     background-color: #DDDDDD;
 }
+
+.simple-link {
+    color: blue;
+    cursor: pointer;
+}
+
+.simple-link:hover{
+    background-color: #CCCCCC;
+    color: red;
+}
+
 
 /** DIVERS **/
 .resize-height{

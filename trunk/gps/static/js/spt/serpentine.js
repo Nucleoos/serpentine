@@ -10,13 +10,13 @@ $(document).ready(function() {
 });
 
 /**
- *  TRACK UI object
+ * UI object
  *  */
 var Ui = function(spec,my) {
     /** attributs **/
     var that = {};
-    that.type = (spec.hasOwnProperty('type') ? spec.type : 'base'); // l'objet instancié contient de base les propriétés passées
-    that.track_id = (spec.hasOwnProperty('track_id') ? spec.track_id : -1); // l'objet instancié contient de base les propriétés passées
+    that.type = (spec.hasOwnProperty('type') ? spec.type : 'base');
+    that.track_id = (spec.hasOwnProperty('track_id') ? spec.track_id : -1);
     that.width = $(document).width();
     that.height = $(document).height();
     if (spec.hasOwnProperty('track_id')){
@@ -27,14 +27,14 @@ var Ui = function(spec,my) {
     //initialise ui
     that.initialise = function() {
         // event on click hideshow class // hides or show the next div
-        $(".hideshow").click(
+        $(".hideshow").on('click',
             function(e){
                 if ($(this).next().css("display")=="none") {
                     $(this).next().show(0); $(this).next().width($(this).width())}
                 else {$(this).next().hide(0); $(this).next().width(0)};
             }
         );
-        $(".resize").on("dblclick", function() {that.resizeUi()});
+        $("#header").on("dblclick", function() {that.resizeUi()});
         $(window).resize(function() {
             that.resizeUi();
         });
@@ -44,6 +44,8 @@ var Ui = function(spec,my) {
         if (this.type === 'track') {
             this.mainmap = SerpentineMap({id:1, map_div: spec.mainmap_div, type: 'ol'},{});
             this.mainmap.initialise();
+            this.plot = Plot({id:1});
+            this.plot.initialise();
         }
         // Track stuff
         if (this.track !== undefined && this.type === 'track') {
@@ -55,7 +57,7 @@ var Ui = function(spec,my) {
     // auto resize
     that.resizeUi = function()  {
         if ($("#header").outerWidth()*0.3 > 300) {
-        $("#sidebar").outerWidth($("#header").outerWidth()*0.3);
+        $("#sidebar").outerWidth($("#header").outerWidth()*0.35);
         } else {$("#sidebar").outerWidth(300);}
         $("#main_content").outerWidth($("#content").outerWidth(true)-$("#sidebar").outerWidth(true)-1);
 
@@ -70,6 +72,12 @@ var Ui = function(spec,my) {
     that.toString = function() {
         return "UI - "+this.mainmap_div + ' height:'+ this.height;
 
+    }
+
+    that.addTrack = function(id) {
+       var track=Track({id:id});
+
+       drawTrack(this.mainmap, track,{style:{strokeWidth:3, strokeColor:'#333333'}});
     }
 
     //return instance of that
@@ -154,5 +162,22 @@ var SerpentineMap = function(spec,my) {
         return lineGeometry;
     }
 
+    return that;
+}
+
+/***************
+ * plot object *
+ ***************/
+// constructor
+var Plot = function(spec,my) {
+    var that =  $.jqplot('chartdiv',[[1,2,3,2,6]]); // Plot is a jqPlot object
+    my = my || {}
+    that.id = spec.id;
+    that.initialise = function() {
+        return this;
+    }
+    that.toString = function(){
+        return 'plot '+ that.id ;
+    };
     return that;
 }
